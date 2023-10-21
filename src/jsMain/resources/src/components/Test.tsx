@@ -1,12 +1,13 @@
 import { ReactElement}  from 'react';
+import NavBar from "./Navigation/NavBar"
 
 interface IProps {
-    test?: string;
 }
 
 const Test = (props: IProps): ReactElement => {
     return (
         <div>
+            <NavBar />
             Тест
         </div>
     )
