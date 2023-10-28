@@ -1,17 +1,28 @@
 plugins {
-    kotlin("multiplatform") version "1.8.22"
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("multiplatform") version "1.9.0"
+    application
 }
 
-group = "org.example"
+group = "telepuziki"
 version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
 kotlin {
+    jvm {
+        jvmToolchain(8)
+        withJava()
+        testRuns.named("test") {
+            executionTask.configure {
+                useJUnitPlatform()
+            }
+        }
+    }
     js {
+        binaries.executable()
         browser {
             commonWebpackConfig {
                 cssSupport {
@@ -19,34 +30,44 @@ kotlin {
                 }
             }
         }
-        binaries.executable()
     }
     sourceSets {
-        val jsMain by getting {
+        val commonMain by getting
+        val commonTest by getting
+        val jvmMain by getting {
             dependencies {
-                //React, React DOM + Wrappers (chapter 3)
-                implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.430"))
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+                implementation("io.ktor:ktor-server-netty:2.3.2")
+                implementation("io.ktor:ktor-server-html-builder-jvm:2.3.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
 
-                //Kotlin React Emotion (CSS) (chapter 3)
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+                // Database dependencies
 
-                //Video Player (chapter 7)
-                implementation(npm("react-player", "2.12.0"))
-
-                //Share Buttons (chapter 7)
-                implementation(npm("react-share", "4.4.1"))
-
-                //Coroutines & serialization (chapter 8)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                implementation("org.flywaydb:flyway-core:6.5.2")
+                implementation("mysql:mysql-connector-java:8.0.23")
             }
         }
+        val jvmTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.346")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.346")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.3-pre.346")
+            }
+        }
+        val jsTest by getting
     }
 }
 
-// Heroku Deployment (chapter 9)
-tasks.register("stage") {
-    dependsOn("build")
+application {
+    mainClass.set("telepuziki.application.ServerKt")
+}
+
+tasks.named<Copy>("jvmProcessResources") {
+    val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
+    from(jsBrowserDistribution)
+}
+
+tasks.named<JavaExec>("run") {
+    dependsOn(tasks.named<Jar>("jvmJar"))
+    classpath(tasks.named<Jar>("jvmJar"))
 }
