@@ -42,9 +42,7 @@ class ListConsoles extends Component {
                         }
                         </tbody>
                     </table>
-
                 </div>
-
             </div>
         )
     }
