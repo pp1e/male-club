@@ -13,3 +13,12 @@
 as example)
 ### Launch
 1. Execute ```gradle run```
+
+## Frontend deployment
+1. Install node.js
+2. ```cd src/main/resources/js```
+3. ```npm install```\
+   Loads dependencies.
+4. ```npm start```\
+   Runs the react app in the development mode.\
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
