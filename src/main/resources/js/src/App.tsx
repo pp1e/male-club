@@ -3,6 +3,7 @@ import Test from "./components/Test";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Consoles from "./components/Consoles/Consoles";
 /**
  * Дока по бутстрапу
  * По компонентам бутстраповским: https://react-bootstrap.github.io/docs/
@@ -17,6 +18,7 @@ function App() {
         {/* <Route path="*" element={<PageOne />} /> */}
         <Route path="admin" element={<AdminPanel />} />
         <Route path="*" element={<Test />} />
+        <Route path="consoles" element={<Consoles />} />
       </Routes>
     </BrowserRouter>
   );
