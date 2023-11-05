@@ -39,7 +39,7 @@ out/
 .vscode/
 
 ### Frontend ###
-!**/src/main/resources/js/node_modules/
+web_client/node_modules/
 
 ### App config ###
-!**/src/main/resources/config/db/database.properties
+server/src/main/resources/config/db/database.properties

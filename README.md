@@ -9,14 +9,14 @@
     ```
 ### Set up application settings
 1. Put database creditionals in ```application.properties``` file 
-(see [```application-template.properties```](src/main/resources/config/mysql/application-template.properties)
+(see [```application-template.properties```](server/src/main/resources/config/db/database-template.properties)
 as example)
 ### Launch
 1. Execute ```gradle run```
 
 ## Frontend deployment
 1. Install node.js
-2. ```cd src/main/resources/js```
+2. ```cd web_client```
 3. ```npm install```\
    Loads dependencies.
 4. ```npm start```\
