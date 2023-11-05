@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 .jpb
+.gitignore
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -39,3 +40,6 @@ out/
 
 ### Frontend ###
 !**/src/main/resources/js/node_modules/
+
+### App config ###
+!**/src/main/resources/config/db/database.properties
