@@ -16,7 +16,7 @@ as example)
 
 ## Frontend deployment
 1. Install node.js
-2. ```cd src/main/resources/js```
+2. ```cd web_client```
 3. ```npm install```\
    Loads dependencies.
 4. ```npm start```\
