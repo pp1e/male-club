@@ -9,7 +9,7 @@
     ```
 ### Set up application settings
 1. Put database creditionals in ```application.properties``` file 
-(see [```application-template.properties```](server/src/main/resources/config/mysql/application-template.properties)
+(see [```application-template.properties```](server/src/main/resources/config/db/database-template.properties)
 as example)
 ### Launch
 1. Execute ```gradle run```
