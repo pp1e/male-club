@@ -2,37 +2,26 @@
     border-radius: 10%;
 }
 
-.reserve-image {
+.reserve-card_image {
     border-radius: 10%;
 }
 
-.children-list-card {
+.reserve-card_children-list-card {
     width: 35vw;
     border-radius: 10%;
 }
 
-.children-list {
+.reserve-card_children-list {
     max-height: 30vw;
     overflow-y: scroll;
 }
 
-.user-name, .user-age {
-    font-size: 36;
+.reserve-card_user-name, .reserve-card_user-age {
     color: rgba(0, 0, 0, 0.6);
     width: 6vw;
 }
 
-.search-container {
-    height: 5vh;
-    width: 100%;
-}
-
-.search {
-    padding: 0;
-    height: 5vh;
-}
-
-.reserve-text {
+.search-container_reserve-text {
     font-size: 2rem;
 }
 
