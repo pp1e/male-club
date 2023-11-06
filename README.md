@@ -8,8 +8,8 @@
     GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'%' IDENTIFIED BY 'qwerty';
     ```
 ### Set up application settings
-1. Put database creditionals in ```application.properties``` file 
-(see [```application-template.properties```](server/src/main/resources/config/db/database-template.properties)
+1. Put database creditionals in ```database.properties``` file 
+(see [```database-template.properties```](server/src/main/resources/config/db/database-template.properties)
 as example)
 ### Launch
 1. Execute ```gradle run```
