@@ -1,8 +1,6 @@
 import { ReactElement, useState, useMemo, useRef } from "react";
 import NavBar from "../Navigation/NavBar";
 
-import "react-datepicker/dist/react-datepicker.css";
-import 'react-time-picker/dist/TimePicker.css';
 import "./styles/loginPage.css";
 
 interface IProps {}
