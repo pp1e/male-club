@@ -44,7 +44,7 @@ const LoginPage = (props: IProps): ReactElement => {
                             </div>
                             <a className="link-warning login-page_password-reminder">Не помню пароль</a>
                         </div>
-                        <button type="submit" className="btn btn-warning px-5 border-0">Войти</button>
+                        <button type="submit" className="btn btn-warning px-5 py-3 border-0">Войти</button>
                     </form>
                 </div>
             </div>
