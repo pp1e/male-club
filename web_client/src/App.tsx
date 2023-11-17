@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Test from "./components/Test";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
+import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,8 +20,9 @@ function App() {
         {/* Ниже пример как пользоваться.*/}
         {/* <Route path="*" element={<PageOne />} /> */}
         <Route path="admin" element={<AdminPanel />} />
+        <Route path="registration" element={<RegistrationPage />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="*" element={<Test />} />
         <Route path="consoles" element={<Consoles />} />
       </Routes>
     </BrowserRouter>
