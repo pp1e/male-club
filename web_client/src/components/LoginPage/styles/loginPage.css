@@ -1,0 +1,11 @@
+.login-page_container {
+    width: fit-content;
+}
+
+.login-page_password-reminder {
+    cursor: pointer;
+}
+
+.login-page_save-login {
+    grid-gap: 1vw;
+}
