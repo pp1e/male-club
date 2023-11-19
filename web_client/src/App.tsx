@@ -5,7 +5,6 @@ import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import StartPage from "./components/StartPage\/StartPage";
-import EventsPage from "./components/EventsPage/EventsPage";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
@@ -24,8 +23,7 @@ function App() {
         <Route path="admin" element={<AdminPanel />} />
         <Route path="registration" element={<RegistrationPage />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="" element={<StartPage />} />        
-        <Route path="upcoming-events" element={<EventsPage />} />
+        <Route path="" element={<StartPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="consoles" element={<Consoles />} />
       </Routes>
