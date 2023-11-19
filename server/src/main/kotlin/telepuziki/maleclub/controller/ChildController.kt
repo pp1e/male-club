@@ -1,10 +1,8 @@
 package telepuziki.maleclub.controller
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Child
 import telepuziki.maleclub.repository.ChildRepository
 
@@ -17,4 +15,13 @@ class ChildController(@Autowired val childRepository: ChildRepository) {
         return childRepository.findAll()
     }
 
+    @GetMapping("/get")
+    fun getChildrenById(@RequestParam id: Long): Child? {
+        return childRepository.findByIdOrNull(id)
+    }
+
+    @PostMapping("/add")
+    fun addUser(@RequestBody child: Child): Child {
+        return childRepository.save(child)
+    }
 }
