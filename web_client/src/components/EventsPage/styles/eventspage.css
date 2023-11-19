@@ -1,0 +1,42 @@
+.events-page__text-main{
+    font-size: 40px;
+    margin-bottom: 100px;    
+    margin-top: 60px;
+}
+
+.events-page__card__container{
+    border-radius: 35px;
+    background: #FFF;
+    box-shadow: 3px 4px 22px 0px rgba(0, 0, 0, 0.25);
+    height: 430px;
+    width: 350px;
+}
+
+.events-page__text-container{
+    height: 140px;
+}
+
+.card__text-main{
+    font-size: 32px;
+}
+.card__text-second{
+    font-size: 24px;
+}
+
+.card__no-data{
+    width: 100%;
+    height: 50vh;
+    color: rgba(54, 20, 20, 0.4);
+}
+
+.events-page__card__image{
+    border-radius: 100%;
+    border: 2px solid #FFDB58;
+    filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
+    height: 200px;
+    width: 200px;
+}
+
+.events-page__container{
+    width: 1195px;
+}
