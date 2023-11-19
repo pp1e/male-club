@@ -1,0 +1,32 @@
+.start-page__image {
+    border-radius: 100%;
+    border: 2px solid #FFDB58;
+    filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
+    height: 300px;
+    width: 300px;
+}
+
+.start-page__content {
+    width: 80%;
+    height: 100%;
+}
+
+.start-page__text-container {
+    width: 630px;    
+    line-height: normal;
+}
+
+.start-page__text-big {
+    font-size: 64px;
+    width: 980px;
+}
+
+.start-page__text-medium {
+    font-size: 34px;
+    color: rgba(0, 0, 0, 0.90);
+}
+
+.start-page__text-small {
+    font-size: 30px;
+    color: rgba(0, 0, 0, 0.60);
+}
