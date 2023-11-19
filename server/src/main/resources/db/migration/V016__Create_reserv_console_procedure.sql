@@ -4,6 +4,6 @@ CREATE PROCEDURE ReservConsole (
     IN date DATETIME
 )
 BEGIN
-    INSERT INTO reservation_console (child_id, console_id, time_and_date)
+    INSERT INTO reservation (child_id, console_id, time_and_date)
     VALUES (child, console, date);
 END
