@@ -1,6 +1,7 @@
 package telepuziki.maleclub.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.ReservationConsole
 import telepuziki.maleclub.repository.ReservationConsoleRepository
@@ -12,6 +13,11 @@ class ReservationConsoleController(@Autowired val reservationConsoleRepository: 
     @GetMapping("/list")
     fun getAllReservations(): List<ReservationConsole> {
         return reservationConsoleRepository.findAll()
+    }
+
+    @GetMapping("/get")
+    fun getChildrenById(@RequestParam id: Long): ReservationConsole? {
+        return reservationConsoleRepository.findByIdOrNull(id)
     }
 
     @PostMapping("/add")
