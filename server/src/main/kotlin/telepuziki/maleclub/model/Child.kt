@@ -21,7 +21,7 @@ data class Child(
     val firstname: String,
 
     @Column(name = "peculiarities", nullable = true)
-    val peculiarities: String,
+    val peculiarities: String?,
 
     @Column(name = "phone", nullable = false)
     val phone: String,

@@ -28,5 +28,5 @@ data class Console(
     val number: Int,
 
     @Column(name = "description", nullable = true)
-    val description: String
+    val description: String?
 )

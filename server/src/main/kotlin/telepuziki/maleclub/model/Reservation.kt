@@ -24,7 +24,7 @@ data class Reservation(
     val childId: Long,
 
     @Column(name = "console_id", nullable = true)
-    val consoleId: Long,
+    val consoleId: Long?,
 
     @Column(name = "phone", nullable = false)
     val phone: String
