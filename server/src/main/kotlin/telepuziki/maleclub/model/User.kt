@@ -23,7 +23,7 @@ data class User(
     val lastname: String,
 
     @Column(name = "patronymic", nullable = true)
-    val patronymic: String,
+    val patronymic: String?,
 
     @Column(name = "phone", nullable = false)
     val phone: String,
