@@ -8,8 +8,8 @@ import telepuziki.maleclub.repository.ReservationRepository
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
-@RequestMapping("/api/v1/reservation_console")
-class ReservationConsoleController(@Autowired val reservationRepository: ReservationRepository) {
+@RequestMapping("/api/v1/reservation")
+class ReservationController(@Autowired val reservationRepository: ReservationRepository) {
     @GetMapping("/list")
     fun getAllReservations(): List<Reservation> {
         return reservationRepository.findAll()
