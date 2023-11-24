@@ -1,6 +1,7 @@
 package telepuziki.maleclub.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
@@ -15,7 +16,17 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
         return consoleRepository.findAll()
     }
 
-    @GetMapping("/admin-info")
+    @GetMapping("/get")
+    fun getChildrenById(@RequestParam id: Long): Console? {
+        return consoleRepository.findByIdOrNull(id)
+    }
+
+    @PostMapping("/add")
+    fun addUser(@RequestBody console: Console): Console {
+        return consoleRepository.save(console)
+    }
+
+    @GetMapping("/admin_info")
     fun getAdminInfoAboutConsoles(@RequestParam date: Date): List<Any> {
         return consoleRepository.getAdminInfoAboutConsoles(date)
     }
