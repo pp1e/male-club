@@ -2,8 +2,10 @@
     border-radius: 100%;
     border: 2px solid #FFDB58;
     filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
-    height: 300px;
-    width: 300px;
+    height: 20vw;
+    width: 20vw;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .start-page__content {
@@ -12,21 +14,34 @@
 }
 
 .start-page__text-container {
-    width: 630px;    
+    width: 65%;    
     line-height: normal;
 }
 
 .start-page__text-big {
-    font-size: 64px;
-    width: 980px;
+    font-size: min(4vw, 64px);
+    width: 100%;
 }
 
 .start-page__text-medium {
-    font-size: 34px;
+    font-size: min(2.5vw, 34px);
     color: rgba(0, 0, 0, 0.90);
+    margin-bottom: 5%;
 }
 
 .start-page__text-small {
-    font-size: 30px;
+    font-size:  min(1.8vw, 30px);
     color: rgba(0, 0, 0, 0.60);
+}
+
+.start-page__container__margin-top {
+    margin-top: 7%;
+}
+
+.start-page__container__margin-left {
+    margin-left: 7%;
+}
+
+.start-page__container__margin-right {
+    margin-right: 7%;
 }
