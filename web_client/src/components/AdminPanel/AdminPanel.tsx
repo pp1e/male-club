@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import NavBar from "../Navigation/NavBar";
-import { IMAGEDATA } from './Images';
+import { ADMIN_PANEL_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -51,7 +51,7 @@ const ReserveCard = (props: IProps): ReactElement => {
         >
             {/* TODO: Переписать задание высоты и ширины в относительные размеры */}
             <Image 
-                src={IMAGEDATA}
+                src={ADMIN_PANEL_IMAGE}
                 className="reserve-card_image"
                 width="350"
                 height="300"
@@ -66,7 +66,7 @@ const ReserveCard = (props: IProps): ReactElement => {
 const User = (props: IUserCard): ReactElement => {
     return (
         <li className="list-group-item list-group-item-action align-items-center d-flex gap-4 py-3 px-1">
-            <img className="rounded-circle flex-shrink-0" src={IMAGEDATA} width="50"/>
+            <img className="rounded-circle flex-shrink-0" src={ADMIN_PANEL_IMAGE} width="50"/>
             <div className="
                 border-bottom border-warning 
                 d-flex justify-content-between 
