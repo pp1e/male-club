@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
 import java.sql.Date
+import java.sql.Time
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
@@ -27,7 +28,12 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
     }
 
     @GetMapping("/admin_info")
-    fun getAdminInfoAboutConsoles(@RequestParam date: Date): List<Any> {
-        return consoleRepository.getAdminInfoAboutConsoles(date)
+    fun getAdminInfoAboutConsoles(
+        @RequestParam(name = "date") date: Date,
+        @RequestParam(name = "time") time: Time?,
+        @RequestParam(name = "child_name", defaultValue = "") childName: String,
+    ): List<Any> {
+        val childNamePattern = "%${childName}%"
+        return consoleRepository.getAdminInfoAboutConsoles(date, time, childNamePattern)
     }
 }
