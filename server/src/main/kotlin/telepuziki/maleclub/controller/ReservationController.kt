@@ -26,7 +26,17 @@ class ReservationController(@Autowired val reservationRepository: ReservationRep
     }
 
     @GetMapping("/events")
-    fun getUpcomingEvents(@RequestParam(name = "parent_id") parentId: Long): List<Any> {
-        return reservationRepository.getUpcomingEvents(parentId)
+    fun getUpcomingEvents(@RequestParam(name = "parent_id") parentId: Long): List<Map<String, Any>> {
+        val upcomingEvents = reservationRepository.getUpcomingEvents(parentId)
+        var upcomingEventsMapped = listOf<Map<String, Any>>()
+        for (event in upcomingEvents) {
+            val eventMapped = mapOf(
+                "childFirstname" to event[0],
+                "reservationTime" to event[1],
+                "consoleNumber" to event[2]
+            )
+            upcomingEventsMapped = upcomingEventsMapped.plus(eventMapped)
+        }
+        return upcomingEventsMapped
     }
 }

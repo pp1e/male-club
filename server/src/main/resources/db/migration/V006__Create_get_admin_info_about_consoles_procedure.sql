@@ -2,7 +2,8 @@ CREATE PROCEDURE GetAdminInfoAboutConsoles (
     IN date DATE, IN time TIME, IN child_name VARCHAR(50)
 )
 BEGIN
-    SELECT child.firstname, console.Number, reservation.phone, child.count_visit, child.peculiarities
+    SELECT child.id, child.firstname, console.Number, reservation.phone,
+           child.count_visit, child.peculiarities
     FROM reservation
              INNER JOIN child ON child.id = reservation.child_id
              INNER JOIN console ON console.id = reservation.console_id

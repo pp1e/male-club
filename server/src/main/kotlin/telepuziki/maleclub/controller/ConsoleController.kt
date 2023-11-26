@@ -34,6 +34,19 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
         @RequestParam(name = "child_name", defaultValue = "") childName: String,
     ): List<Any> {
         val childNamePattern = "%${childName}%"
-        return consoleRepository.getAdminInfoAboutConsoles(date, time, childNamePattern)
+        val adminInfo = consoleRepository.getAdminInfoAboutConsoles(date, time, childNamePattern)
+        var adminInfoMapped = listOf<Map<String, Any>>()
+        for (adminInfoItem in adminInfo) {
+            val adminInfoItemMapped = mapOf(
+                "childId" to adminInfoItem[0],
+                "childFirstname" to adminInfoItem[1],
+                "consoleNumber" to adminInfoItem[2],
+                "phone" to adminInfoItem[3],
+                "countVisit" to adminInfoItem[4],
+                "childPeculiarities" to adminInfoItem[5]
+            )
+            adminInfoMapped = adminInfoMapped.plus(adminInfoItemMapped)
+        }
+        return adminInfoMapped
     }
 }
