@@ -23,9 +23,6 @@ data class Child(
     @Column(name = "peculiarities", nullable = true)
     val peculiarities: String?,
 
-    @Column(name = "phone", nullable = false)
-    val phone: String,
-
     @Column(name = "count_visit", nullable = false)
     val countVisit: Int,
 

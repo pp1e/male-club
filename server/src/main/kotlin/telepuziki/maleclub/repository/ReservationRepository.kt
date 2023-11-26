@@ -9,5 +9,5 @@ import telepuziki.maleclub.model.Reservation
 @Repository
 interface ReservationRepository: JpaRepository<Reservation, Long> {
     @Query(value = "CALL GetUpcomingEvents(:parent_id);", nativeQuery = true)
-    fun getUpcomingEvents(@Param("parent_id") parentId: Long): List<Any>
+    fun getUpcomingEvents(@Param("parent_id") parentId: Long): List<List<Any>>
 }

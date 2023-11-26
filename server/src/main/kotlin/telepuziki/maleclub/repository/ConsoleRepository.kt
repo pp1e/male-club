@@ -17,5 +17,5 @@ interface ConsoleRepository : JpaRepository<Console, Long> {
         @Param("date") date: Date,
         @Param("time") time: Time?,
         @Param("child_name") childName: String,
-    ): List<Any>
+    ): List<List<Any>>
 }
