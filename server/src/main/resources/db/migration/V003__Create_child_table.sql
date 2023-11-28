@@ -5,6 +5,7 @@ CREATE TABLE child(
     count_visit INT NOT NULL,
     user_id BIGINT NOT NULL,
     birthdate DATE NOT NULL,
+    photo VARBINARY(MAX) NULL,
     PRIMARY KEY (ID),
     CONSTRAINT child_user_fk FOREIGN KEY (user_id) REFERENCES user (id)
 );
