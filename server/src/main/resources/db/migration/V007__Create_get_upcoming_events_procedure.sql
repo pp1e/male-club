@@ -2,7 +2,7 @@ CREATE PROCEDURE GetUpcomingEvents (
     IN parent_id BIGINT
 )
 BEGIN
-    SELECT child.firstname, reservation.time_and_date, console.Number
+    SELECT child.firstname, child.photo reservation.time_and_date, console.Number
     FROM child
         INNER JOIN reservation ON child.id = reservation.child_id
         INNER JOIN console ON reservation.console_id = console.id
