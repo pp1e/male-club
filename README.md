@@ -12,7 +12,8 @@
 (see [```database-template.properties```](server/src/main/resources/config/db/database-template.properties)
 as example)
 ### Launch
-1. Execute ```gradle run```
+1. Execute ```./gradlew build``` if needed
+2. Execute ```./gradle bootRun```
 
 ## Frontend deployment
 1. Install node.js
