@@ -7,5 +7,6 @@ import telepuziki.maleclub.model.User
 
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
+    fun findByPhone(phone: String): User?
     fun existsByPhone(@Param("phone") phone: String): Boolean
 }
