@@ -2,6 +2,8 @@ package telepuziki.maleclub.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,12 +29,29 @@ class UserController(@Autowired val userRepository: UserRepository) {
     }
 
     @PostMapping("/add")
-    fun addUser(@RequestBody user: User): User {
-        return userRepository.save(user)
+    fun addUser(@RequestBody user: User): ResponseEntity<Boolean> {
+        if (userRepository.existsByPhone(user.phone))
+            return ResponseEntity(false, HttpStatus.CONFLICT)
+        userRepository.save(user)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 
     @GetMapping("/check_phone")
     fun checkPhone(@RequestParam("phone") phone: String): Boolean {
         return userRepository.existsByPhone(phone)
+    }
+
+    @GetMapping("check_success_login")
+    fun checkSuccessLogin(
+        @RequestParam("phone") phone: String,
+        @RequestParam("password") password: String
+    ): ResponseEntity<Boolean> {
+        if (!checkPhone(phone))
+            return ResponseEntity(false, HttpStatus.NOT_ACCEPTABLE)
+        else {
+            if (!userRepository.existsByPhoneAndPassword(phone, password))
+                return ResponseEntity(false, HttpStatus.CONFLICT)
+        }
+        return ResponseEntity(true, HttpStatus.OK)
     }
 }

@@ -8,4 +8,8 @@ import telepuziki.maleclub.model.User
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
     fun existsByPhone(@Param("phone") phone: String): Boolean
+    fun existsByPhoneAndPassword(
+        @Param("phone") phone: String,
+        @Param("password") password: String
+        ): Boolean
 }
