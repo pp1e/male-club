@@ -21,6 +21,7 @@ class SecurityConfig {
             .authorizeHttpRequests(
                 Customizer { authorize ->
                     authorize
+                        .requestMatchers("api/v1/user/list").hasAuthority("parent")
                         .anyRequest().authenticated()
                 }
             )

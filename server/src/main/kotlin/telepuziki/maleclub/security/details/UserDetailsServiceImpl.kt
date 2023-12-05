@@ -15,6 +15,6 @@ class UserDetailsServiceImpl(
     ): UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByPhone(username) ?: throw UsernameNotFoundException("User not found")
-        return UserDetailsImpl(user)
+        return UserDetailsImpl(user, userRepository)
     }
 }

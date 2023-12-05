@@ -4,13 +4,18 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import telepuziki.maleclub.model.User
+import telepuziki.maleclub.repository.UserRepository
 import java.util.*
 
 
-class UserDetailsImpl(val user: User): UserDetails {
+class UserDetailsImpl(
+    val user: User,
+    val userRepository: UserRepository
+    ): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return Collections.singletonList(SimpleGrantedAuthority("USER"))
+        val role = userRepository.getRole(user.id)
+        return Collections.singletonList(SimpleGrantedAuthority(role))
     }
 
     override fun getPassword(): String {
