@@ -1,4 +1,4 @@
-import { ReactElement, useState, useMemo } from "react";
+import { ReactElement, useState, useMemo, ReactNode } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -20,7 +20,9 @@ interface IUserCard {
     user: IUser;
 }
 
-interface IProps {}
+interface IProps {
+    childrenList?: ReactNode;
+}
 
 /**
  * Блок выбора даты и времени.
@@ -76,9 +78,46 @@ const User = (props: IUserCard): ReactElement => {
             ">
                 <span className="reserve-card_user-name text-truncate">{ props.user.name }</span>
                 <span className="reserve-card_user-age text-truncate">Возраст { props.user.age }</span>
-                <button type="button" className="btn btn-outline-warning btn-sm">Перейти к ребенку</button>
+                <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" />
+                <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" href="#">Подтвердить бронь</a></li>
+                    <li><a className="dropdown-item" href="#">Отменить бронь</a></li>
+                </ul>
             </div>
         </li>
+    )
+}
+
+/**
+     * Блок списка детей.
+     */
+ const ChildrenListCard = (props: IProps): ReactElement => {
+    return (
+        <div 
+            className="
+                d-flex flex-column align-items-center 
+                reserve-card_children-list-card 
+                shadow-lg py-4 px-2
+            "
+        >
+            <div className="container-fluid">
+                <form className="d-flex">
+                    <input 
+                        className="form-control me-2 border border-warning" 
+                        type="search" 
+                        placeholder="Поиск" 
+                        aria-label="Поиск" 
+                    />
+                    <button className="btn btn btn-outline-warning" type="submit">Поиск</button>
+                </form>
+            </div>
+            
+            <div className="container-fluid mt-4">
+                <ul className="list-group-flush reserve-card_children-list px-0">
+                    {props.childrenList}
+                </ul>
+            </div>
+        </div>
     )
 }
 
@@ -99,39 +138,6 @@ const AdminPanel = (props: IProps): ReactElement => {
         ))
     }, [userList]);
 
-    /**
-     * Блок списка детей.
-     */
-    const ChildrenListCard = (props: IProps): ReactElement => {
-        return (
-            <div 
-                className="
-                    d-flex flex-column align-items-center 
-                    reserve-card_children-list-card 
-                    shadow-lg py-4 px-2
-                "
-            >
-                <div className="container-fluid">
-                    <form className="d-flex">
-                        <input 
-                            className="form-control me-2 border border-warning" 
-                            type="search" 
-                            placeholder="Поиск" 
-                            aria-label="Поиск" 
-                        />
-                        <button className="btn btn btn-outline-warning" type="submit">Поиск</button>
-                    </form>
-                </div>
-                
-                <div className="container-fluid mt-4">
-                    <ul className="list-group-flush reserve-card_children-list px-0">
-                        {childrenList}
-                    </ul>
-                </div>
-            </div>
-        )
-    }
-
     return (
         <>
             <NavBar />
@@ -146,7 +152,7 @@ const AdminPanel = (props: IProps): ReactElement => {
                     {/* Блок занятости */}
                     <div className="container d-flex flex-row mt-5 justify-content-center">
                         <ReserveCard />
-                        <ChildrenListCard />
+                        <ChildrenListCard childrenList={childrenList}/>
                     </div>
                 </div>
             </div>
