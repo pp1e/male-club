@@ -21,7 +21,7 @@ class ChildController(@Autowired val childRepository: ChildRepository) {
     }
 
     @PostMapping("/add")
-    fun addUser(@RequestBody child: Child): Child {
+    fun addChild(@RequestBody child: Child): Child {
         return childRepository.save(child)
     }
 }

@@ -16,12 +16,12 @@ class ReservationController(@Autowired val reservationRepository: ReservationRep
     }
 
     @GetMapping("/get")
-    fun getChildrenById(@RequestParam id: Long): Reservation? {
+    fun getReservationById(@RequestParam id: Long): Reservation? {
         return reservationRepository.findByIdOrNull(id)
     }
 
     @PostMapping("/add")
-    fun addUser(@RequestBody reservation: Reservation): Reservation {
+    fun addReservation(@RequestBody reservation: Reservation): Reservation {
         return reservationRepository.save(reservation)
     }
 

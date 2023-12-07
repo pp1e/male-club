@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-
 
 @Configuration
 @EnableWebSecurity
@@ -21,11 +21,21 @@ class SecurityConfig {
             .authorizeHttpRequests(
                 Customizer { authorize ->
                     authorize
-                        .requestMatchers("api/v1/user/list").hasAuthority("parent")
+                        .requestMatchers(
+                            "api/v1/child/list",
+                            "api/v1/console/list",
+                            "api/v1/console/add",
+                            "api/v1/console/admin_info",
+                            "api/v1/reservation/list",
+                            "api/v1/user/list",
+                            "api/v1/user/get"
+                        ).hasAuthority("admin")
+                        .requestMatchers("api/v1/user/add").permitAll()
                         .anyRequest().authenticated()
                 }
             )
             .httpBasic(Customizer.withDefaults())
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         return http.build()
     }
 

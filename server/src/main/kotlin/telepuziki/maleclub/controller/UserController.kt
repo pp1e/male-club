@@ -24,7 +24,7 @@ class UserController(
     }
 
     @GetMapping("/get")
-    fun getChildrenById(@RequestParam id: Long): User? {
+    fun getUserById(@RequestParam id: Long): User? {
         return userRepository.findByIdOrNull(id)
     }
 

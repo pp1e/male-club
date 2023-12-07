@@ -32,5 +32,5 @@ data class User(
     var password: String,
 
     @Column(name = "role_id", nullable = false)
-    val roleId: Long,
+    val roleId: Long = 1,
 )

@@ -18,12 +18,12 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
     }
 
     @GetMapping("/get")
-    fun getChildrenById(@RequestParam id: Long): Console? {
+    fun getConsoleById(@RequestParam id: Long): Console? {
         return consoleRepository.findByIdOrNull(id)
     }
 
     @PostMapping("/add")
-    fun addUser(@RequestBody console: Console): Console {
+    fun addConsole(@RequestBody console: Console): Console {
         return consoleRepository.save(console)
     }
 
