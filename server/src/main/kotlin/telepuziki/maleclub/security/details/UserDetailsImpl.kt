@@ -18,6 +18,10 @@ class UserDetailsImpl(
         return Collections.singletonList(SimpleGrantedAuthority(role))
     }
 
+    fun getId(): Long {
+        return user.id
+    }
+
     override fun getPassword(): String {
         return user.password
     }
