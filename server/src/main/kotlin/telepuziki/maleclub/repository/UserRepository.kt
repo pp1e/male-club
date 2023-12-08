@@ -10,6 +10,12 @@ import telepuziki.maleclub.model.User
 interface UserRepository: JpaRepository<User, Long> {
     fun findByPhone(phone: String): User?
     fun existsByPhone(@Param("phone") phone: String): Boolean
+  
     @Query(value = "CALL GetRole(:user_id);", nativeQuery = true)
     fun getRole(@Param("user_id") userId: Long): String
+  
+    fun existsByPhoneAndPassword(
+        @Param("phone") phone: String,
+        @Param("password") password: String
+        ): Boolean
 }
