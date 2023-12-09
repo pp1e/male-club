@@ -19,23 +19,23 @@
 }
 
 .start-page__text-big {
-    font-size: min(4vw, 64px);
+    font-size: min(5vw, 64px);
     width: 100%;
 }
 
 .start-page__text-medium {
-    font-size: min(2.5vw, 34px);
+    font-size: min(3vw, 34px);
     color: rgba(0, 0, 0, 0.90);
     margin-bottom: 5%;
 }
 
 .start-page__text-small {
-    font-size:  min(1.8vw, 30px);
+    font-size:  min(2.3vw, 30px);
     color: rgba(0, 0, 0, 0.60);
 }
 
 .start-page__container__margin-top {
-    margin-top: 7%;
+    margin-top: 10%;
 }
 
 .start-page__container__margin-left {

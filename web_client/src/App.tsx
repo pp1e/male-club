@@ -6,6 +6,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import EventsPage from "./components/EventsPage/EventsPage";
 import StartPage from "./components/StartPage/StartPage";
+import PersonalAccount from "./components/PersonalAccount/PersonalAccount";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
@@ -22,10 +23,12 @@ function App() {
         {/* Ниже пример как пользоваться.*/}
         {/* <Route path="*" element={<PageOne />} /> */}
         <Route path="" element={<StartPage />} />
+
         <Route path="admin" element={<AdminPanel />} />
         <Route path="registration" element={<RegistrationPage />} /> 
         <Route path="login" element={<LoginPage />} />    
         <Route path="upcoming-events" element={<EventsPage />} />
+        <Route path="account" element={<PersonalAccount />} />
         <Route path="consoles" element={<Consoles />} />
         <Route path="*" element={<NotFoundPage />} />  
       </Routes>

@@ -6,6 +6,7 @@ export function getChildrenList() {
     return axios.get(CONSOLES_API_BASE_URL('child', 'list'));
 }
 
+
 /* Возвращает 
     406 - нет пользователя с таким телефоном
     409 - неправильный пароль
@@ -43,4 +44,12 @@ export function registryUser(
             password: password
         }
     );
+}
+
+export function getUserReservationList() {
+    return axios.get(CONSOLES_API_BASE_URL('user', 'list'));
+}
+
+export function getUserChildrenList() {
+    return axios.get(CONSOLES_API_BASE_URL('child', 'list'));
 }
