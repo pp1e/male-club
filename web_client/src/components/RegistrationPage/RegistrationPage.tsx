@@ -1,4 +1,7 @@
-import { ReactElement, useState, useMemo, useRef } from "react";
+import { AxiosResponse } from "axios";
+import { ReactElement, useState, useRef } from "react";
+import { useNavigate } from "react-router";
+import { registryUser } from "../../services/Services";
 import NavBar from "../Navigation/NavBar";
 
 import "./styles/registrationPage.css";
@@ -13,25 +16,62 @@ const RegistrationPage = (props: IProps): ReactElement => {
     const passwordRef = useRef<HTMLInputElement>(null);
     const saveLoginRef = useRef<HTMLInputElement>(null);
     const submitPasswordRef = useRef<HTMLInputElement>(null);
+    const submitButtonRef = useRef<HTMLDivElement>(null);
     const [isNameValid, setIsNameValid] = useState(true);
     const [isSurnameValid, setIsSurenameValid] = useState(true);
     const [isPhoneValid, setIsPhoneValid] = useState(true);
     const [arePasswordsValid, setArePasswordsValid] = useState(true);
-
-    const onSubmit = (event: any) => {
-        event.preventDefault();
-        setIsNameValid(!!nameRef.current?.value);
-        setIsSurenameValid(!!surnameRef.current?.value);
-        setIsPhoneValid(!!phoneRef.current?.value);
-        setArePasswordsValid(
-            !!(passwordRef.current?.value 
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+    const getNameValue = () => nameRef.current?.value;
+    const getSurnameValue = () => surnameRef.current?.value;
+    const getPhoneValue = () => phoneRef.current?.value;
+    const checkPasswordsValidity = () => passwordRef.current?.value 
                 && submitPasswordRef.current?.value 
-                && passwordRef.current?.value === submitPasswordRef.current?.value
-            )
-        )
-        console.log(!!(passwordRef.current?.value && submitPasswordRef.current?.value &&
-            passwordRef.current?.value === submitPasswordRef.current?.value))
-        return;
+                && passwordRef.current?.value === submitPasswordRef.current?.value;
+
+    const setValidationStatuses = () => {
+        setIsNameValid(!!getNameValue());
+        setIsSurenameValid(!!getSurnameValue());
+        setIsPhoneValid(!!getPhoneValue());
+        setArePasswordsValid(!!checkPasswordsValidity());
+    }
+
+    const onSubmit = async (event: any) => {
+        event.preventDefault();
+        setValidationStatuses();
+        if (!getNameValue() || !getSurnameValue() || !getPhoneValue() || !arePasswordsValid ) {
+            return;
+        } else {
+            await registryUser({
+                firstName: getNameValue() || '',
+                lastName: getSurnameValue() || '',
+                patronymic: patronymicRef.current?.value,
+                phone: getPhoneValue() || '',
+                password: passwordRef.current?.value || ''
+            })
+                .then((result: AxiosResponse<any, any>) => {
+                    if (result.status === 200) {
+                        submitButtonRef.current && 
+                        (submitButtonRef.current.innerHTML = 
+                            `
+                                <button class="btn btn-success px-5 py-4 border-0" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Регистрация прошла успешно!
+                                </button>
+                            `
+                        )
+                        setErrorMessage("");
+                        setTimeout(() => navigate('/login'), 2000);
+                    }
+                })
+                .catch(errorData => {
+                    if (errorData.message === "Request failed with status code 409") {
+                        setIsPhoneValid(false);
+                        setErrorMessage("Пользователь уже зарегистрирован!");
+                    }
+                });
+        } 
     }
 
     return (
@@ -118,7 +158,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                                 placeholder="Пароль"
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-2">
                             <input 
                                 ref={submitPasswordRef}
                                 type="password"
@@ -137,6 +177,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                                 : ""
                             }
                         </div>
+                        <div className="text-danger mb-1">{errorMessage}</div>
                         <div className="mb-3 d-flex flex-row registration-page_text-field">
                             <input
                                 ref={saveLoginRef}
@@ -151,7 +192,14 @@ const RegistrationPage = (props: IProps): ReactElement => {
                                 на обработку персональных данных
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-warning px-5 py-4 border-0">Зарегистрироваться</button>
+                        <div ref={submitButtonRef}>
+                            <button 
+                                type="submit" 
+                                className="btn btn-warning px-5 py-4 border-0"
+                            >
+                                Зарегистрироваться
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

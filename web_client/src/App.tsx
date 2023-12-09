@@ -21,13 +21,13 @@ function App() {
       <Routes>
         {/* Ниже пример как пользоваться.*/}
         {/* <Route path="*" element={<PageOne />} /> */}
-        <Route path="admin" element={<AdminPanel />} />
-        <Route path="registration" element={<RegistrationPage />} />
-        <Route path="*" element={<NotFoundPage />} />       
-        <Route path="upcoming-events" element={<EventsPage />} />
         <Route path="" element={<StartPage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route path="admin" element={<AdminPanel />} />
+        <Route path="registration" element={<RegistrationPage />} /> 
+        <Route path="login" element={<LoginPage />} />    
+        <Route path="upcoming-events" element={<EventsPage />} />
         <Route path="consoles" element={<Consoles />} />
+        <Route path="*" element={<NotFoundPage />} />  
       </Routes>
     </BrowserRouter>
   );
