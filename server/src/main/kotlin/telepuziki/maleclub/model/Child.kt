@@ -27,7 +27,7 @@ data class Child(
     val countVisit: Int = 0,
 
     @Column(name = "user_id", nullable = false)
-    var userId: Long = -1L,
+    val userId: Long?,
 
     @Column(name = "birthdate", nullable = false)
     val birthdate: Date,
