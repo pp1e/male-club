@@ -29,8 +29,8 @@ data class User(
     val phone: String,
 
     @Column(name = "password", nullable = false)
-    var password: String,
+    val password: String,
 
     @Column(name = "role_id", nullable = false)
-    val roleId: Long = 1,
+    val roleId: Long?,
 )

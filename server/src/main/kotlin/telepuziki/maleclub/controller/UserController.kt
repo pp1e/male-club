@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.User
+import telepuziki.maleclub.repository.RoleRepository
 import telepuziki.maleclub.repository.UserRepository
 
 
@@ -17,9 +18,10 @@ class UserController(
     @Autowired
     val userRepository: UserRepository,
     @Autowired
+    val roleRepository: RoleRepository,
+    @Autowired
     val passwordEncoder: PasswordEncoder
     ) {
-
     @GetMapping("/list")
     fun getAllUsers(): List<User> {
         return userRepository.findAll()
@@ -34,10 +36,22 @@ class UserController(
     fun addUser(@RequestBody user: User): ResponseEntity<Boolean> {
         if (userRepository.existsByPhone(user.phone))
             return ResponseEntity(false, HttpStatus.CONFLICT)
-        if (user.roleId == 2L)
-            return ResponseEntity(false, HttpStatus.FORBIDDEN)
-        user.password = passwordEncoder.encode(user.password)
-        userRepository.save(user)
+        var roleId = user.roleId
+        if (roleId == null) {
+            val defaultRole = roleRepository.findByName("user")
+            if (defaultRole == null)
+                return ResponseEntity(false, HttpStatus.INTERNAL_SERVER_ERROR)
+            roleId = defaultRole.id
+        }
+        else {
+            val roleUser = roleRepository.findByIdOrNull(roleId)
+            if (roleUser == null)
+                return ResponseEntity(false, HttpStatus.BAD_REQUEST)
+            if (roleUser.name == "admin")
+                return ResponseEntity(false, HttpStatus.FORBIDDEN)
+        }
+        val userToAdd = user.copy(roleId = roleId, password = passwordEncoder.encode(user.password))
+        userRepository.save(userToAdd)
         return ResponseEntity(true, HttpStatus.OK)
     }
 
