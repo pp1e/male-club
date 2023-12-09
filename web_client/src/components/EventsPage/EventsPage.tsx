@@ -3,6 +3,7 @@ import NavBar from "../Navigation/NavBar";
 import { AUTHOR_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import "./styles/eventspage.css";
+import { getUserReservationList } from '../../services/Services';
 
 interface IChild {
     name: string;
@@ -61,12 +62,17 @@ const EventsPage = (props: IProps): ReactElement => {
             date: "11.06.22",
             numPs: 14008
         },
-        // {
-        //     name: "Денис",
-        //     date: "11.06.22",
-        //     numPs: 14008
-        // },
+        {
+            name: "Денис",
+            date: "11.06.22",
+            numPs: 14008
+        },
     ]);
+
+    getUserReservationList().then((res) => {
+        setUserList([res.data]);
+    });
+    
     const childrenList = useMemo(() => {
         if (userList.length > 0) {
             return userList.map(user => (

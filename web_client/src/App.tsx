@@ -6,6 +6,7 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import EventsPage from "./components/EventsPage/EventsPage";
 import StartPage from "./components/StartPage/StartPage";
+import PersonalAccount from "./components/PersonalAccount/PersonalAccount";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
@@ -27,6 +28,7 @@ function App() {
         <Route path="upcoming-events" element={<EventsPage />} />
         <Route path="" element={<StartPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="account" element={<PersonalAccount />} />
         <Route path="consoles" element={<Consoles />} />
       </Routes>
     </BrowserRouter>
