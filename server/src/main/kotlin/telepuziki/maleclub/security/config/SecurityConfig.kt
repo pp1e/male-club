@@ -33,7 +33,11 @@ class SecurityConfig {
                             "api/v1/user/list",
                             "api/v1/user/get"
                         ).hasAuthority("admin")
-                        .requestMatchers("api/v1/user/add").permitAll()
+                        .requestMatchers(
+                            "api/v1/user/add",
+                            "api/v1/user/check_phone",
+                            "api/v1/user/check_success_login"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 }
             )

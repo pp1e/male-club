@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.User
 import telepuziki.maleclub.repository.UserRepository
-import telepuziki.maleclub.security.details.UserDetailsImpl
 
 
 @CrossOrigin(origins = ["http://localhost:3000"])
@@ -53,12 +51,16 @@ class UserController(
         @RequestParam("phone") phone: String,
         @RequestParam("password") password: String
     ): ResponseEntity<Boolean> {
-        if (!checkPhone(phone))
+        val user = userRepository.findByPhone(phone)
+        if (user == null)
             return ResponseEntity(false, HttpStatus.NOT_ACCEPTABLE)
         else {
-            if (!userRepository.existsByPhoneAndPassword(phone, password))
+            if (!passwordEncoder.matches(password, user.password))
                 return ResponseEntity(false, HttpStatus.CONFLICT)
         }
-        return ResponseEntity(true, HttpStatus.OK)
+        if (userRepository.getRole(user.id) == "admin")
+            return ResponseEntity(true, HttpStatus.CREATED) // это admin
+        else
+            return ResponseEntity(true, HttpStatus.OK) // это user
     }
 }
