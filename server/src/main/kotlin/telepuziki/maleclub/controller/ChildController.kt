@@ -55,4 +55,13 @@ class ChildController(
         childRepository.save(childToAdd)
         return ResponseEntity(true, HttpStatus.OK)
     }
+
+    @DeleteMapping("/delete/{id:\\d+}")
+    fun deleteChildById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
+        if (childRepository.existsById(id)) {
+            childRepository.deleteById(id)
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+    }
 }

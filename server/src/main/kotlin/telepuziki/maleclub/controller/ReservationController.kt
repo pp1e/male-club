@@ -56,6 +56,32 @@ class ReservationController(
         return ResponseEntity(true, HttpStatus.OK)
     }
 
+    @DeleteMapping("/delete/{id:\\d+}")
+    fun deleteReservationById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
+        if (reservationRepository.existsById(id)) {
+            reservationRepository.deleteById(id)
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+    }
+
+    @PutMapping("/confirm/{id:\\d+}")
+    fun confirmReservation(@PathVariable id: Long): ResponseEntity<Boolean> {
+        val reservation = reservationRepository.findByIdOrNull(id)
+        if (reservation != null) {
+            val child = childRepository.findByIdOrNull(
+                id = reservation.childId
+            )
+            if (child == null)
+                return ResponseEntity(false, HttpStatus.INTERNAL_SERVER_ERROR)
+            val newCountVisit = if (child.countVisit >= 5) 0 else child.countVisit + 1
+            val newChild = child.copy(countVisit = newCountVisit)
+            childRepository.save(newChild)
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+    }
+
     @GetMapping("/events")
     fun getUpcomingEvents(
         @RequestParam(name = "userId") userId: Long,
