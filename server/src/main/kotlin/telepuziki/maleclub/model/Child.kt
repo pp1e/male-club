@@ -24,10 +24,10 @@ data class Child(
     val peculiarities: String?,
 
     @Column(name = "count_visit", nullable = false)
-    val countVisit: Int,
+    val countVisit: Int = 0,
 
     @Column(name = "user_id", nullable = false)
-    val userId: Long,
+    val userId: Long?,
 
     @Column(name = "birthdate", nullable = false)
     val birthdate: Date,

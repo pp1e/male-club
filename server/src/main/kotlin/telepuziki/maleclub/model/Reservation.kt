@@ -2,7 +2,7 @@ package telepuziki.maleclub.model
 
 import jakarta.persistence.*
 import lombok.*
-import java.util.Date
+import java.time.LocalDateTime
 
 @Setter
 @Getter
@@ -18,7 +18,7 @@ data class Reservation(
     val id: Long,
 
     @Column(name = "time_and_date", nullable = false)
-    val timeAndDate: Date,
+    val timeAndDate: LocalDateTime,
 
     @Column(name = "child_id", nullable = false)
     val childId: Long,

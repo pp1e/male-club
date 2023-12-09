@@ -6,4 +6,5 @@ import telepuziki.maleclub.model.Child
 
 @Repository
 interface ChildRepository: JpaRepository<Child, Long> {
+    fun findAllByUserId(userId: Long): List<Child>
 }
