@@ -8,7 +8,7 @@
     border-radius: 7%;
     background: #FFF;
     box-shadow: 0.4vh 0.6vh 2.2vh 0px rgba(0, 0, 0, 0.25);
-    height: min(36vw, 430px);
+    height: min(36vw, 400px);
     width: min(28vw, 350px);
     margin: 0% 2.5% 5% 2.5%;
     padding-top: 2%;
@@ -21,10 +21,10 @@
 }
 
 .card__text-main{
-    font-size: min(3.1vw, 32px);
+    font-size: min(3.3vw, 32px);
 }
 .card__text-second{    
-    font-size: min(2.7vw, 24px);
+    font-size: min(2.8vw, 24px);
 }
 
 .card__no-data{
@@ -46,9 +46,9 @@
 .events-page__container{
     width: 100%;
 }
-.aa{
-    height: 75%;
-    width: 75%;
-    max-height: 135px;
-    max-width: 120px;
+.account__no-photo{
+    height: 70%;
+    width: 70%;
+    max-height: 130px; 
+    max-width: 115px;
 }

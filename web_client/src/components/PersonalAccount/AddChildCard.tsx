@@ -1,53 +1,70 @@
-import { ReactElement, useState, useRef, useEffect, useCallback } from "react";
+import { ReactElement, useState, useRef } from "react";
+import { AxiosResponse } from "axios";
 import Image from 'react-bootstrap/Image';
 import { AUTHOR_IMAGE } from '../../resources/Images';
 import { IChild } from './PersonalAccount';
-import { getAge } from './Handlers';
+import { getAge, checkAge } from './Handlers';
+import { addUserChild } from '../../services/Services'
 
 const AddChildCard = ({userList, setUserList, userIndex, isEdit, setEditIndex}: {userList: IChild[], setUserList: React.Dispatch<React.SetStateAction<IChild[]>>, userIndex?: number, isEdit?: boolean, setEditIndex?: React.Dispatch<React.SetStateAction<number>>}): ReactElement => {
     const nameRef = useRef<HTMLInputElement>(null);
     const dateRef = useRef<HTMLInputElement>(null);
     const featuresRef = useRef<HTMLTextAreaElement>(null);
-    const phoneRef= useRef<HTMLInputElement>(null);
+    // const phoneRef= useRef<HTMLInputElement>(null);
     const [isNameValid, setIsNameValid] = useState(true);
     const [isDateValid, setIsDateValid] = useState(true);
-    const [isPhoneValid, setIsPhoneValid] = useState(true);
+    // const [isPhoneValid, setIsPhoneValid] = useState(true);
+    const dateRegExp: RegExp = /^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/;
+    // const phoneRegExp: RegExp = /^((\+7)[\- ]?)(\(\d{3}\)|\d{3})[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}(([\- ]?\d{1})[\- ]?\d{1})$/;
 
-    const onSubmit = (event:any) => {
+    const onSubmit = async (event:any) => {
         event.preventDefault();
         setIsNameValid(!!nameRef.current?.value);
-        setIsDateValid(!!dateRef.current?.value); //проверка возраста
-        setIsPhoneValid(!!phoneRef.current?.value && new RegExp(/^(\8\d{10})$/).test(phoneRef.current!!.value));
-        const validationPassed = isEdit ? !!nameRef.current?.value && new RegExp(/^(\8\d{10})$/).test(phoneRef.current!!.value) : !!nameRef.current?.value && !!dateRef.current?.value && !!phoneRef.current?.value && new RegExp(/^(\8\d{10})$/).test(phoneRef.current!!.value)
+        setIsDateValid(!!dateRef.current?.value && checkAge(new Date(dateRef.current?.value!!)) && new RegExp(dateRegExp).test(dateRef.current?.value));
+        // setIsPhoneValid(!!phoneRef.current?.value && new RegExp(phoneRegExp).test(phoneRef.current!!.value));
+        // const validationPassed = isEdit ? !!nameRef.current?.value && new RegExp(phoneRegExp).test(phoneRef.current!!.value) : !!nameRef.current?.value && !!dateRef.current?.value && !!phoneRef.current?.value && new RegExp(phoneRegExp).test(phoneRef.current!!.value)
+        const validationPassed = isEdit ? !!nameRef.current?.value : !!nameRef.current?.value && !!dateRef.current?.value;
         if (validationPassed) {
             if (isEdit) {
-                userList.at(userIndex!!)!!.name = String(nameRef.current?.value);
-                userList.at(userIndex!!)!!.features = String(featuresRef.current?.value);
-                userList.at(userIndex!!)!!.phone = String(phoneRef.current?.value);
+                userList.at(userIndex!!)!!.name = nameRef.current?.value!!;
+                userList.at(userIndex!!)!!.features = featuresRef.current?.value!!;
+                // userList.at(userIndex!!)!!.phone = phoneRef.current?.value!!;
                 setUserList([...userList]);
                 setEditIndex!!(-1);
             }
             else {
-            //FIXME сохранить ребенка в базу
+            // FIXME привязать пользователя, пока вообще всё настроено с телефоном, поэтому нифига не сохранит...
+                // await addUserChild({
+                //     name: nameRef.current?.value!!,
+                //     date: new Date(dateRef.current?.value!!),
+                //     features: featuresRef.current?.value!!,
+                //     countVisites: 0,
+                //     user_id: 1,
+                //     // phone: phoneRef.current?.value!!
+                // })
+                //     .then((result: AxiosResponse<any, any>) => {
+                //         if (result.status !== 200) {
+                //             console.log('Ошибка при сохранении ребёнка :с');
+                //         }
+                //     })
+                //     .catch(errorData => {
+                //         console.log('Ошибка при сохранении ребёнка :с');
+                //         console.log(errorData.message);
+                //     });
             setUserList([
                 ...userList,
                 {
                     id: userList.length,
-                    name: String(nameRef.current?.value),
-                    date: new Date(String(dateRef.current?.value)),
-                    features: String(featuresRef.current?.value),
+                    name: nameRef.current?.value!!,
+                    date: new Date(dateRef.current?.value!!),
+                    features: featuresRef.current?.value!!,
                     countVisites: 0,
-                    phone: String(phoneRef.current?.value)
+                    // phone: 'phoneRef.current?.value!!'
                 }
-            ])}
+            ])
+            }
         };
     };
-
-    // useEffect(() => {
-    //     setIsNameValid(!!nameRef.current?.value);
-    //     setIsDateValid(!!dateRef.current?.value); //проверка возраста
-    //     setIsPhoneValid(!!phoneRef.current?.value && new RegExp(/^(\8\d{10})$/).test(phoneRef.current!!.value));
-    // }, [onsubmit]);
 
     return  <>
                 <form method="POST" onSubmit={onSubmit} className=" account-page__card__container d-flex flex-column justify-content-center align-items-center">
@@ -79,10 +96,17 @@ const AddChildCard = ({userList, setUserList, userIndex, isEdit, setEditIndex}: 
                                                     type="date"
                                                     placeholder="дд.мм.гггг" 
                                                     aria-label="дд.мм.гггг" 
-                                                />
+                                                />                                                
+                                                {
+                                                    !isDateValid ?
+                                                        <div className="invalid-feedback text-start px-1">
+                                                            Допустимый возраст: 2-16 лет.
+                                                        </div> 
+                                                    : ""
+                                                }
                                             </div>
                                         :
-                                            <div className="d-flex flex-column account-page__text-container justify-content-around">
+                                            <div className="d-flex flex-column justify-content-around py-1">
                                                 <span className="card__text-main">Возраст: {getAge(userList[userIndex!!].date)}</span>
                                             </div>
 
@@ -98,7 +122,7 @@ const AddChildCard = ({userList, setUserList, userIndex, isEdit, setEditIndex}: 
                                     aria-label="Введите особенности ребенка"
                                 />
                             </div>
-                            <div className="card__input__width mb-2">
+                            {/* <div className="card__input__width mb-2">
                                 <input
                                     ref={phoneRef}
                                     name="phone"
@@ -107,15 +131,15 @@ const AddChildCard = ({userList, setUserList, userIndex, isEdit, setEditIndex}: 
                                     type="phone" 
                                     placeholder="Контактный телефон" 
                                     aria-label="Контактный телефон" 
-                                />                                
+                                />
                                 {
                                     !isPhoneValid ?
-                                        <div className="invalid-feedback text-start px-3">
-                                            Формат: 11 цифр, начиная с 8.
+                                        <div className="invalid-feedback text-start px-1">
+                                            Номер должен начинаться с +7.
                                         </div> 
                                     : ""
                                 }
-                            </div>
+                            </div> */}
                             <button type="submit" className="btn-warning no-page__button my-2">{ isEdit ? 'Изменить' : 'Добавить ребенка'}</button>
                         </div>
                 </form>

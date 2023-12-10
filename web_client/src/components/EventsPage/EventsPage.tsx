@@ -1,14 +1,14 @@
-import { ReactElement, useState, useMemo } from "react";
+import { ReactElement, useState, useMemo, useEffect } from "react";
 import NavBar from "../Navigation/NavBar";
 import { AUTHOR_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import "./styles/eventspage.css";
-import { getUserReservationList } from '../../services/Services';
+import { getParentReservationList } from '../../services/Services';
 
 interface IChild {
-    name: string;
-    date: string,
-    numPs: number;
+    childFirstname: string;
+    reservationTime: string,
+    consoleNumber: number;
 }
 
 interface IChildCard {
@@ -23,13 +23,13 @@ const ChildCard = (props: IChildCard): ReactElement => {
                     <div className="events-page__card__image d-flex flex-column justify-content-center align-items-center">
                         <Image
                             src={AUTHOR_IMAGE}
-                            className="aa"
+                            className="account__no-photo"
                         />
                     </div>                    
-                    <div className="d-flex flex-column events-page__text-container justify-content-between card__text-second">
-                        <span className="card__text-main">{props.user.name}</span>
-                        <span>{props.user.date}</span>
-                        <span>{props.user.numPs}</span>
+                    <div className="d-flex flex-column events-page__text-container justify-content-around">
+                        <span className="card__text-main">{props.user.childFirstname}</span>
+                        <span className="card__text-second">Дата записи: {props.user.reservationTime}</span>
+                        <span className="card__text-second">Номер консоли: {props.user.consoleNumber}</span>
                     </div>
                 </div>
             </>
@@ -38,40 +38,43 @@ const ChildCard = (props: IChildCard): ReactElement => {
 const EventsPage = (props: IProps): ReactElement => {
     const [userList, setUserList] = useState([
         {
-            name: "Полина",
-            date: "11.06.22",
-            numPs: 14001
+            childFirstname: "Полина",
+            reservationTime: "11.06.22",
+            consoleNumber: 14001
         },
         {
-            name: "Никина",
-            date: "11.06.22",
-            numPs: 14010
+            childFirstname: "Никина",
+            reservationTime: "11.06.22",
+            consoleNumber: 14010
         },
         {
-            name: "Пуговка",
-            date: "11.06.22",
-            numPs: 14002
+            childFirstname: "Пуговка",
+            reservationTime: "11.06.22",
+            consoleNumber: 14002
         },
         {
-            name: "Егор",
-            date: "11.06.22",
-            numPs: 14003
+            childFirstname: "Егор",
+            reservationTime: "11.06.22",
+            consoleNumber: 14003
         },
         {
-            name: "Лиза",
-            date: "11.06.22",
-            numPs: 14008
+            childFirstname: "Лиза",
+            reservationTime: "11.06.22",
+            consoleNumber: 14008
         },
         {
-            name: "Денис",
-            date: "11.06.22",
-            numPs: 14008
+            childFirstname: "Денис",
+            reservationTime: "11.06.22",
+            consoleNumber: 14008
         },
     ]);
 
-    getUserReservationList().then((res) => {
-        setUserList([res.data]);
-    });
+    // FIXME нужен parent_id
+    // useEffect(() => {
+    //     getParentReservationList(parent_id).then((result) => {
+    //         setUserList(result.data);
+    //     });
+    // }, [parent_id]);
     
     const childrenList = useMemo(() => {
         if (userList.length > 0) {

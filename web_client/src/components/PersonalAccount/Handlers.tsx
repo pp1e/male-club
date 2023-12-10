@@ -1,18 +1,10 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement } from "react";
 
 
 export function getAge(date: Date): string {
     const count = new Date().getFullYear() - date.getFullYear();
-    if (count % 10 === 1) {
-        return count !== 11 ? `${count} год` : `${count} лет`;
-    }
-    if (count % 10 > 1 && count % 10 < 5) {
-        return `${count} года`;
-    }
-    if (count % 10 > 4) {
-        return `${count} лет`;
-    }
-    return '';
+    return count > 4 ? `${count} лет`
+                     : `${count} года`;
 }
 
 export function checkAge(date: Date): boolean {

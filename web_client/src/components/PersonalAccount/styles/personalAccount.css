@@ -79,8 +79,9 @@
     height: 1.2em;
 }
 .account__dropdown__container {
-    margin-top: -2.4em;
-    margin-right: 0.5em;
+    margin-top: -4.4em;
+    margin-right: 0.7em;
+    margin-bottom: 0.7em;
 }
 
 .account__button__container:hover {
@@ -150,4 +151,9 @@ textarea
 {    
     font-size: min(2.2vw, 20px)!important;
     text-align: center;
+}
+
+.card__button__add {
+    height: min(30vh, 204px);
+    width: min(30vh, 204px);
 }

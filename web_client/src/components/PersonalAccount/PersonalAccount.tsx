@@ -5,7 +5,6 @@ import AddChildCard from './AddChildCard';
 import Image from 'react-bootstrap/Image';
 import "./styles/personalAccount.css";
 import { getAge, checkAge, getVisitsCircles } from './Handlers';
-import { getUserChildrenList } from '../../services/Services'
 
 export interface IChild {    
     id: number;
@@ -13,7 +12,7 @@ export interface IChild {
     date: Date;
     features: string;
     countVisites: number;
-    phone: string;
+    // phone: string;
 }
 
 interface IChildCard {
@@ -26,11 +25,10 @@ interface IProps {}
 const childListTest: IChild[] = [{
     id: 0,
     name: "Полина",
-    date: new Date("11.06.22"),
+    date: new Date("11.06.06"),
     features: 'насморк',
     countVisites: 6,
-    phone: '+7(910)829-28-27'
-
+    // phone: '+7(910)829-28-27'
 },
 {
     id: 1,
@@ -38,7 +36,7 @@ const childListTest: IChild[] = [{
     date: new Date("11.06.20"),
     features: 'насморк',
     countVisites: 7,
-    phone: '+7(910)829-28-27'
+    // phone: '+7(910)829-28-27'
 },
 {
     id: 2,
@@ -46,7 +44,7 @@ const childListTest: IChild[] = [{
     date: new Date("11.06.12"),
     features: 'насморк',
     countVisites: 1,
-    phone: '+7(910)829-28-27'
+    // phone: '+7(910)829-28-27'
 },
 {
     id: 3,
@@ -54,7 +52,7 @@ const childListTest: IChild[] = [{
     date: new Date("11.06.18"),
     features: 'насморк',
     countVisites: 4,
-    phone: '+7(910)829-28-27'
+    // phone: '+7(910)829-28-27'
 },
 {
     id: 4,
@@ -62,7 +60,7 @@ const childListTest: IChild[] = [{
     date: new Date("11.06.19"),
     features: 'насморк',
     countVisites: 2,
-    phone: '+7(910)829-28-27'
+    // phone: '+7(910)829-28-27'
 },
 {
     id: 5,
@@ -70,7 +68,7 @@ const childListTest: IChild[] = [{
     date: new Date("11.06.16"),
     features: 'насморк',
     countVisites: 5,
-    phone: '+7(910)829-28-27'
+    // phone: '+7(910)829-28-27'
 },]
 
 
@@ -100,7 +98,6 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                                         />
                                                     </button>
                                                     <ul className="dropdown-menu" >
-                                                        {/* FIXME по клику сделать изменение и удаление */}
                                                         {
                                                             checkAge(props.user.date)
                                                             ? <li><button id={`${props.user.id}`} onClick={editCardButtonClick} className="dropdown-item">Изменить данные</button></li>
@@ -127,10 +124,10 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                                     <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Количество посещений:</span>
                                                     <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.user.countVisites)}</div>
                                                 </div>
-                                                <div className="d-flex flex-column  justify-content-center">
+                                                {/* <div className="d-flex flex-column  justify-content-center">
                                                     <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Контактный телефон:</span>
                                                     <span className={`card__text-second card__text__line-height ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.phone}</span>
-                                                </div>                   
+                                                </div>                    */}
                                             </div>
                                         :
                                             <AddChildCard userList={userList} setUserList={setUserList} userIndex={props.user.id} isEdit={props.isEdit} setEditIndex={setEditIndex}/>
@@ -157,7 +154,6 @@ const PersonalAccount = (props: IProps): ReactElement => {
             )
         })
         setUserCardList(newList);
-        // userCardList.at(+e.currentTarget.id)!!.isEdit = true;
         setEditIndex(+e.currentTarget.id);
         const newList1: IChild[] = [...userList];
         setUserList(newList1);
@@ -205,16 +201,15 @@ const PersonalAccount = (props: IProps): ReactElement => {
 
     const AddButton = (props: IProps): ReactElement => {
         return  <div className="account-page__card__container d-flex flex-column justify-content-center align-items-center account__button__container">
-                    <button type="button" className="account__button rgba-red-light d-flex flex-column justify-content-center align-items-center" onClick={addChildButtonClick}>
+                    <button type="button" className="account__button d-flex card__button__add flex-column justify-content-center align-items-center" onClick={addChildButtonClick}>
                         <Image
                             src={ADD_BUTTON_IMAGE}
-                            className="rgba-red-light"
-                            height="min(2vh, 204px)"
-                            width="min(2vh, 204px)"
+                            className="card__button__add"
                         />
                     </button>
                 </div>
     }
+    
     return (
         <>
             <NavBar />
