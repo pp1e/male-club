@@ -2,6 +2,8 @@ package telepuziki.maleclub.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
@@ -25,6 +27,15 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
     @PostMapping("/add")
     fun addConsole(@RequestBody console: Console): Console {
         return consoleRepository.save(console)
+    }
+
+    @DeleteMapping("/delete/{id:\\d+}")
+    fun deleteConsoleById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
+        if (consoleRepository.existsById(id)) {
+            consoleRepository.deleteById(id)
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        return ResponseEntity(false, HttpStatus.NOT_FOUND)
     }
 
     @GetMapping("/admin_info")

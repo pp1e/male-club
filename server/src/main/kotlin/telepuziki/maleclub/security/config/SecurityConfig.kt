@@ -31,12 +31,16 @@ class SecurityConfig {
                             "api/v1/console/admin_info",
                             "api/v1/reservation/list",
                             "api/v1/user/list",
-                            "api/v1/user/get"
+                            "api/v1/user/get",
+                            "api/v1/user/delete",
+                            "api/v1/console/delete/",
+                            "api/v1/reservation/delete/",
+                            "api/v1/reservation/confirm/",
                         ).hasAuthority("admin")
                         .requestMatchers(
                             "api/v1/user/add",
                             "api/v1/user/check_phone",
-                            "api/v1/user/check_success_login"
+                            "api/v1/user/check_success_login",
                         ).permitAll()
                         .anyRequest().authenticated()
                 }

@@ -55,6 +55,15 @@ class UserController(
         return ResponseEntity(true, HttpStatus.OK)
     }
 
+    @DeleteMapping("/delete/{id:\\d+}")
+    fun deleteUserById(@PathVariable("id") id: Long): ResponseEntity<Boolean>  {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id)
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+    }
+
     @GetMapping("/check_phone")
     fun checkPhone(@RequestParam("phone") phone: String): Boolean {
         return userRepository.existsByPhone(phone)
