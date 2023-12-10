@@ -9,6 +9,7 @@ import "./styles/registrationPage.css";
 interface IProps {}
 
 const RegistrationPage = (props: IProps): ReactElement => {
+    const navigate = useNavigate();
     const nameRef = useRef<HTMLInputElement>(null);
     const surnameRef = useRef<HTMLInputElement>(null);
     const patronymicRef = useRef<HTMLInputElement>(null);
@@ -21,7 +22,6 @@ const RegistrationPage = (props: IProps): ReactElement => {
     const [isSurnameValid, setIsSurenameValid] = useState(true);
     const [isPhoneValid, setIsPhoneValid] = useState(true);
     const [arePasswordsValid, setArePasswordsValid] = useState(true);
-    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const getNameValue = () => nameRef.current?.value;
     const getSurnameValue = () => surnameRef.current?.value;
@@ -80,13 +80,14 @@ const RegistrationPage = (props: IProps): ReactElement => {
             <div className="container mt-5 py-5 d-flex flex-row justify-content-center">
                 <div className="text-center login-page_container">
                     <h1 className="px-5 mb-4">Добро пожаловать!</h1>
-                    <form onSubmit={onSubmit}>
+                    <form method="POST" onSubmit={onSubmit}>
                         <div className="mb-4">
                             <input 
                                 ref={nameRef}
                                 type="text"
                                 className={`
                                     form-control py-3 
+                                    text-start
                                     ${isNameValid ? 'border-warning' : ''} 
                                     ${!isNameValid ? 'is-invalid' : ''}
                                 `} 
@@ -106,6 +107,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                                 type="text"
                                 className={`
                                     form-control py-3 
+                                    text-start
                                     ${isSurnameValid ? 'border-warning' : ''} 
                                     ${!isSurnameValid ? 'is-invalid' : ''}
                                 `} 
@@ -123,7 +125,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                             <input 
                                 ref={patronymicRef}
                                 type="text"
-                                className="form-control py-3 border-warning" 
+                                className="form-control py-3 border-warning text-start" 
                                 placeholder="Отчество"
                             />
                         </div>
@@ -133,6 +135,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                                 type="phone"
                                 className={`
                                     form-control py-3 
+                                    text-start
                                     ${isPhoneValid ? 'border-warning' : ''} 
                                     ${!isPhoneValid ? 'is-invalid' : ''}
                                 `}

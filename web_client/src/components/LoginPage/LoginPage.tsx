@@ -1,20 +1,66 @@
-import { ReactElement, useState, useMemo, useRef } from "react";
+import { ReactElement, useState, useRef } from "react";
+import { useNavigate } from "react-router";
 import NavBar from "../Navigation/NavBar";
+import { loginUser } from "../../services/Services";
 
 import "./styles/loginPage.css";
 
 interface IProps {}
 
 const LoginPage = (props: IProps): ReactElement => {
+    const navigate = useNavigate();
     const phoneRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const saveLoginRef = useRef<HTMLInputElement>(null);
     const [isPhoneValid, setIsPhoneValid] = useState(true);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const [errorPhoneMessage, setErrorPhoneMessage] = useState('');
+    const [errorPasswordMessage, setErrorPasswordMessage] = useState('');
+
+    const setValidityStates = (): void => {
+        // TODO: Сделать валидацию на ввод(через регулярки)
+        if (!phoneRef.current?.value) {
+            setIsPhoneValid(false);
+            setErrorPhoneMessage('Введите номер телефона!');
+        } else {
+            setIsPhoneValid(true);
+        }
+        if (!passwordRef.current?.value) {
+            setIsPasswordValid(false);
+            setErrorPasswordMessage('Введите пароль!');
+        } else {
+            setIsPasswordValid(true);
+        }
+    }
 
     const onSubmit = (event: any) => {
         event.preventDefault();
-        // TODO: Прописать отправку на сервер данных, а также анализ результатов
+        setValidityStates();
+        if (!phoneRef.current?.value || !passwordRef.current?.value) {
+            return;
+        }
+        loginUser({
+            phone: phoneRef.current.value || '',
+            password: passwordRef.current.value || ''
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    localStorage.setItem('isUserAuthorized', 'User');
+                    navigate('/');
+                } else if (res.status === 202) {
+                    localStorage.setItem('isUserAuthorized', 'Admin');
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                if (error.message === 'Request failed with status code 409') {
+                    setIsPasswordValid(false);
+                    setErrorPasswordMessage('Пароль введен неверно!');
+                } else if (error.message === 'Request failed with status code 406') {
+                    setIsPhoneValid(false);
+                    setErrorPhoneMessage('Номера телефона не существует!');
+                }
+            });
     }
 
     return (
@@ -23,13 +69,14 @@ const LoginPage = (props: IProps): ReactElement => {
             <div className="container mt-5 py-5 d-flex flex-row justify-content-center">
                 <div className="text-center login-page_container">
                     <h1 className="px-5 mb-4">Добро пожаловать!</h1>
-                    <form onSubmit={onSubmit}>
+                    <form method="GET" onSubmit={onSubmit}>
                         <div className="mb-4">
                             <input 
                                 ref={phoneRef}
                                 type="phone"
                                 className={`
-                                    form-control py-3 
+                                    form-control py-3
+                                    text-start
                                     ${isPhoneValid ? 'border-warning' : ''} 
                                     ${!isPhoneValid ? 'is-invalid' : ''}
                                 `}
@@ -38,7 +85,7 @@ const LoginPage = (props: IProps): ReactElement => {
                             {
                                 !isPhoneValid ?
                                     <div className="invalid-feedback text-start">
-                                        Такой номер телефона не зарегестрирован!
+                                        {errorPhoneMessage}
                                     </div> 
                                 : ""
                             }
