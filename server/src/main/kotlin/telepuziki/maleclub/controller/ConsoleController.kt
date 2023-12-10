@@ -9,6 +9,7 @@ import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
 import java.sql.Date
 import java.sql.Time
+import java.time.LocalDateTime
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
@@ -59,5 +60,24 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
             adminInfoMapped = adminInfoMapped.plus(adminInfoItemMapped)
         }
         return adminInfoMapped
+    }
+
+    @GetMapping("/reservation_info")
+    fun getConsoleReservationInfo(
+        @RequestParam(name = "datetime") datetime: LocalDateTime,
+    ): List<Any> {
+        val consoleReservationInfo = consoleRepository.getConsoleReservationInfo(datetime)
+        var consoleReservationInfoMapped = listOf<Map<String, Any>>()
+        for (consoleReservationInfoItem in consoleReservationInfo) {
+            val consoleReservationInfoItemMapped = mapOf(
+                "id" to consoleReservationInfoItem[0],
+                "name" to consoleReservationInfoItem[1],
+                "number" to consoleReservationInfoItem[2],
+                "description" to consoleReservationInfoItem[3],
+                "is_reserved" to (consoleReservationInfoItem[4] != null),
+            )
+            consoleReservationInfoMapped = consoleReservationInfoMapped.plus(consoleReservationInfoItemMapped)
+        }
+        return consoleReservationInfoMapped
     }
 }
