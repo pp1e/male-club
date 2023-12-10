@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 import telepuziki.maleclub.model.Console
 import java.sql.Date
 import java.sql.Time
+import java.time.LocalDateTime
 
 @Repository
 interface ConsoleRepository : JpaRepository<Console, Long> {
@@ -17,5 +18,10 @@ interface ConsoleRepository : JpaRepository<Console, Long> {
         @Param("date") date: Date,
         @Param("time") time: Time?,
         @Param("child_name") childName: String,
+    ): List<List<Any>>
+
+    @Query(value = "CALL GetConsoleReservationInfo(:datetime);", nativeQuery = true)
+    fun getConsoleReservationInfo(
+        @Param("datetime") datetime: LocalDateTime,
     ): List<List<Any>>
 }
