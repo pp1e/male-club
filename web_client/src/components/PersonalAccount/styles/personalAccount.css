@@ -1,0 +1,159 @@
+.account-page__text-main{
+    font-size: min(3.5vw, 40px);
+    margin-bottom: 6%;    
+    margin-top: 4%;
+}
+
+.account-page__card__container{
+    border-radius: 7%;
+    background: #FFF;
+    box-shadow: 0.4vh 0.6vh 2.2vh 0px rgba(0, 0, 0, 0.25);
+    height: min(38vw, 580px);
+    width: min(28vw, 350px);
+    margin: 0% 2% 5% 2%;
+    margin-bottom: 2%;
+    min-height: 200px;
+    min-width: 140px;
+}
+
+.account-page__text-container{
+    margin-top: 5%;
+}
+
+.card__text-main{
+    font-size: min(2.7vw, 30px);
+    /* line-height: 3rem; */
+    margin-top: -0.4rem;
+}
+.card__text-second{
+    font-size: min(2.2vw, 20px);
+}
+
+.card__text__line-height {    
+    margin-top: -5%;
+}
+
+.card__no-data{
+    width: 100%;
+    height: 50vh;
+    color: rgba(54, 20, 20, 0.4);
+}
+
+.account-page__card__image{
+    border-radius: 100%;
+    border: 0.15vh solid #FFDB58;
+    filter: drop-shadow(0.2vh 0.2vh 0.2vh rgba(0, 0, 0, 0.15));
+    height: 40%;
+    width: 58%;
+    max-height: 190px;
+    max-width: 190px;
+}
+
+.account-page__container{
+    width: 100%;
+}
+.account__no-photo{
+    height: 70%;
+    width: 70%;
+    max-height: 130px; 
+    max-width: 115px;
+}
+
+.account__button {
+    border-radius: 100%;
+    outline: none;
+    border: none;
+    cursor: pointer;    
+    height: min(4vh, 204px);
+    width: min(4vh, 204px);
+    max-height: 204px;
+    max-width: 204px;
+}
+.account__button__container {
+    background: rgba(148, 144, 144, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.account__dropdown {
+    width: 1.1em;
+    height: 1.2em;
+}
+.account__dropdown__container {
+    margin-top: -4.4em;
+    margin-right: 0.7em;
+    margin-bottom: 0.7em;
+}
+
+.account__button__container:hover {
+    
+    background: rgba(90, 90, 90, 0.1)
+}
+.no-page__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFDB58;
+    border-radius: 5px;
+    font-size: min(1.5vw, 16px);
+    filter: none;
+    height: 20%;
+    width: 70%;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.account__circle{
+    border-radius: 100%;
+    height: 100%;
+    width: min(1.5vw, 20px);
+    background-color: #FFDB58;    
+    filter: drop-shadow(0.2vh 0.2vh 0.2vh rgba(0, 0, 0, 0.10));;
+
+}
+
+.account__circle__container {
+    width: inherit;
+    height: min(1.5vw, 20px);
+}
+
+.account__circle__not-visite{
+    background-color: #FFF;    
+    border: 0.15vh solid #FFDB58;
+}
+
+.account__circle__sixth-visite{
+    background-color: #FFF;    
+    border: 0.15vh dashed #FFDB58;
+}
+
+.card__input__width{
+    width: 70%!important;
+}
+
+.card__textarea__resize{
+    resize: none;
+}
+
+.card__text__not-allowed{
+    color: rgba(0, 0, 0, 0.60);
+}
+
+.card__text__not-allowed-reason{
+    color: rgba(255, 0, 0, 0.6);
+}
+
+input[type="text"],
+input[type="date"],
+input[type="phone"],
+textarea
+{    
+    font-size: min(2.2vw, 20px)!important;
+    text-align: center;
+}
+
+.card__button__add {
+    height: min(30vh, 204px);
+    width: min(30vh, 204px);
+}
