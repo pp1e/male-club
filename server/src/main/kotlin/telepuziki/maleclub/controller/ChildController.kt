@@ -57,8 +57,15 @@ class ChildController(
     }
 
     @DeleteMapping("/delete/{id:\\d+}")
-    fun deleteChildById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
-        if (childRepository.existsById(id)) {
+    fun deleteChildById(
+        @PathVariable("id") id: Long,
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<Boolean> {
+        val currentUserId = userDetails.getId()
+        val child = childRepository.findByIdOrNull(id)
+        if ((child != null) &&
+            ((child.userId == currentUserId) || (userDetails.getAuthorities().first().authority == "admin"))
+            ) {
             childRepository.deleteById(id)
             return ResponseEntity(true, HttpStatus.OK)
         }

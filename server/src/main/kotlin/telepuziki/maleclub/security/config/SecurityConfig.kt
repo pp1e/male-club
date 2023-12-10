@@ -41,7 +41,6 @@ class SecurityConfig {
                             "api/v1/user/add",
                             "api/v1/user/check_phone",
                             "api/v1/user/check_success_login",
-                            "api/v1/child/delete",
                         ).permitAll()
                         .anyRequest().authenticated()
                 }
