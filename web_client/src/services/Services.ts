@@ -13,11 +13,11 @@ export function getChildrenList() {
     200 - все ок
     201 - админ
 */
-export function loginUser() {
+export function loginUser({ phone, password }: { phone: string, password: string }) {
     return axios.get(CONSOLES_API_BASE_URL('user', 'check_success_login'), {
         params: {
-            phone: encodeURI(''),// TODO: передать телефон с + начинать
-            password: ''// TODO: передать пароль
+            phone: encodeURI(phone),
+            password: encodeURI(password)
         }
     });
 }
