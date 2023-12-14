@@ -47,7 +47,7 @@ const LoginPage = (props: IProps): ReactElement => {
                 if (res.status === 200) {
                     localStorage.setItem('isUserAuthorized', 'User');
                     navigate('/');
-                } else if (res.status === 202) {
+                } else if (res.status === 201) {
                     localStorage.setItem('isUserAuthorized', 'Admin');
                     navigate('/');
                 }
