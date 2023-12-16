@@ -19,8 +19,19 @@ class ChildController(
     @Autowired val userRepository: UserRepository
 ) {
     @GetMapping("/list")
-    fun getAllChildren(): List<Child> {
-        return childRepository.findAll()
+    fun getAllChildren(
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<List<Child>> {
+        if (userDetails.getAuthorities().first().authority == "admin")
+            return ResponseEntity(
+                childRepository.findAll(),
+                HttpStatus.OK
+            )
+        val parentId = userDetails.getId()
+        return ResponseEntity(
+            childRepository.findAllByUserId(parentId),
+            HttpStatus.OK
+        )
     }
 
     @GetMapping("/get")
