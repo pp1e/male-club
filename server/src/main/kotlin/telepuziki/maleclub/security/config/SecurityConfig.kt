@@ -25,7 +25,6 @@ class SecurityConfig {
                 Customizer { authorize ->
                     authorize
                         .requestMatchers(
-                            "api/v1/child/list",
                             "api/v1/console/list",
                             "api/v1/console/add",
                             "api/v1/console/admin_info",
