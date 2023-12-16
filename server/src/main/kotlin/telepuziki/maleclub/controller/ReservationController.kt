@@ -84,7 +84,7 @@ class ReservationController(
 
     @GetMapping("/events")
     fun getUpcomingEvents(
-        @RequestParam(name = "userId") userId: Long,
+        @RequestParam(name = "user_id") userId: Long,
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<List<Map<String, Any>>> {
         if (userId != userDetails.getId() && userDetails.getAuthorities().first().authority != "admin")
@@ -93,9 +93,10 @@ class ReservationController(
         var upcomingEventsMapped = listOf<Map<String, Any>>()
         for (event in upcomingEvents) {
             val eventMapped = mapOf(
-                "childFirstname" to event[0],
-                "reservationTime" to event[1],
-                "consoleNumber" to event[2]
+                "reservationId" to event[0],
+                "childFirstname" to event[1],
+                "reservationTime" to event[2],
+                "consoleNumber" to event[3]
             )
             upcomingEventsMapped = upcomingEventsMapped.plus(eventMapped)
         }

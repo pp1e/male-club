@@ -1,0 +1,1 @@
+INSERT user(id, firstname, lastname, phone, password, role_id) VALUES (1, 'telepuzik', '', 'telepuzik', '$2a$12$zHDfADQbKSfKb/fORPJRmO3wqaiUTDUUi2d5u1aQtSmMV/iXncQI6', 2)
