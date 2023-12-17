@@ -29,3 +29,12 @@ export function addUserChild(
         }
     );
 }
+
+export function getAdminChildrenList({date, time}: { date: string, time: string }) {
+    return axios.get(CONSOLES_API_BASE_URL('console', 'admin_info'), {
+        params: {
+            date: date,
+            time: time
+        }
+    });
+}

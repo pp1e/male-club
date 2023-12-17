@@ -59,8 +59,8 @@ const AuthorizedNavBar = (): ReactElement => {
                         </li>
                     </ul>
                     <div className="d-flex gap-3">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" />
-                        <ul className="dropdown-menu">
+                        <a className="nav-link dropdown-toggle dropstart" data-toggle="dropdown" href="#" />
+                        <ul className="dropdown-menu dropdown-menu-right">
                             <li><a className="dropdown-item" href="/account">Личный кабинет</a></li>
                             <li><a className="dropdown-item" href="/upcoming-events">Предстоящие мероприятия</a></li>
                             <li><a className="dropdown-item" onClick={authStore.logout} href="/login">Выйти</a></li>

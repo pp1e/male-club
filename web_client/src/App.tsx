@@ -35,10 +35,11 @@ const App = observer(() => {
         <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="consoles" element={<Consoles />} />
+        <Route path="admin" element={<AdminPanel />} />
 
-        <Route path="admin" element={<PrivateRoute />} >
+        {/* <Route path="admin" element={<PrivateRoute />} >
             <Route path="" element={<AdminPanel />} />
-        </Route>
+        </Route> */}
         <Route path="upcoming-events" element={<PrivateRoute />} >
             <Route path="" element={<EventsPage />} />
         </Route>
