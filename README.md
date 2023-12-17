@@ -4,8 +4,10 @@
 2. Create MySQL database:
     ```sql
     CREATE DATABASE male_club;
-    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'localhost' IDENTIFIED BY 'qwerty';
-    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'%' IDENTIFIED BY 'qwerty';
+    CREATE OR REPLACE USER 'male_club_user'@'localhost' IDENTIFIED BY 'qwerty';
+    CREATE OR REPLACE USER 'male_club_user'@'%' IDENTIFIED BY 'qwerty';
+    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'localhost';
+    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'%';
     ```
 ### Set up application settings
 1. Put database creditionals in ```database.properties``` file 
