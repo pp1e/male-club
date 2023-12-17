@@ -1,7 +1,8 @@
 import { ReactElement, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import NavBar from "../Navigation/NavBar";
-import { loginUser } from "../../services/Services";
+import { loginUser } from "../../services/api.auth";
+import authStore from "../../store";
 
 import "./styles/loginPage.css";
 
@@ -33,34 +34,22 @@ const LoginPage = (props: IProps): ReactElement => {
         }
     }
 
-    const onSubmit = (event: any) => {
+    const onSubmit = async (event: any) => {
         event.preventDefault();
         setValidityStates();
         if (!phoneRef.current?.value || !passwordRef.current?.value) {
             return;
         }
-        loginUser({
-            phone: phoneRef.current.value || '',
-            password: passwordRef.current.value || ''
-        })
-            .then(res => {
-                if (res.status === 200) {
-                    localStorage.setItem('isUserAuthorized', 'User');
-                    navigate('/');
-                } else if (res.status === 201) {
-                    localStorage.setItem('isUserAuthorized', 'Admin');
-                    navigate('/');
-                }
-            })
-            .catch(error => {
-                if (error.message === 'Request failed with status code 409') {
-                    setIsPasswordValid(false);
-                    setErrorPasswordMessage('Пароль введен неверно!');
-                } else if (error.message === 'Request failed with status code 406') {
-                    setIsPhoneValid(false);
-                    setErrorPhoneMessage('Номера телефона не существует!');
-                }
-            });
+        const resultStatus = await authStore.login(phoneRef.current.value, passwordRef.current.value);
+        if (resultStatus === 409) {
+            setIsPasswordValid(false);
+            setErrorPasswordMessage('Пароль введен неверно!');
+        } else if (resultStatus === 406) {
+            setIsPhoneValid(false);
+            setErrorPhoneMessage('Номера телефона не существует!');
+        } else {
+            navigate("/")
+        }
     }
 
     return (

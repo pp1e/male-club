@@ -17,18 +17,3 @@
     color: rgba(0, 0, 0, 0.90);
     margin: 2.5%;
 }
-
-.no-page__button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFDB58;
-    border-radius: 10px;
-    font-size: min(1.5vw, 24px);
-    color: rgba(0, 0, 0, 0.90);
-    height: 7%;
-    width: 20%;
-    box-shadow: 0.5vh 1vh 1.5vh 0px rgba(0, 0, 0, 0.20);
-    text-decoration: none;
-    cursor: pointer;
-}
