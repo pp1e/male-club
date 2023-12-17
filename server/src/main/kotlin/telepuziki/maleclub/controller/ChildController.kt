@@ -40,9 +40,9 @@ class ChildController(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Child?> {
         val findChild = childRepository.findByIdOrNull(id)
-        if (userDetails.getAuthorities().first().authority == "admin")
-            return ResponseEntity(findChild, HttpStatus.OK)
-        if (findChild != null && findChild.userId != userDetails.getId())
+        if (findChild != null &&
+            findChild.userId != userDetails.getId() &&
+            userDetails.isNotAdmin())
             return ResponseEntity(null, HttpStatus.FORBIDDEN)
         return ResponseEntity(findChild, HttpStatus.OK)
     }
@@ -60,7 +60,7 @@ class ChildController(
         else {
             if (!userRepository.existsById(child.userId))
                 return ResponseEntity(false, HttpStatus.BAD_REQUEST)
-            if (child.userId != currentUserId && userDetails.getAuthorities().first().authority != "admin")
+            if (child.userId != currentUserId && userDetails.isNotAdmin())
                 return ResponseEntity(false, HttpStatus.FORBIDDEN)
         }
         childRepository.save(childToAdd)
@@ -74,12 +74,31 @@ class ChildController(
     ): ResponseEntity<Boolean> {
         val currentUserId = userDetails.getId()
         val child = childRepository.findByIdOrNull(id)
-        if ((child != null) &&
-            ((child.userId == currentUserId) || (userDetails.getAuthorities().first().authority == "admin"))
-            ) {
-            childRepository.deleteById(id)
-            return ResponseEntity(true, HttpStatus.OK)
-        }
-        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        if (child == null)
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (child.userId != currentUserId && userDetails.isNotAdmin())
+            return ResponseEntity(false, HttpStatus.FORBIDDEN)
+
+        childRepository.deleteById(id)
+        return ResponseEntity(true, HttpStatus.OK)
+    }
+
+    @PutMapping("/update/{id:\\d+}")
+    fun updateChildById(
+        @PathVariable("id") id: Long,
+        @RequestBody child: Child,
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<Boolean> {
+        val currentUserId = userDetails.getId()
+
+        if (!childRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (child.userId != currentUserId && userDetails.isNotAdmin())
+            return ResponseEntity(false, HttpStatus.FORBIDDEN)
+
+        val newChild = child.copy(id=id)
+        childRepository.save(newChild)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 }

@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
+import telepuziki.maleclub.security.details.UserDetailsImpl
 import java.sql.Date
 import java.sql.Time
 import java.time.LocalDateTime
@@ -32,11 +34,25 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
 
     @DeleteMapping("/delete/{id:\\d+}")
     fun deleteConsoleById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
-        if (consoleRepository.existsById(id)) {
-            consoleRepository.deleteById(id)
-            return ResponseEntity(true, HttpStatus.OK)
-        }
-        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (!consoleRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        consoleRepository.deleteById(id)
+        return ResponseEntity(true, HttpStatus.OK)
+    }
+
+    @PutMapping("/update/{id:\\d+}")
+    fun updateConsoleById(
+        @PathVariable("id") id: Long,
+        @RequestBody console: Console,
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<Boolean> {
+        if (!consoleRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        val newConsole= console.copy(id=id)
+        consoleRepository.save(newConsole)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 
     @GetMapping("/admin_info")

@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.User
 import telepuziki.maleclub.repository.RoleRepository
 import telepuziki.maleclub.repository.UserRepository
+import telepuziki.maleclub.security.details.UserDetailsImpl
 
 
 @CrossOrigin(origins = ["http://localhost:3000"])
@@ -57,11 +59,29 @@ class UserController(
 
     @DeleteMapping("/delete/{id:\\d+}")
     fun deleteUserById(@PathVariable("id") id: Long): ResponseEntity<Boolean>  {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id)
-            return ResponseEntity(true, HttpStatus.OK)
-        }
-        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (!userRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        userRepository.deleteById(id)
+        return ResponseEntity(true, HttpStatus.OK)
+    }
+
+    @PutMapping("/update/{id:\\d+}")
+    fun updateUserById(
+        @PathVariable("id") id: Long,
+        @RequestBody user: User,
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<Boolean> {
+        val currentUserId = userDetails.getId()
+
+        if (!userRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (id != currentUserId && userDetails.isNotAdmin())
+            return ResponseEntity(false, HttpStatus.FORBIDDEN)
+
+        val newUser = user.copy(id=id)
+        userRepository.save(newUser)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 
     @GetMapping("/check_phone")
@@ -81,9 +101,13 @@ class UserController(
             if (!passwordEncoder.matches(password, user.password))
                 return ResponseEntity(false, HttpStatus.CONFLICT)
         }
-        if (userRepository.getRole(user.id) == "admin")
-            return ResponseEntity(true, HttpStatus.CREATED) // это admin
-        else
-            return ResponseEntity(true, HttpStatus.OK) // это user
+
+        return ResponseEntity(
+            true,
+            if (userRepository.getRole(user.id) == "admin")
+                HttpStatus.CREATED // This is an admin
+            else
+                HttpStatus.OK // This is a common user
+        )
     }
 }

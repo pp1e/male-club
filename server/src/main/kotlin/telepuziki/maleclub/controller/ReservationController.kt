@@ -31,13 +31,13 @@ class ReservationController(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Reservation?> {
         val findReservation = reservationRepository.findByIdOrNull(id)
-        if (userDetails.getAuthorities().first().authority == "admin")
-            return ResponseEntity(findReservation, HttpStatus.OK)
+
         if (findReservation != null &&
-            childRepository.findByIdOrNull(findReservation.childId)?.userId != userDetails.getId())
+            childRepository.findByIdOrNull(findReservation.childId)?.userId != userDetails.getId() &&
+            userDetails.isNotAdmin())
             return ResponseEntity(null, HttpStatus.FORBIDDEN)
-        else
-            return ResponseEntity(findReservation, HttpStatus.OK)
+
+        return ResponseEntity(findReservation, HttpStatus.OK)
     }
 
     @PostMapping("/add")
@@ -50,7 +50,7 @@ class ReservationController(
         if (child == null || console == null) {
             return ResponseEntity(false, HttpStatus.BAD_REQUEST)
         }
-        if (child.userId != userDetails.getId() && userDetails.getAuthorities().first().authority != "admin")
+        if (child.userId != userDetails.getId() && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
         reservationRepository.save(reservation)
         return ResponseEntity(true, HttpStatus.OK)
@@ -58,28 +58,47 @@ class ReservationController(
 
     @DeleteMapping("/delete/{id:\\d+}")
     fun deleteReservationById(@PathVariable("id") id: Long): ResponseEntity<Boolean> {
-        if (reservationRepository.existsById(id)) {
-            reservationRepository.deleteById(id)
-            return ResponseEntity(true, HttpStatus.OK)
-        }
-        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (!reservationRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        reservationRepository.deleteById(id)
+        return ResponseEntity(true, HttpStatus.OK)
+    }
+
+    @PutMapping("/update/{id:\\d+}")
+    fun updateReservationById(
+        @PathVariable("id") id: Long,
+        @RequestBody reservation: Reservation,
+        @AuthenticationPrincipal userDetails: UserDetailsImpl
+    ): ResponseEntity<Boolean> {
+        if (!reservationRepository.existsById(id))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (!childRepository.existsById(reservation.childId))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (reservation.consoleId != null &&
+            !consoleRepository.existsById(reservation.consoleId))
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        val newReservation = reservation.copy(id=id)
+        reservationRepository.save(newReservation)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 
     @PutMapping("/confirm/{id:\\d+}")
     fun confirmReservation(@PathVariable id: Long): ResponseEntity<Boolean> {
         val reservation = reservationRepository.findByIdOrNull(id)
-        if (reservation != null) {
-            val child = childRepository.findByIdOrNull(
-                id = reservation.childId
-            )
-            if (child == null)
-                return ResponseEntity(false, HttpStatus.INTERNAL_SERVER_ERROR)
-            val newCountVisit = if (child.countVisit >= 5) 0 else child.countVisit + 1
-            val newChild = child.copy(countVisit = newCountVisit)
-            childRepository.save(newChild)
-            return ResponseEntity(true, HttpStatus.OK)
-        }
-        return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (reservation == null)
+            return ResponseEntity(false, HttpStatus.NOT_FOUND)
+
+        val oldChild = childRepository.findByIdOrNull(
+            reservation.childId
+        )
+        if (oldChild == null)
+            return ResponseEntity(false, HttpStatus.INTERNAL_SERVER_ERROR)
+        val newCountVisit = if (oldChild.countVisit >= 5) 0 else oldChild.countVisit + 1
+        val newChild = oldChild.copy(countVisit = newCountVisit)
+        childRepository.save(newChild)
+        return ResponseEntity(true, HttpStatus.OK)
     }
 
     @GetMapping("/events")
@@ -87,7 +106,7 @@ class ReservationController(
         @RequestParam(name = "user_id") userId: Long,
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<List<Map<String, Any>>> {
-        if (userId != userDetails.getId() && userDetails.getAuthorities().first().authority != "admin")
+        if (userId != userDetails.getId() && userDetails.isNotAdmin())
             return ResponseEntity(null, HttpStatus.FORBIDDEN)
         val upcomingEvents = reservationRepository.getUpcomingEvents(userId)
         var upcomingEventsMapped = listOf<Map<String, Any>>()

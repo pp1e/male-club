@@ -28,6 +28,7 @@ class SecurityConfig {
                             "api/v1/console/list",
                             "api/v1/console/add",
                             "api/v1/console/admin_info",
+                            "api/v1/console/update/",
                             "api/v1/reservation/list",
                             "api/v1/user/list",
                             "api/v1/user/get",
@@ -35,6 +36,7 @@ class SecurityConfig {
                             "api/v1/console/delete/",
                             "api/v1/reservation/delete/",
                             "api/v1/reservation/confirm/",
+                            "api/v1/reservation/update/"
                         ).hasAuthority("admin")
                         .requestMatchers(
                             "api/v1/user/add",
