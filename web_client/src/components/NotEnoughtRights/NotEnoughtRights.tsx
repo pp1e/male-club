@@ -11,8 +11,8 @@ const NotEnoughtRights = (): ReactElement => {
                     src={NOT_ENOUGHT_RIGHTS}
                     className="no-page__image no-page__image-border"
                 />                
-                <span className="no-page__text">Страница не найдена, но мы поищем...</span>                
-                <a href="#" role="button" className="btn-warning no-page__button">На главную</a>
+                <span className="no-page__text">Надо авторизоваться...</span>                
+                <a href="/login" role="button" className="btn btn-warning p-4">Перейти к авторизации</a>
             </div>            
         </>   
     )

@@ -140,7 +140,7 @@ const AddChildCard = ({userList, setUserList, userIndex, isEdit, setEditIndex}: 
                                     : ""
                                 }
                             </div> */}
-                            <button type="submit" className="btn-warning no-page__button my-2">{ isEdit ? 'Изменить' : 'Добавить ребенка'}</button>
+                            <button type="submit" className="btn btn-warning p-3 my-2">{ isEdit ? 'Изменить' : 'Добавить ребенка'}</button>
                         </div>
                 </form>
             </>

@@ -12,7 +12,7 @@ const NotFoundPage = (): ReactElement => {
                     className="no-page__image no-page__image-border"
                 />                
                 <span className="no-page__text">Страница не найдена, но мы поищем...</span>                
-                <a href="/" role="button" className="btn-warning no-page__button">На главную</a>
+                <a href="/" role="button" className="btn btn-warning p-4">На главную</a>
             </div>            
         </>   
     )

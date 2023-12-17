@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { ReactElement, useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import { registryUser } from "../../services/Services";
+import { registryUser } from "../../services/api.auth";
 import NavBar from "../Navigation/NavBar";
 
 import "./styles/registrationPage.css";
