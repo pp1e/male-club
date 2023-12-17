@@ -22,6 +22,14 @@ class UserDetailsImpl(
         return user.id
     }
 
+    fun isAdmin(): Boolean {
+        return getAuthorities().first().authority == "admin"
+    }
+
+    fun isNotAdmin(): Boolean {
+        return !isAdmin()
+    }
+
     override fun getPassword(): String {
         return user.password
     }
