@@ -11,6 +11,7 @@ import telepuziki.maleclub.repository.ChildRepository
 import telepuziki.maleclub.repository.UserRepository
 import telepuziki.maleclub.security.details.UserDetailsImpl
 
+
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
 @RequestMapping("/api/v1/child")
@@ -22,7 +23,7 @@ class ChildController(
     fun getAllChildren(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<List<Child>> {
-        if (userDetails.getAuthorities().first().authority == "admin")
+        if (userDetails.isAdmin())
             return ResponseEntity(
                 childRepository.findAll(),
                 HttpStatus.OK
@@ -42,7 +43,8 @@ class ChildController(
         val findChild = childRepository.findByIdOrNull(id)
         if (findChild != null &&
             findChild.userId != userDetails.getId() &&
-            userDetails.isNotAdmin())
+            userDetails.isNotAdmin()
+        )
             return ResponseEntity(null, HttpStatus.FORBIDDEN)
         return ResponseEntity(findChild, HttpStatus.OK)
     }
@@ -56,8 +58,7 @@ class ChildController(
         var childToAdd = child
         if (child.userId == null) {
             childToAdd = child.copy(userId = currentUserId)
-        }
-        else {
+        } else {
             if (!userRepository.existsById(child.userId))
                 return ResponseEntity(false, HttpStatus.BAD_REQUEST)
             if (child.userId != currentUserId && userDetails.isNotAdmin())
@@ -74,12 +75,10 @@ class ChildController(
     ): ResponseEntity<Boolean> {
         val currentUserId = userDetails.getId()
         val child = childRepository.findByIdOrNull(id)
-
         if (child == null)
             return ResponseEntity(false, HttpStatus.NOT_FOUND)
         if (child.userId != currentUserId && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
-
         childRepository.deleteById(id)
         return ResponseEntity(true, HttpStatus.OK)
     }
@@ -91,13 +90,12 @@ class ChildController(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Boolean> {
         val currentUserId = userDetails.getId()
-
         if (!childRepository.existsById(id))
             return ResponseEntity(false, HttpStatus.NOT_FOUND)
         if (child.userId != currentUserId && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
 
-        val newChild = child.copy(id=id)
+        val newChild = child.copy(id = id)
         childRepository.save(newChild)
         return ResponseEntity(true, HttpStatus.OK)
     }

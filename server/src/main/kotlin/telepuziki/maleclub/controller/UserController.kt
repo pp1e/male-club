@@ -79,7 +79,7 @@ class UserController(
         if (id != currentUserId && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
 
-        val newUser = user.copy(id=id)
+        val newUser = user.copy(id = id)
         userRepository.save(newUser)
         return ResponseEntity(true, HttpStatus.OK)
     }
@@ -87,27 +87,5 @@ class UserController(
     @GetMapping("/check_phone")
     fun checkPhone(@RequestParam("phone") phone: String): Boolean {
         return userRepository.existsByPhone(phone)
-    }
-
-    @GetMapping("check_success_login")
-    fun checkSuccessLogin(
-        @RequestParam("phone") phone: String,
-        @RequestParam("password") password: String
-    ): ResponseEntity<Boolean> {
-        val user = userRepository.findByPhone(phone)
-        if (user == null)
-            return ResponseEntity(false, HttpStatus.NOT_ACCEPTABLE)
-        else {
-            if (!passwordEncoder.matches(password, user.password))
-                return ResponseEntity(false, HttpStatus.CONFLICT)
-        }
-
-        return ResponseEntity(
-            true,
-            if (userRepository.getRole(user.id) == "admin")
-                HttpStatus.CREATED // This is an admin
-            else
-                HttpStatus.OK // This is a common user
-        )
     }
 }

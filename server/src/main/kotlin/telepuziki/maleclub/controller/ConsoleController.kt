@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
-import telepuziki.maleclub.security.details.UserDetailsImpl
 import java.sql.Date
 import java.sql.Time
 import java.time.LocalDateTime
@@ -17,6 +15,7 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/v1/console")
 class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
+
     @GetMapping("/list")
     fun getAllConsoles(): List<Console> {
         return consoleRepository.findAll()
@@ -44,13 +43,12 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
     @PutMapping("/update/{id:\\d+}")
     fun updateConsoleById(
         @PathVariable("id") id: Long,
-        @RequestBody console: Console,
-        @AuthenticationPrincipal userDetails: UserDetailsImpl
+        @RequestBody console: Console
     ): ResponseEntity<Boolean> {
         if (!consoleRepository.existsById(id))
             return ResponseEntity(false, HttpStatus.NOT_FOUND)
 
-        val newConsole= console.copy(id=id)
+        val newConsole = console.copy(id = id)
         consoleRepository.save(newConsole)
         return ResponseEntity(true, HttpStatus.OK)
     }
@@ -80,7 +78,7 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
 
     @GetMapping("/reservation_info")
     fun getConsoleReservationInfo(
-        @RequestParam(name = "datetime") datetime: LocalDateTime,
+        @RequestParam(name = "datetime") datetime: LocalDateTime
     ): List<Any> {
         val consoleReservationInfo = consoleRepository.getConsoleReservationInfo(datetime)
         var consoleReservationInfoMapped = listOf<Map<String, Any>>()
