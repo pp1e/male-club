@@ -30,6 +30,7 @@ class SecurityConfig {
                             "api/v1/console/admin_info",
                             "api/v1/console/update/",
                             "api/v1/reservation/list",
+                            "api/v1/reservation/occupancy",
                             "api/v1/user/list",
                             "api/v1/user/get",
                             "api/v1/user/delete",
