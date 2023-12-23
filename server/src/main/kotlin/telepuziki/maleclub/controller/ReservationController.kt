@@ -11,6 +11,7 @@ import telepuziki.maleclub.repository.ChildRepository
 import telepuziki.maleclub.repository.ConsoleRepository
 import telepuziki.maleclub.repository.ReservationRepository
 import telepuziki.maleclub.security.details.UserDetailsImpl
+import java.time.LocalDateTime
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
@@ -120,5 +121,13 @@ class ReservationController(
             upcomingEventsMapped = upcomingEventsMapped.plus(eventMapped)
         }
         return ResponseEntity<List<Map<String, Any>>>(upcomingEventsMapped, HttpStatus.OK)
+    }
+
+    @GetMapping("/occupancy")
+    fun getCurrentOccupancy(
+        @RequestParam(name = "datetime", required = false) datetime: LocalDateTime?
+    ): ResponseEntity<Int> {
+        val occupancy = reservationRepository.getOccupancy(datetime?: LocalDateTime.now())
+        return ResponseEntity<Int>(occupancy, HttpStatus.OK)
     }
 }
