@@ -48,32 +48,41 @@ class JwtUtils(
         return WebUtils.getCookie(request, nameCookie)?.getValue()
     }
 
-    fun generateAccessJwtCookie(phone: String): ResponseCookie {
+    fun generateAccessJwtCookie(phone: String): Map<String,Any> {
+        val expiration = Date(Date().getTime() + expirationMsAccessToken)
         val jwt = Jwts.builder()
             .setSubject(phone)
             .setIssuedAt(Date())
-            .setExpiration(Date(Date().getTime() + expirationMsAccessToken))
+            .setExpiration(expiration)
             .signWith(key(), SignatureAlgorithm.HS256)
             .compact()
-        return createResponseCookie(jwt, cookieNameAccessToken, "/api")
+        val result = mapOf(
+            "accessToken" to jwt,
+            "expiryDateAccessToken" to expiration
+        )
+        return result
     }
 
-    fun generateRefreshJwtCookie(userId: Long): ResponseCookie {
+    fun generateRefreshJwtCookie(userId: Long): Map<String,Any> {
         val refreshToken = RefreshToken(
             userId = userId,
             expiryDate = LocalDateTime.now().plusSeconds(expirationMsRefreshToken / 1000),
             token = UUID.randomUUID().toString()
         )
         refreshTokenRepository.save(refreshToken)
-        return createResponseCookie(refreshToken.token, cookieNameRefreshToken, "/api/refresh")
+        val result = mapOf(
+            "refreshToken" to refreshToken.token,
+            "expiryDateRefreshToken" to refreshToken.expiryDate
+        )
+        return result
     }
 
     fun getCleanAccessJwtCookie(): ResponseCookie? {
-        return ResponseCookie.from(cookieNameAccessToken, "").path("/api").build()
+        return ResponseCookie.from(cookieNameAccessToken, "").path("/").build()
     }
 
     fun getCleanJwtRefreshCookie(): ResponseCookie? {
-        return ResponseCookie.from(cookieNameRefreshToken, "").path("/api/refresh").build()
+        return ResponseCookie.from(cookieNameRefreshToken, "").path("/").build()
     }
 
     fun createResponseCookie(token: String, cookieNameToken: String, path: String): ResponseCookie {

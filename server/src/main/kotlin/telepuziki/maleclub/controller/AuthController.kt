@@ -39,13 +39,13 @@ class AuthController(
     fun generateToken(
         @RequestParam("phone") phone: String,
         @RequestParam("password") password: String
-    ): ResponseEntity<Boolean> {
+    ): ResponseEntity<Map<String,Any>> {
         val user = userRepository.findByPhone(phone)
         if (user == null)
-            return ResponseEntity(false, HttpStatus.NOT_ACCEPTABLE)
+            return ResponseEntity(null, HttpStatus.NOT_ACCEPTABLE)
         else {
             if (!passwordEncoder.matches(password, user.password))
-                return ResponseEntity(false, HttpStatus.CONFLICT)
+                return ResponseEntity(null, HttpStatus.CONFLICT)
         }
 
         val authentication = authenticationManager
@@ -53,14 +53,11 @@ class AuthController(
         SecurityContextHolder.getContext().authentication = authentication
         val userDetails = authentication.principal as UserDetailsImpl
 
-        val accessJwtCookie = jwtUtils.generateAccessJwtCookie(userDetails.username)
-        val refreshJwtCookie = jwtUtils.generateRefreshJwtCookie(userDetails.getId())
+        val accessJwt = jwtUtils.generateAccessJwtCookie(userDetails.username)
+        val refreshJwt = jwtUtils.generateRefreshJwtCookie(userDetails.getId())
 
-        val headers = HttpHeaders()
-        headers.add(HttpHeaders.SET_COOKIE, accessJwtCookie.toString())
-        headers.add(HttpHeaders.SET_COOKIE, refreshJwtCookie.toString())
         val status = if (userRepository.getRole(user.id) == "admin") HttpStatus.CREATED else HttpStatus.OK
-        return ResponseEntity(true, headers, status)
+        return ResponseEntity(accessJwt + refreshJwt, status)
     }
 
     @Transactional
@@ -96,9 +93,7 @@ class AuthController(
 
         val user = userRepository.findById(refreshToken.userId).get()
 
-        val accessJwtCookie: ResponseCookie = jwtUtils.generateAccessJwtCookie(user.phone)
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, accessJwtCookie.toString())
-                .body(true)
+        val accessJwt = jwtUtils.generateAccessJwtCookie(user.phone)
+        return ResponseEntity(accessJwt, HttpStatus.OK)
     }
 }
