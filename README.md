@@ -1,3 +1,4 @@
+# Development deployment
 ## Server API deployment
 ### Create database
 1. Log in MySQL as root user
@@ -25,3 +26,30 @@ as example)
 4. ```npm start```\
    Runs the react app in the development mode.\
    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+# Production deployment
+
+### Create database
+1. Log in MySQL as root user
+2. Create MySQL database:
+    ```sql
+    CREATE DATABASE male_club;
+    CREATE OR REPLACE USER 'male_club_user'@'localhost' IDENTIFIED BY 'qwerty';
+    CREATE OR REPLACE USER 'male_club_user'@'%' IDENTIFIED BY 'qwerty';
+    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'localhost';
+    GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'%';
+    ```
+3. Allow remote access to the database. Add the following line to `/ect/mysql/my.cnf` file: 
+   ```bash
+   [mysqld]
+   bind-address = 0.0.0.0
+   ```
+   
+### Docker deployment
+1. If there are changes in code:
+   1. Move to the server directory:
+   ```bash
+   cd server
+   ```
+   2. Execute ```./gradlew build``` to compile `JAR` file.
+2. Run ```docker-compose build && docker-compose up -d``` in project root directory
