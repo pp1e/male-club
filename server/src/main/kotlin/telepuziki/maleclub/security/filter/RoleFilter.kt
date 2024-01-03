@@ -32,7 +32,8 @@ class RoleFilter : OncePerRequestFilter() {
         "/api/v1/user/check_phone",
         "/api/v1/login",
         "/api/v1/logout",
-        "/api/v1/refresh"
+        "/api/v1/refresh",
+        "/api/v1/check_access_token"
     )
 
     @Throws(IOException::class, ServletException::class)

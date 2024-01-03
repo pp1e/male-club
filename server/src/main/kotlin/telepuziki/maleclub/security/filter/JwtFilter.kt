@@ -31,7 +31,7 @@ class JwtFilter(
         filterChain: FilterChain
     ) {
         try {
-            val jwt = jwtUtils.getAccessJwt(request)
+            val jwt = jwtUtils.getJwt(request)
             if (jwt != null) {
                 if (jwtUtils.isValidAccessJwt(jwt)) {
                     val phone = jwtUtils.getPhoneFromJwt(jwt)

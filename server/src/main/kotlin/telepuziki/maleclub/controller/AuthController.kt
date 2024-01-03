@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseCookie
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -39,7 +38,7 @@ class AuthController(
     fun generateToken(
         @RequestParam("phone") phone: String,
         @RequestParam("password") password: String
-    ): ResponseEntity<Map<String,Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val user = userRepository.findByPhone(phone)
         if (user == null)
             return ResponseEntity(null, HttpStatus.NOT_ACCEPTABLE)
@@ -53,11 +52,12 @@ class AuthController(
         SecurityContextHolder.getContext().authentication = authentication
         val userDetails = authentication.principal as UserDetailsImpl
 
-        val accessJwt = jwtUtils.generateAccessJwtCookie(userDetails.username)
-        val refreshJwt = jwtUtils.generateRefreshJwtCookie(userDetails.getId())
+        val accessJwt = jwtUtils.generateAccessJwt(userDetails.username)
+        val refreshJwt = jwtUtils.generateRefreshJwt(userDetails.getId())
+        val tokens = mapOf("accessToken" to accessJwt, "refreshToken" to refreshJwt)
 
         val status = if (userRepository.getRole(user.id) == "admin") HttpStatus.CREATED else HttpStatus.OK
-        return ResponseEntity(accessJwt + refreshJwt, status)
+        return ResponseEntity(tokens, status)
     }
 
     @Transactional
@@ -67,33 +67,38 @@ class AuthController(
             val userDetails = UserDetailsServiceImpl.getCurrentUserDetails()
             refreshTokenRepository.deleteByUserId(userDetails.getId())
         }
-
-        val accessJwtCookie = jwtUtils.getCleanAccessJwtCookie()
-        val refreshJwtCookie = jwtUtils.getCleanJwtRefreshCookie()
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, accessJwtCookie.toString())
-            .header(HttpHeaders.SET_COOKIE, refreshJwtCookie.toString())
-            .body(true)
+        return ResponseEntity.ok().body(true)
     }
 
     @PostMapping("/refresh")
-    fun refreshToken(request: HttpServletRequest): ResponseEntity<*>? {
-        val refreshTokenFromRequest = jwtUtils.getRefreshJwt(request)
+    fun refreshToken(request: HttpServletRequest): ResponseEntity<Map<String, Any>> {
+        val refreshTokenFromRequest = jwtUtils.getJwt(request)
 
         if (refreshTokenFromRequest.isNullOrEmpty())
-            return ResponseEntity(false, HttpStatus.NOT_FOUND) // Refresh Token is empty
+            return ResponseEntity(null, HttpStatus.NOT_FOUND) // Refresh Token is empty
 
         val refreshToken = refreshTokenRepository.findByToken(refreshTokenFromRequest)
         if (refreshToken == null)
-            return ResponseEntity(false, HttpStatus.NOT_ACCEPTABLE) // Refresh Token is unknown
+            return ResponseEntity(null, HttpStatus.NOT_ACCEPTABLE) // Refresh Token is unknown
 
         if (!jwtUtils.isValidRefreshJwt(refreshToken))
-            return ResponseEntity(false, HttpStatus.CONFLICT) // Refresh token was expired, please sign in
+            return ResponseEntity(null, HttpStatus.CONFLICT) // Refresh token was expired, please sign in
 
         val user = userRepository.findById(refreshToken.userId).get()
 
-        val accessJwt = jwtUtils.generateAccessJwtCookie(user.phone)
-        return ResponseEntity(accessJwt, HttpStatus.OK)
+        val accessJwt = jwtUtils.generateAccessJwt(user.phone)
+        val refreshJwt = jwtUtils.generateRefreshJwt(user.id)
+        val tokens = mapOf("accessToken" to accessJwt, "refreshToken" to refreshJwt)
+
+        return ResponseEntity(tokens, HttpStatus.OK)
+    }
+
+    @GetMapping("/check_access_token")
+    fun checkAccessToken(request: HttpServletRequest): ResponseEntity<Boolean> {
+        val unauthorizedCode = request.getAttribute("unauthorizedCode")
+        return if (unauthorizedCode != null)
+            ResponseEntity(false, unauthorizedCode as HttpStatus)
+        else
+            ResponseEntity(true, HttpStatus.OK)
     }
 }
