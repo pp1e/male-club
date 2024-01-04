@@ -1,16 +1,15 @@
 import { ReactElement, useState, useMemo, ReactNode, useRef, SetStateAction, Dispatch } from "react";
+import { observer } from "mobx-react-lite";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import NavBar from "../Navigation/NavBar";
 import { ADMIN_PANEL_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import { getAdminChildrenList } from '../../services/Services';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-time-picker/dist/TimePicker.css';
-import dayjs from 'dayjs';
 import "./styles/adminPanel.css";
 
 interface IUser {
@@ -183,7 +182,7 @@ const ChildrenListCard = (props: IProps): ReactElement => {
     )
 }
 
-const AdminPanel = (props: IProps): ReactElement => {
+const AdminPanel = observer((): ReactElement => {
     const [userList, setUserList] = useState([
         {
             name: "Никита",
@@ -198,28 +197,24 @@ const AdminPanel = (props: IProps): ReactElement => {
     ]);
 
     return (
-        <>
-            <NavBar />
-            <div className="container-xl py-4">
-                <div className="mt-5 text-center">
-                    <h1 className="display-2">Личный кабинет администратора</h1>
-                </div>
-                <div className="container">
-                    {/* Выбор даты и времени */}
-                    <DateTimePicker 
-                        setUserList={setUserList}
-                    />
+        <div className="container-xl py-4">
+            <div className="mt-5 text-center">
+                <h1 className="display-2">Личный кабинет администратора</h1>
+            </div>
+            <div className="container">
+                {/* Выбор даты и времени */}
+                <DateTimePicker 
+                    setUserList={setUserList}
+                />
 
-                    {/* Блок занятости */}
-                    <div className="container d-flex flex-row mt-5 justify-content-center">
-                        <ReserveCard />
-                        <ChildrenListCard children={userList} setChildrenList={setUserList} />
-                    </div>
+                {/* Блок занятости */}
+                <div className="container d-flex flex-row mt-5 justify-content-center">
+                    <ReserveCard />
+                    <ChildrenListCard children={userList} setChildrenList={setUserList} />
                 </div>
             </div>
-        </>
-        
+        </div>
     )
-};
+});
 
 export default AdminPanel;

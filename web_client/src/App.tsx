@@ -14,6 +14,7 @@ import PersonalAccount from "./components/PersonalAccount/PersonalAccount";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
+import NavBar from './components/Navigation/NavBar';
 /**
  * Дока по бутстрапу
  * По компонентам бутстраповским: https://react-bootstrap.github.io/docs/
@@ -21,33 +22,34 @@ import Consoles from "./components/Consoles/Consoles";
  */
 
 const App = observer(() => {
-
   useEffect(() => {
     AuthStore.checkAuth();
- }, []);
-
+  }, []);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="" element={<StartPage />} />
-        <Route path="login" element={<LoginPage />} /> 
-        <Route path="registration" element={<RegistrationPage />} />
-        <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
-        <Route path="*" element={<NotFoundPage />} />
-        <Route path="consoles" element={<Consoles />} />
-        <Route path="admin" element={<AdminPanel />} />
+    <>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path="" element={<StartPage />} />
+          <Route path="login" element={<LoginPage />} /> 
+          <Route path="registration" element={<RegistrationPage />} />
+          <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="consoles" element={<Consoles />} />
+          {/* <Route path="admin" element={<AdminPanel />} /> */}
 
-        {/* <Route path="admin" element={<PrivateRoute />} >
-            <Route path="" element={<AdminPanel />} />
-        </Route> */}
-        <Route path="upcoming-events" element={<PrivateRoute />} >
-            <Route path="" element={<EventsPage />} />
-        </Route>
-        <Route path="account" element={<PrivateRoute />} >
-            <Route path="" element={<PersonalAccount />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="admin" element={<PrivateRoute />} >
+              <Route path="" element={<AdminPanel />} />
+          </Route>
+          <Route path="upcoming-events" element={<PrivateRoute />} >
+              <Route path="" element={<EventsPage />} />
+          </Route>
+          <Route path="account" element={<PrivateRoute />} >
+              <Route path="" element={<PersonalAccount />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </> 
   );
 });
 

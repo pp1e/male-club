@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import NavBar from "../Navigation/NavBar";
 import { AUTHOR_IMAGE, ADD_BUTTON_IMAGE, THREE_POINTS } from '../../resources/Images';
 import AddChildCard from './AddChildCard';
 import Image from 'react-bootstrap/Image';
@@ -211,16 +210,13 @@ const PersonalAccount = (props: IProps): ReactElement => {
     }
     
     return (
-        <>
-            <NavBar />
-            <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
-                <span className="account-page__text-main">Личный аккаунт</span>
-                <div className="d-flex flex-row justify-content-center flex-wrap account-page__container">
-                    {resultAdditionalList}
-                    <AddButton/>
-                </div>
+        <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
+            <span className="account-page__text-main">Личный аккаунт</span>
+            <div className="d-flex flex-row justify-content-center flex-wrap account-page__container">
+                {resultAdditionalList}
+                <AddButton/>
             </div>
-        </>   
+        </div>
     )
 };
 

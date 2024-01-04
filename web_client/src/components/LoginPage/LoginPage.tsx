@@ -1,7 +1,5 @@
 import { ReactElement, useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import NavBar from "../Navigation/NavBar";
-import { loginUser } from "../../services/api.auth";
 import authStore from "../../store";
 
 import "./styles/loginPage.css";
@@ -41,6 +39,8 @@ const LoginPage = (props: IProps): ReactElement => {
             return;
         }
         const resultStatus = await authStore.login(phoneRef.current.value, passwordRef.current.value);
+        // console.log(resultStatus);
+        // authStore.login(phoneRef.current.value, passwordRef.current.value);
         if (resultStatus === 409) {
             setIsPasswordValid(false);
             setErrorPasswordMessage('Пароль введен неверно!');
@@ -53,67 +53,64 @@ const LoginPage = (props: IProps): ReactElement => {
     }
 
     return (
-        <>
-            <NavBar />
-            <div className="container mt-5 py-5 d-flex flex-row justify-content-center">
-                <div className="text-center login-page_container">
-                    <h1 className="px-5 mb-4">Добро пожаловать!</h1>
-                    <form method="GET" onSubmit={onSubmit}>
-                        <div className="mb-4">
-                            <input 
-                                ref={phoneRef}
-                                type="phone"
-                                className={`
-                                    form-control py-3
-                                    text-start
-                                    ${isPhoneValid ? 'border-warning' : ''} 
-                                    ${!isPhoneValid ? 'is-invalid' : ''}
-                                `}
-                                placeholder="Телефон"
-                            />
-                            {
-                                !isPhoneValid ?
-                                    <div className="invalid-feedback text-start">
-                                        {errorPhoneMessage}
-                                    </div> 
-                                : ""
-                            }
-                        </div>
-                        <div className="mb-3">
+        <div className="container mt-5 py-5 d-flex flex-row justify-content-center">
+            <div className="text-center login-page_container">
+                <h1 className="px-5 mb-4">Добро пожаловать!</h1>
+                <form method="GET" onSubmit={onSubmit}>
+                    <div className="mb-4">
+                        <input 
+                            ref={phoneRef}
+                            type="phone"
+                            className={`
+                                form-control py-3
+                                text-start
+                                ${isPhoneValid ? 'border-warning' : ''} 
+                                ${!isPhoneValid ? 'is-invalid' : ''}
+                            `}
+                            placeholder="Телефон"
+                        />
+                        {
+                            !isPhoneValid ?
+                                <div className="invalid-feedback text-start">
+                                    {errorPhoneMessage}
+                                </div> 
+                            : ""
+                        }
+                    </div>
+                    <div className="mb-3">
+                        <input
+                            ref={passwordRef}
+                            type="password" 
+                            className={`
+                                form-control py-3 
+                                ${isPasswordValid ? 'border-warning' : ''} 
+                                ${!isPasswordValid ? 'is-invalid' : ''}
+                            `}
+                            placeholder="Пароль"
+                        />
+                        {
+                            !isPasswordValid ?
+                                <div className="invalid-feedback text-start">
+                                    Пароль введен неверно!
+                                </div> 
+                            : ""
+                        }
+                    </div>
+                    <div className="mb-3 d-flex flex-row justify-content-between">
+                        <div className="d-flex flex-row login-page_save-login">
                             <input
-                                ref={passwordRef}
-                                type="password" 
-                                className={`
-                                    form-control py-3 
-                                    ${isPasswordValid ? 'border-warning' : ''} 
-                                    ${!isPasswordValid ? 'is-invalid' : ''}
-                                `}
-                                placeholder="Пароль"
+                                ref={saveLoginRef}
+                                type="checkbox" 
+                                className="form-check-input form-check-input-warning"
                             />
-                            {
-                                !isPasswordValid ?
-                                    <div className="invalid-feedback text-start">
-                                        Пароль введен неверно!
-                                    </div> 
-                                : ""
-                            }
+                            <div className="form-check-label ml-2">Запомнить меня</div>
                         </div>
-                        <div className="mb-3 d-flex flex-row justify-content-between">
-                            <div className="d-flex flex-row login-page_save-login">
-                                <input
-                                    ref={saveLoginRef}
-                                    type="checkbox" 
-                                    className="form-check-input form-check-input-warning"
-                                />
-                                <div className="form-check-label ml-2">Запомнить меня</div>
-                            </div>
-                            <a className="link-warning login-page_password-reminder">Не помню пароль</a>
-                        </div>
-                        <button type="submit" className="btn btn-warning px-5 py-3 border-0">Войти</button>
-                    </form>
-                </div>
+                        <a className="link-warning login-page_password-reminder">Не помню пароль</a>
+                    </div>
+                    <button type="submit" className="btn btn-warning px-5 py-3 border-0">Войти</button>
+                </form>
             </div>
-        </>   
+        </div> 
     )
 };
 

@@ -1,13 +1,21 @@
-import { makeAutoObservable } from "mobx";
-import { loginUser, refreshToken, logout } from "./services/api.auth";
+import { computed, makeAutoObservable, observable } from "mobx";
+import { loginUser, refreshToken, logout, checkAuthToken } from "./services/api.auth";
 
 class AuthStore {   
-    isAuth = false;
-    isAdmin = false;
-    isAuthInProgress = false;
+    // TODO: небезопасно, придумать валидное решение
+    // (это чтобы при обновлении страницы не вылетала авторизация, 
+    // хотя если ничего не придумаем-забьем хуй)
+    @observable isAuth = !!localStorage.getItem('token');
+    @observable isAdmin = !!localStorage.getItem('isAdmin');
+    @observable isAuthInProgress = false;
   
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
+    }
+
+    @computed
+    get getIsAuth() {
+        return this.isAuth;
     }
 
     async login(phone: string, password: string) {
@@ -15,20 +23,19 @@ class AuthStore {
         try {
             const response = await loginUser({phone, password});
             localStorage.setItem("token", response.data.accessToken);
+            localStorage.setItem("refresh_token", response.data.refreshToken);
             this.isAuth = true;
             if (response.status === 201) {
-                this.isAdmin = false;
+                localStorage.setItem("isAdmin", "true");
+                this.isAdmin = true;
             }
             return response.status;
         } catch (error: any) {
-            if (error.message === 'Request failed with status code 409') {
+            console.log(error);
+            if (error.response.status === 409) {
                 return 409;
-                // setIsPasswordValid(false);
-                // setErrorPasswordMessage('Пароль введен неверно!');
-            } else if (error.message === 'Request failed with status code 406') {
-                return 406
-                // setIsPhoneValid(false);
-                // setErrorPhoneMessage('Номера телефона не существует!');
+            } else if (error.response.status === 406) {
+                return 406;
             }
         } finally {
             this.isAuthInProgress = false;
@@ -38,11 +45,16 @@ class AuthStore {
     async checkAuth() {
         this.isAuthInProgress = true;
         try {
-            const resp = await refreshToken();
-            localStorage.setItem("token", resp.data.accessToken);
-            this.isAuth = true;
+            const isTokenValid = await checkAuthToken();
+            if (!isTokenValid.data) {
+                const resp = await refreshToken();
+                localStorage.setItem("token", resp.data.accessToken);
+                localStorage.setItem("refresh_token", resp.data.refreshToken);
+            } else {
+                this.isAuth = true;
+            }
         } catch (err) {
-            console.log("login error");
+
         } finally {
             this.isAuthInProgress = false;
         } 
@@ -54,12 +66,12 @@ class AuthStore {
             await logout();
             this.isAuth = false;
             this.isAdmin = false;
-            localStorage.removeItem("token");
+            localStorage.clear();
         } catch (err) {
             console.log("logout error");
         } finally {
             this.isAuthInProgress = false;
-        } 
+        }
     }
 }
 

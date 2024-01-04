@@ -1,11 +1,9 @@
+import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router';
 import { ReactElement}  from 'react';
-import authStore from "../../store";
+import AuthStore from "../../store";
 
 import "./styles/navBar.css";
-
-
-interface IProps {
-}
 
 const UnauthorizedNavBar = (): ReactElement => {
     return (
@@ -41,7 +39,8 @@ const UnauthorizedNavBar = (): ReactElement => {
     )
 };
 
-const AuthorizedNavBar = (): ReactElement => {
+const AuthorizedNavBar = observer((): ReactElement => {
+    const navigate = useNavigate();
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -52,30 +51,37 @@ const AuthorizedNavBar = (): ReactElement => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/">Главная</a>
+                            <a className="nav-link active" aria-current="page" onClick={() => navigate('/')}>Главная</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/upcoming-events">Записаться</a>
+                            <a className="nav-link active" aria-current="page" onClick={() => navigate('/upcoming-events')}>Записаться</a>
                         </li>
+                        {
+                            AuthStore.isAdmin ?
+                                <li className="nav-item">
+                                    <a className="nav-link active" aria-current="page" onClick={() => navigate('/admin')}>Панель Администратора</a>
+                                </li>
+                            : null
+                        }
                     </ul>
                     <div className="d-flex gap-3">
                         <a className="nav-link dropdown-toggle dropstart" data-toggle="dropdown" href="#" />
                         <ul className="dropdown-menu dropdown-menu-right">
                             <li><a className="dropdown-item" href="/account">Личный кабинет</a></li>
                             <li><a className="dropdown-item" href="/upcoming-events">Предстоящие мероприятия</a></li>
-                            <li><a className="dropdown-item" onClick={authStore.logout} href="/login">Выйти</a></li>
+                            <li><a className="dropdown-item" onClick={AuthStore.logout} href="/login">Выйти</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </nav>
     )
-}
+});
 
-const NavBar = (): ReactElement => {
-    return authStore.isAuth 
+const NavBar = observer((): ReactElement => {
+    return AuthStore.isAuth
         ? <AuthorizedNavBar />
         : <UnauthorizedNavBar />
-}
+});
 
 export default NavBar;

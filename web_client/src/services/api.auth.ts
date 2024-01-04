@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { instance } from "../api.config";
+import { instance, refreshInstance } from "../api.config";
 import { CONSOLES_API_BASE_URL } from './Services';
 
 /* Возвращает 
@@ -9,12 +9,7 @@ import { CONSOLES_API_BASE_URL } from './Services';
     201 - админ
 */
 export function loginUser({ phone, password }: { phone: string, password: string }) {
-    return axios.get(CONSOLES_API_BASE_URL('user', 'check_success_login'), {
-        params: {
-            phone: encodeURI(phone),
-            password: encodeURI(password)
-        }
-    });
+    return axios.post(`http://localhost:8080/api/v1/login?phone=${phone}&password=${password}`);
 }
 
 /* Возвращает 
@@ -40,11 +35,19 @@ export function registryUser(
         }
     );
 }
-    
+
+export function checkAuthToken() {
+    return axios.get("http://localhost:8080/api/v1/check_access_token", {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+}
+
 export function refreshToken() {
-    return instance.get("/api/refresh");
+    return refreshInstance.post("/refresh");
 }
     
 export function logout() {
-    return instance.post("/user/logout");
+    return axios.post("http://localhost:8080/api/v1/logout");
 }
