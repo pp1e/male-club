@@ -50,9 +50,8 @@ class AuthStore {
                 const resp = await refreshToken();
                 localStorage.setItem("token", resp.data.accessToken);
                 localStorage.setItem("refresh_token", resp.data.refreshToken);
-            } else {
-                this.isAuth = true;
-            }
+            } 
+            this.isAuth = true;
         } catch (err) {
 
         } finally {

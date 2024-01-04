@@ -45,7 +45,11 @@ export function checkAuthToken() {
 }
 
 export function refreshToken() {
-    return refreshInstance.post("/refresh");
+    return axios.post("http://localhost:8080/api/v1/refresh", null, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('refresh_token')}`
+        }
+    });
 }
     
 export function logout() {
