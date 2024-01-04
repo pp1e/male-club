@@ -1,5 +1,4 @@
 import { ReactElement, useState, useMemo, useEffect } from "react";
-import NavBar from "../Navigation/NavBar";
 import { AUTHOR_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import "./styles/eventspage.css";
@@ -89,15 +88,12 @@ const EventsPage = (props: IProps): ReactElement => {
     }, [userList]);
 
     return (
-        <>
-            <NavBar />
-            <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
-                <span className="events-page__text-main">Предстоящие записи</span>
-                <div className="d-flex flex-row justify-content-center flex-wrap events-page__container">
-                    {childrenList}
-                </div>
+        <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
+            <span className="events-page__text-main">Предстоящие записи</span>
+            <div className="d-flex flex-row justify-content-center flex-wrap events-page__container">
+                {childrenList}
             </div>
-        </>   
+        </div> 
     )
 };
 

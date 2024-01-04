@@ -7,3 +7,7 @@
     left: auto; 
     right: 0;
 }
+
+.nav-link {
+    cursor: pointer;
+}

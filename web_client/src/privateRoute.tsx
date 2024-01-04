@@ -1,14 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
-import authStore from "./store";
+import AuthStore from "./store";
 import { observer } from "mobx-react-lite";
 
-interface IProps {}
-
-const PrivateRoute = (props: IProps) => {
-    if (authStore.isAuthInProgress) {
+const PrivateRoute = () => {
+    if (AuthStore.isAuthInProgress) {
       return <div>Checking auth...</div>;
     }
-    if (authStore.isAuth) {
+    if (AuthStore.getIsAuth) {
       return <Outlet />
     } else {
       return <Navigate to="/notEnoughtRights" />;

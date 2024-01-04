@@ -7,7 +7,6 @@ interface IProps {
 const Test = (props: IProps): ReactElement => {
     return (
         <div>
-            <NavBar />
             Тест
         </div>
     )

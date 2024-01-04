@@ -1,15 +1,11 @@
 import { ReactElement } from "react";
-import NavBar from "../Navigation/NavBar";
 import { START_PAGE_CHILD1, START_PAGE_CHILD2 } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import "./styles/startpage.css";
 
-interface IProps {}
-
-const StartPage = (props: IProps): ReactElement => {
+const StartPage = (): ReactElement => {
     return (
         <>
-            <NavBar />
             <div className="text-start container mt-4 d-flex flex-row justify-content-center">
                 <div className="d-flex flex-column font-weight-normal start-page__content">
                     <div className="d-flex flex-column align-items-end justify-content-end start-page__container__margin-left">
