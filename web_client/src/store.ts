@@ -8,6 +8,9 @@ class AuthStore {
     @observable isAuth = !!localStorage.getItem('token');
     @observable isAdmin = !!localStorage.getItem('isAdmin');
     @observable isAuthInProgress = false;
+    @observable userId = "";
+    @observable userPhone = "";
+    @observable userInitials = "";
   
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
@@ -74,6 +77,9 @@ class AuthStore {
             await logout();
             this.isAuth = false;
             this.isAdmin = false;
+            this.userId = "";
+            this.userPhone = "";
+            this.userInitials = "";
             localStorage.clear();
         } catch (err) {
             console.log("Ошибка с выходом");

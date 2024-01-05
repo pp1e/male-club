@@ -4,7 +4,7 @@ import "../NotFoundPage/styles/notFoundPage.css";
 import { NOT_ENOUGHT_RIGHTS } from '../../resources/Images';
 import { useNavigate } from "react-router";
 
-const NotEnoughtRightsAdmin = (): ReactElement => {
+const AlreadyAuth = (): ReactElement => {
     const navigate = useNavigate();
     return (
         <>
@@ -13,11 +13,11 @@ const NotEnoughtRightsAdmin = (): ReactElement => {
                     src={NOT_ENOUGHT_RIGHTS}
                     className="no-page__image no-page__image-border"
                 />                
-                <span className="no-page__text">Ты не администратор:(</span>                
+                <span className="no-page__text">Вы уже авторизованы</span>                
                 <a role="button" className="btn btn-warning p-4" onClick={() => navigate("/")}>Перейти на главную</a>
             </div>            
         </>   
     )
 };
 
-export default NotEnoughtRightsAdmin;
+export default AlreadyAuth;
