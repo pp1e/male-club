@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 import telepuziki.maleclub.security.details.UserDetailsServiceImpl
 import telepuziki.maleclub.security.filter.JwtFilter
 import telepuziki.maleclub.security.filter.RoleFilter
@@ -33,6 +36,7 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
         http
             .csrf(Customizer { csrf -> csrf.disable() })
+            .cors(Customizer.withDefaults())
             .authorizeHttpRequests(
                 Customizer { authorize ->
                     authorize
@@ -65,5 +69,17 @@ class SecurityConfig(
         authProvider.setUserDetailsService(userDetailsServiceImpl)
         authProvider.setPasswordEncoder(passwordEncoder())
         return authProvider
+    }
+
+    @Bean
+    fun corsFilter(): CorsFilter {
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        config.addAllowedOrigin("http://localhost:3000")
+        config.addAllowedHeader("*")
+        config.addAllowedMethod("*")
+        source.registerCorsConfiguration("/**", config)
+        return CorsFilter(source)
     }
 }
