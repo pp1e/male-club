@@ -40,11 +40,11 @@ const App = observer(() => {
           <Route path="consoles" element={<Consoles />} />
           {/* <Route path="admin" element={<AdminPanel />} /> */}
 
-          <Route path="login" element={<PrivateRoute AuthorizationPage={true} />} >
-              <Route path="login" element={<LoginPage />} /> 
+          <Route path="login" element={<PrivateRoute isAuthorisationPage={true} />} >
+              <Route path="" element={<LoginPage />} /> 
           </Route>
-          <Route path="registration" element={<PrivateRoute AuthorizationPage={true} />} >
-              <Route path="registration" element={<RegistrationPage />} />
+          <Route path="registration" element={<PrivateRoute isAuthorisationPage={true} />} >
+              <Route path="" element={<RegistrationPage />} />
           </Route>
           <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
               <Route path="" element={<AdminPanel />} />

@@ -26,12 +26,30 @@ class AuthStore {
         return this.isAdmin;
     }
 
+    @computed
+    get getUserId() {
+        return this.userId;
+    }
+
+    @computed
+    get getUserPhone() {
+        return this.userPhone;
+    }
+
+    @computed
+    get getUserInitials() {
+        return this.userInitials;
+    }
+
     async login(phone: string, password: string) {
         this.isAuthInProgress = true;
         try {
             const response = await loginUser({phone, password});
             localStorage.setItem("token", response.data.accessToken);
             localStorage.setItem("refresh_token", response.data.refreshToken);
+            this.userId = response.data.id;
+            this.userPhone = response.data.phone;
+            this.userInitials = response.data.initials;
             this.isAuth = true;
             if (response.status === 201) {
                 localStorage.setItem("isAdmin", "true");
@@ -63,6 +81,7 @@ class AuthStore {
                     localStorage.setItem("refresh_token", resp.data.refreshToken);
                     this.isAuth = true;
                 } catch (error) {
+                    this.clearUserData();
                     console.log("Нужно авторизоваться!");
                 }    
             }
@@ -75,17 +94,21 @@ class AuthStore {
         this.isAuthInProgress = true;
         try {
             await logout();
-            this.isAuth = false;
-            this.isAdmin = false;
-            this.userId = "";
-            this.userPhone = "";
-            this.userInitials = "";
-            localStorage.clear();
+            this.clearUserData();
         } catch (err) {
             console.log("Ошибка с выходом");
         } finally {
             this.isAuthInProgress = false;
         }
+    }
+
+    clearUserData() {
+        this.isAuth = false;
+        this.isAdmin = false;
+        this.userId = "";
+        this.userPhone = "";
+        this.userInitials = "";
+        localStorage.clear();
     }
 }
 

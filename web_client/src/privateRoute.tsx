@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 
 interface IProps {
   isAdminPanel?: boolean;
-  AuthorizationPage?: boolean;
+  isAuthorisationPage?: boolean;
 }
 
 const PrivateRoute = (props: IProps) => {
@@ -12,14 +12,17 @@ const PrivateRoute = (props: IProps) => {
         return <div>Checking auth...</div>;
     }
     if (AuthStore.getIsAuth) {
-        if (props.AuthorizationPage) {
-          return <Navigate to="/alreadyAuth" />;
+        if (props.isAuthorisationPage) {
+            return <Navigate to="/alreadyAuth" />;
         }
         if (props.isAdminPanel && !AuthStore.getIsAdmin) {
-          return <Navigate to="/notEnoughtRightsAdmin" />;
+            return <Navigate to="/notEnoughtRightsAdmin" />;
         }
         return <Outlet />
     } else {
+        if (props.isAuthorisationPage) {
+            return <Outlet />
+        }
         return <Navigate to="/notEnoughtRights" />;
     }
 };
