@@ -12,6 +12,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import EventsPage from "./components/EventsPage/EventsPage";
 import StartPage from "./components/StartPage/StartPage";
 import PersonalAccount from "./components/PersonalAccount/PersonalAccount";
+import PrerecordingPage from "./components/PrerecordingPage/PrerecordingPage";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
@@ -39,7 +40,9 @@ const App = observer(() => {
           <Route path="*" element={<NotFoundPage />} />
           <Route path="consoles" element={<Consoles />} />
           {/* <Route path="admin" element={<AdminPanel />} /> */}
-
+          <Route path="prerecording" element={<PrivateRoute />} >
+              <Route path="" element={<PrerecordingPage />} />
+          </Route>
           <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
               <Route path="" element={<AdminPanel />} />
           </Route>
@@ -51,7 +54,7 @@ const App = observer(() => {
           </Route>
         </Routes>
       </BrowserRouter>
-    </> 
+    </>
   );
 });
 

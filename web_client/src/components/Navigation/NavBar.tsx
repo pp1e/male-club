@@ -54,7 +54,7 @@ const AuthorizedNavBar = observer((): ReactElement => {
                             <a className="nav-link active" aria-current="page" onClick={() => navigate('/')}>Главная</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" onClick={() => navigate('/upcoming-events')}>Записаться</a>
+                            <a className="nav-link active" aria-current="page" onClick={() => navigate('/prerecording')}>Записаться</a>
                         </li>
                         {
                             AuthStore.isAdmin ?
