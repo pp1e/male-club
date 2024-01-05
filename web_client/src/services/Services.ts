@@ -6,6 +6,14 @@ export function getChildrenList() {
     return axios.get(CONSOLES_API_BASE_URL('child', 'list'));
 }
 
+export function getConsolesOccupation() {
+    return axios.get(CONSOLES_API_BASE_URL('reservation', 'occupancy'), {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+}
+
 export function getParentReservationList(parent_id: number) {
     return axios.get(`http://localhost:8080/api/v1/reservation/events?parent_id=${parent_id}`);
 }

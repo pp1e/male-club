@@ -38,7 +38,7 @@ const App = observer(() => {
           <Route path="alreadyAuth" element={<AlreadyAuth />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="consoles" element={<Consoles />} />
-          {/* <Route path="admin" element={<AdminPanel />} /> */}
+          <Route path="admin" element={<AdminPanel />} />
 
           <Route path="login" element={<PrivateRoute isAuthorisationPage={true} />} >
               <Route path="" element={<LoginPage />} /> 
@@ -46,9 +46,9 @@ const App = observer(() => {
           <Route path="registration" element={<PrivateRoute isAuthorisationPage={true} />} >
               <Route path="" element={<RegistrationPage />} />
           </Route>
-          <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
+          {/* <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
               <Route path="" element={<AdminPanel />} />
-          </Route>
+          </Route> */}
           <Route path="upcoming-events" element={<PrivateRoute />} >
               <Route path="" element={<EventsPage />} />
           </Route>

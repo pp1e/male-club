@@ -6,11 +6,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { ADMIN_PANEL_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
-import { getAdminChildrenList } from '../../services/Services';
+import { 
+    getAdminChildrenList, 
+    getConsolesOccupation as getOccupatedConsolesAmount 
+} from '../../services/Services';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-time-picker/dist/TimePicker.css';
 import "./styles/adminPanel.css";
+import "../PersonalAccount/styles/personalAccount.css";
 
 interface IUser {
     name: string;
@@ -83,9 +87,26 @@ const DateTimePicker = (props: IDatePicker ):ReactElement => {
             </button>
         </div>
     )
-}
+};
 
-const ReserveCard = (props: IProps): ReactElement => {
+const getConsolesOccupation = (occupation: number): ReactElement => {
+    let visibleCount = occupation;
+    let emptyCirlesCount = 6 - visibleCount;
+    const content = [];
+    while (visibleCount > 0) {
+        visibleCount--;
+        content.push(<div className="account__circle me-2"></div>);
+    }
+    while (emptyCirlesCount > 0) {
+        emptyCirlesCount--;
+        content.push(<div className="account__circle account__circle__not-visite me-2"></div>)
+    }
+    return <>{content}</>;
+}
+const ReserveCard = (): ReactElement => {
+    const [consolesOccupation, setConsolesOccupation] = useState(0);
+    // getParentReservationList(1);
+    getOccupatedConsolesAmount().then(res => console.log(res)).catch(err => console.log(err));
     return (
         <div 
             className="d-flex flex-column align-items-center reserve-card shadow-lg mx-5 p-3"
@@ -98,13 +119,12 @@ const ReserveCard = (props: IProps): ReactElement => {
                 height="300"
             />
             <div className="mt-4 search-container_reserve-text">Занятость площадки</div>
-            <div>Сами ебитесь с этими кружочками</div>
-            <button type="button" className="btn btn-warning mt-4 btn-lg rounded-pill">
-                Изменить
-            </button>
+            {/* <div>Сами ебитесь с этими кружочками</div>
+             */}
+            <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getConsolesOccupation(6)}</div>
         </div>
     )
-}
+};
 
 const User = (props: IUserCard): ReactElement => {
     return (
@@ -127,7 +147,7 @@ const User = (props: IUserCard): ReactElement => {
             </div>
         </li>
     )
-}
+};
 
 /**
  * Блок списка детей.
