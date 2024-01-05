@@ -18,6 +18,11 @@ class AuthStore {
         return this.isAuth;
     }
 
+    @computed
+    get getIsAdmin() {
+        return this.isAdmin;
+    }
+
     async login(phone: string, password: string) {
         this.isAuthInProgress = true;
         try {
@@ -46,14 +51,18 @@ class AuthStore {
         this.isAuthInProgress = true;
         try {
             const isTokenValid = await checkAuthToken();
-            if (!isTokenValid.data) {
-                const resp = await refreshToken();
-                localStorage.setItem("token", resp.data.accessToken);
-                localStorage.setItem("refresh_token", resp.data.refreshToken);
-            } 
-            this.isAuth = true;
-        } catch (err) {
-
+            isTokenValid.data && (this.isAuth = true);
+        } catch (err: any) {
+            if (err.response?.status === 408) {
+                try {
+                    const resp = await refreshToken();
+                    localStorage.setItem("token", resp.data.accessToken);
+                    localStorage.setItem("refresh_token", resp.data.refreshToken);
+                    this.isAuth = true;
+                } catch (error) {
+                    console.log("Нужно авторизоваться!");
+                }    
+            }
         } finally {
             this.isAuthInProgress = false;
         } 
@@ -67,7 +76,7 @@ class AuthStore {
             this.isAdmin = false;
             localStorage.clear();
         } catch (err) {
-            console.log("logout error");
+            console.log("Ошибка с выходом");
         } finally {
             this.isAuthInProgress = false;
         }

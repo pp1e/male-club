@@ -2,14 +2,21 @@ import { Navigate, Outlet } from "react-router-dom";
 import AuthStore from "./store";
 import { observer } from "mobx-react-lite";
 
-const PrivateRoute = () => {
+interface IProps {
+  isAdminPanel?: boolean;
+}
+
+const PrivateRoute = (props: IProps) => {
     if (AuthStore.isAuthInProgress) {
-      return <div>Checking auth...</div>;
+        return <div>Checking auth...</div>;
     }
     if (AuthStore.getIsAuth) {
-      return <Outlet />
+        if (props.isAdminPanel && !AuthStore.getIsAdmin) {
+          return <Navigate to="/notEnoughtRightsAdmin" />;
+        }
+        return <Outlet />
     } else {
-      return <Navigate to="/notEnoughtRights" />;
+        return <Navigate to="/notEnoughtRights" />;
     }
 };
   

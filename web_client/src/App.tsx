@@ -7,6 +7,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 import NotEnoughtRights from './components/NotEnoughtRights/NotEnoughtRights';
+import NotEnoughtRightsAdmin from './components/NotEnoughtRights/NotEnoughtRightsAdmin';
 import LoginPage from "./components/LoginPage/LoginPage";
 import EventsPage from "./components/EventsPage/EventsPage";
 import StartPage from "./components/StartPage/StartPage";
@@ -34,11 +35,12 @@ const App = observer(() => {
           <Route path="login" element={<LoginPage />} /> 
           <Route path="registration" element={<RegistrationPage />} />
           <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
+          <Route path="notEnoughtRightsAdmin" element={<NotEnoughtRightsAdmin />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="consoles" element={<Consoles />} />
           {/* <Route path="admin" element={<AdminPanel />} /> */}
 
-          <Route path="admin" element={<PrivateRoute />} >
+          <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
               <Route path="" element={<AdminPanel />} />
           </Route>
           <Route path="upcoming-events" element={<PrivateRoute />} >

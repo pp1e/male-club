@@ -13,8 +13,8 @@ const NotEnoughtRights = (): ReactElement => {
                     src={NOT_ENOUGHT_RIGHTS}
                     className="no-page__image no-page__image-border"
                 />                
-                <span className="no-page__text">Надо авторизоваться...</span>                
-                <a role="button" className="btn btn-warning p-4" onClick={() => navigate("/login")}>Перейти к авторизации</a>
+                <span className="no-page__text">Ты не администратор:(</span>                
+                <a role="button" className="btn btn-warning p-4" onClick={() => navigate("/")}>Перейти на главную</a>
             </div>            
         </>   
     )
