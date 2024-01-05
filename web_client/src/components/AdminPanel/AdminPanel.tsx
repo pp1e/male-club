@@ -105,13 +105,14 @@ const getConsolesOccupation = (occupation: number): ReactElement => {
 }
 const ReserveCard = (): ReactElement => {
     const [consolesOccupation, setConsolesOccupation] = useState(0);
-    // getParentReservationList(1);
-    getOccupatedConsolesAmount().then(res => console.log(res)).catch(err => console.log(err));
+    // TODO: Реализовать получение заполненности консолей по времени.
+    getOccupatedConsolesAmount()
+        .then(res => setConsolesOccupation(res.data))
+        .catch(err => console.log("Ошибка с получением заполненности, попробуйте перезапустить приложение"));
     return (
         <div 
             className="d-flex flex-column align-items-center reserve-card shadow-lg mx-5 p-3"
         >
-            {/* TODO: Переписать задание высоты и ширины в относительные размеры */}
             <Image 
                 src={ADMIN_PANEL_IMAGE}
                 className="reserve-card_image"
@@ -119,9 +120,9 @@ const ReserveCard = (): ReactElement => {
                 height="300"
             />
             <div className="mt-4 search-container_reserve-text">Занятость площадки</div>
-            {/* <div>Сами ебитесь с этими кружочками</div>
-             */}
-            <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getConsolesOccupation(6)}</div>
+            <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">
+                {getConsolesOccupation(consolesOccupation)}
+            </div>
         </div>
     )
 };
