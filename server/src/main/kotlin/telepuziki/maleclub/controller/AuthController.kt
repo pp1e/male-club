@@ -54,10 +54,20 @@ class AuthController(
 
         val accessJwt = jwtUtils.generateAccessJwt(userDetails.username)
         val refreshJwt = jwtUtils.generateRefreshJwt(userDetails.getId())
-        val tokens = mapOf("accessToken" to accessJwt, "refreshToken" to refreshJwt)
+
+        var initials = user.lastname + " " + user.firstname
+        if (user.patronymic != null)
+            initials += " " + user.patronymic
+        val result = mapOf(
+            "accessToken" to accessJwt,
+            "refreshToken" to refreshJwt,
+            "id" to user.id,
+            "phone" to user.phone,
+            "initials" to initials
+        )
 
         val status = if (userRepository.getRole(user.id) == "admin") HttpStatus.CREATED else HttpStatus.OK
-        return ResponseEntity(tokens, status)
+        return ResponseEntity(result, status)
     }
 
     @Transactional
