@@ -24,14 +24,15 @@ class UserController(
     @Autowired
     val passwordEncoder: PasswordEncoder
     ) {
-    @GetMapping("/list")
-    fun getAllUsers(): List<User> {
-        return userRepository.findAll()
-    }
 
-    @GetMapping("/get")
-    fun getUserById(@RequestParam id: Long): User? {
-        return userRepository.findByIdOrNull(id)
+    @GetMapping("/info")
+    fun getUserInfo(@AuthenticationPrincipal userDetails: UserDetailsImpl): Map<String, Any> {
+        val user = userRepository.findByIdOrNull(userDetails.getId())!!
+        return mapOf(
+            "id" to user.id,
+            "phone" to user.phone,
+            "initials" to user.getInitials()
+        )
     }
 
     @PostMapping("/add")

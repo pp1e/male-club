@@ -23,7 +23,6 @@ class RoleFilter : OncePerRequestFilter() {
         "/api/v1/reservation/confirm/",
         "/api/v1/reservation/update/",
         "/api/v1/reservation/occupancy",
-        "/api/v1/user/list",
         "/api/v1/user/delete",
     )
 

@@ -33,4 +33,11 @@ data class User(
 
     @Column(name = "role_id", nullable = false)
     val roleId: Long?,
-)
+) {
+    fun getInitials(): String {
+        return if (patronymic != null)
+            "$lastname $firstname $patronymic"
+        else
+            "$lastname $firstname"
+    }
+}
