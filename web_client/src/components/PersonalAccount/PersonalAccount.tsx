@@ -4,6 +4,8 @@ import AddChildCard from './AddChildCard';
 import Image from 'react-bootstrap/Image';
 import "./styles/personalAccount.css";
 import { getAge, checkAge, getVisitsCircles } from './Handlers';
+import { getChildrenList, updateUserChild, deleteUserChild } from '../../services/Services';
+import { error } from "console";
 
 export interface IChild {    
     id: number;
@@ -11,7 +13,6 @@ export interface IChild {
     date: Date;
     features: string;
     countVisites: number;
-    // phone: string;
 }
 
 interface IChildCard {
@@ -21,58 +22,66 @@ interface IChildCard {
 
 interface IProps {}
 
-const childListTest: IChild[] = [{
-    id: 0,
-    name: "Полина",
-    date: new Date("11.06.06"),
-    features: 'насморк',
-    countVisites: 6,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 1,
-    name: "Никина",
-    date: new Date("11.06.20"),
-    features: 'насморк',
-    countVisites: 7,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 2,
-    name: "Пуговка",
-    date: new Date("11.06.12"),
-    features: 'насморк',
-    countVisites: 1,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 3,
-    name: "Егор",
-    date: new Date("11.06.18"),
-    features: 'насморк',
-    countVisites: 4,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 4,
-    name: "Лиза",
-    date: new Date("11.06.19"),
-    features: 'насморк',
-    countVisites: 2,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 5,
-    name: "Денис",
-    date: new Date("11.06.16"),
-    features: 'насморк',
-    countVisites: 5,
-    // phone: '+7(910)829-28-27'
-},]
+// const childListTest: IChild[] = [{
+//     id: 0,
+//     name: "Полина",
+//     date: new Date("11.06.06"),
+//     features: 'насморк',
+//     countVisites: 6,
+//     // phone: '+7(910)829-28-27'
+// },
+// {
+//     id: 1,
+//     name: "Никина",
+//     date: new Date("11.06.20"),
+//     features: 'насморк',
+//     countVisites: 7,
+//     // phone: '+7(910)829-28-27'
+// },
+// {
+//     id: 2,
+//     name: "Пуговка",
+//     date: new Date("11.06.12"),
+//     features: 'насморк',
+//     countVisites: 1,
+//     // phone: '+7(910)829-28-27'
+// },
+// {
+//     id: 3,
+//     name: "Егор",
+//     date: new Date("11.06.18"),
+//     features: 'насморк',
+//     countVisites: 4,
+//     // phone: '+7(910)829-28-27'
+// },
+// {
+//     id: 4,
+//     name: "Лиза",
+//     date: new Date("11.06.19"),
+//     features: 'насморк',
+//     countVisites: 2,
+//     // phone: '+7(910)829-28-27'
+// },
+// {
+//     id: 5,
+//     name: "Денис",
+//     date: new Date("11.06.16"),
+//     features: 'насморк',
+//     countVisites: 5,
+//     // phone: '+7(910)829-28-27'
+// },]
 
 
 const PersonalAccount = (props: IProps): ReactElement => {
-    const [userList, setUserList] = useState(childListTest);
+    const [userList, setUserList] = useState<IChild[]>([]);
+
+    useEffect(() => {
+        getChildrenList().then((result) => {
+            // console.log(result.data)
+            setUserList(result.data);
+        }).catch(error=> console.log(error));
+    }, [userList]);
+
     function getList(): IChildCard[] {
         return userList.map(item => (
             {
@@ -129,15 +138,16 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                                 </div>                    */}
                                             </div>
                                         :
-                                            <AddChildCard userList={userList} setUserList={setUserList} userIndex={props.user.id} isEdit={props.isEdit} setEditIndex={setEditIndex}/>
+                                            <AddChildCard userIndex={props.user.id} isEdit={props.isEdit} setEditIndex={setEditIndex}/>
                     }
                 </>
     }
 
-    const deleteCardButtonClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
-        // delete userList[+e.currentTarget.id];
-        userList.splice( +e.currentTarget.id,1);
-        setUserList([...userList]);
+    const deleteCardButtonClick = async (e: React.MouseEvent<HTMLButtonElement> ) => {
+        await deleteUserChild(+e.currentTarget.id);
+        // // delete userList[+e.currentTarget.id];
+        // userList.splice( +e.currentTarget.id,1);
+        // setUserList([...userList]);
     };
 
     const editCardButtonClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
@@ -194,7 +204,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                             <ChildCard user={item.user} key={item.user.id} isEdit={item.isEdit}/>
                                         ))
                                     }
-                                    <AddChildCard userList={childListTest} setUserList={setUserList}/>
+                                    <AddChildCard/>
                                 </>)
     };
 
