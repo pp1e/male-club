@@ -81,7 +81,6 @@ class AuthStore {
     }
 
     async login(phone: string, password: string) {
-        this.setAuthInProgress(true);
         try {
             const response = await loginUser({phone, password});
             localStorage.setItem("token", response.data.accessToken);
@@ -103,8 +102,6 @@ class AuthStore {
             } else if (error.response.status === 406) {
                 return 406;
             }
-        } finally {
-            this.setAuthInProgress(false);
         }
     }
 
@@ -134,14 +131,11 @@ class AuthStore {
     }
 
     async logout() {
-        this.setAuthInProgress(true);
         try {
             await logout();
             this.clearUserData();
         } catch (err) {
             console.log("Ошибка с выходом");
-        } finally {
-            this.setAuthInProgress(false);
         }
     }
 

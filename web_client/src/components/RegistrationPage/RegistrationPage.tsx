@@ -65,7 +65,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                     }
                 })
                 .catch(errorData => {
-                    if (errorData.message === "Request failed with status code 409") {
+                    if (errorData.response?.status === 409) {
                         setIsPhoneValid(false);
                         setErrorMessage("Пользователь уже зарегистрирован!");
                     }

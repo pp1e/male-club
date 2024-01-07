@@ -4,9 +4,7 @@ import authStore from "../../store";
 
 import "./styles/loginPage.css";
 
-interface IProps {}
-
-const LoginPage = (props: IProps): ReactElement => {
+const LoginPage = (): ReactElement => {
     const navigate = useNavigate();
     const phoneRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -39,8 +37,6 @@ const LoginPage = (props: IProps): ReactElement => {
             return;
         }
         const resultStatus = await authStore.login(phoneRef.current.value, passwordRef.current.value);
-        // console.log(resultStatus);
-        // authStore.login(phoneRef.current.value, passwordRef.current.value);
         if (resultStatus === 409) {
             setIsPasswordValid(false);
             setErrorPasswordMessage('Пароль введен неверно!');
@@ -48,7 +44,7 @@ const LoginPage = (props: IProps): ReactElement => {
             setIsPhoneValid(false);
             setErrorPhoneMessage('Номера телефона не существует!');
         } else {
-            navigate("/")
+            navigate("/");
         }
     }
 
