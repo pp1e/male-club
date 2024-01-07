@@ -86,16 +86,17 @@ class ChildController(
     @PutMapping("/update/{id:\\d+}")
     fun updateChildById(
         @PathVariable("id") id: Long,
-        @RequestBody child: Child,
+        @RequestParam(name = "firstname") firstname: String,
+        @RequestParam(name = "peculiarities") peculiarities: String,
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Boolean> {
         val currentUserId = userDetails.getId()
-        if (!childRepository.existsById(id))
+        val child = childRepository.findByIdOrNull(id)
+        if (child == null)
             return ResponseEntity(false, HttpStatus.NOT_FOUND)
         if (child.userId != currentUserId && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
-
-        val newChild = child.copy(id = id)
+        val newChild = child.copy(firstname = firstname, peculiarities = peculiarities)
         childRepository.save(newChild)
         return ResponseEntity(true, HttpStatus.OK)
     }
