@@ -95,7 +95,7 @@ const AuthorizedNavBar = observer((): ReactElement => {
                             <a 
                                 className="nav-link active" 
                                 aria-current="page" 
-                                onClick={() => navigate('/upcoming-events')}
+                                onClick={() => navigate('/prerecording')}
                             >
                                 Записаться
                             </a>

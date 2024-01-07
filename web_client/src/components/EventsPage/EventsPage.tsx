@@ -1,6 +1,7 @@
 import { ReactElement, useState, useMemo, useEffect } from "react";
 import { AUTHOR_IMAGE } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
+import AuthStore from './../../store';
 import "./styles/eventspage.css";
 import { getParentReservationList } from '../../services/Services';
 
@@ -16,6 +17,9 @@ interface IChildCard {
 
 interface IProps {}
 
+function getCurrentReservationDateTime(datetime: string) {
+    return new Date(datetime).toLocaleString().slice(0,-3);
+}
 const ChildCard = (props: IChildCard): ReactElement => { 
     return <>
             <div className="events-page__card__container d-flex flex-column justify-content-center align-items-center">
@@ -27,7 +31,7 @@ const ChildCard = (props: IChildCard): ReactElement => {
                     </div>                    
                     <div className="d-flex flex-column events-page__text-container justify-content-around">
                         <span className="card__text-main">{props.user.childFirstname}</span>
-                        <span className="card__text-second">Дата записи: {props.user.reservationTime}</span>
+                        <span className="card__text-second">Дата записи: {getCurrentReservationDateTime(props.user.reservationTime)}</span>
                         <span className="card__text-second">Номер консоли: {props.user.consoleNumber}</span>
                     </div>
                 </div>
@@ -35,45 +39,13 @@ const ChildCard = (props: IChildCard): ReactElement => {
 }
 
 const EventsPage = (props: IProps): ReactElement => {
-    const [userList, setUserList] = useState([
-        {
-            childFirstname: "Полина",
-            reservationTime: "11.06.22",
-            consoleNumber: 14001
-        },
-        {
-            childFirstname: "Никина",
-            reservationTime: "11.06.22",
-            consoleNumber: 14010
-        },
-        {
-            childFirstname: "Пуговка",
-            reservationTime: "11.06.22",
-            consoleNumber: 14002
-        },
-        {
-            childFirstname: "Егор",
-            reservationTime: "11.06.22",
-            consoleNumber: 14003
-        },
-        {
-            childFirstname: "Лиза",
-            reservationTime: "11.06.22",
-            consoleNumber: 14008
-        },
-        {
-            childFirstname: "Денис",
-            reservationTime: "11.06.22",
-            consoleNumber: 14008
-        },
-    ]);
+    const [userList, setUserList] = useState([]);
 
-    // FIXME нужен parent_id
-    // useEffect(() => {
-    //     getParentReservationList(parent_id).then((result) => {
-    //         setUserList(result.data);
-    //     });
-    // }, [parent_id]);
+    useEffect(() => {
+        getParentReservationList(AuthStore.getUserId!!).then((result) => {
+            setUserList(result.data);
+        });
+    }, []);
     
     const childrenList = useMemo(() => {
         if (userList.length > 0) {
