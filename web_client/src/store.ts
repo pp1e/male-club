@@ -1,19 +1,18 @@
-import { computed, makeAutoObservable, observable } from "mobx";
+import { computed, makeAutoObservable, observable, runInAction } from "mobx";
 import { loginUser, refreshToken, logout, checkAuthToken } from "./services/api.auth";
+import { getUserData } from "./services/Services";
 
-class AuthStore {   
-    // TODO: небезопасно, придумать валидное решение
-    // (это чтобы при обновлении страницы не вылетала авторизация, 
-    // хотя если ничего не придумаем-забьем хуй)
-    @observable isAuth = !!localStorage.getItem('token');
-    @observable isAdmin = !!localStorage.getItem('isAdmin');
+class AuthStore {
+    @observable isAuth = false;
+    @observable isAdmin = false;
     @observable isAuthInProgress = false;
-    @observable userId = "";
+    @observable userId: null | number = null;
     @observable userPhone = "";
     @observable userInitials = "";
   
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
+        this.fillUserData();
     }
 
     @computed
@@ -41,73 +40,119 @@ class AuthStore {
         return this.userInitials;
     }
 
+    setAuthInProgress = (status: boolean) => {
+        this.isAuthInProgress = status;
+    }
+
+    setIsAuth = (isAuth: boolean) => {
+        this.isAuth = isAuth;
+    }
+
+    setIsAdmin = (isAdmin: boolean) => {
+        this.isAdmin = isAdmin;
+    }
+
+    setUserID = (userID: number) => {
+        this.userId = userID;
+    }
+
+    setUserInitials = (userInitials: string) => {
+        this.userInitials = userInitials;
+    }
+
+    setUserPhone = (userPhone: string) => {
+        this.userPhone = userPhone;
+    }
+
+    async fillUserData () {
+        try {
+            const authTokenRes = await checkAuthToken();
+            const getUserDataRes = await getUserData();
+            runInAction(() => {
+                this.isAuth = authTokenRes.data;
+                this.isAdmin = authTokenRes.status === 201;
+                this.userId = getUserDataRes.data.id;
+                this.userInitials = getUserDataRes.data.initials;
+                this.userPhone = getUserDataRes.data.phone;
+            });
+        } catch (err) {
+            logout();
+        }
+    }
+
     async login(phone: string, password: string) {
-        this.isAuthInProgress = true;
+        this.setAuthInProgress(true);
         try {
             const response = await loginUser({phone, password});
             localStorage.setItem("token", response.data.accessToken);
             localStorage.setItem("refresh_token", response.data.refreshToken);
-            this.userId = response.data.id;
-            this.userPhone = response.data.phone;
-            this.userInitials = response.data.initials;
-            this.isAuth = true;
+            runInAction(() => {
+                this.userId = response.data.id;
+                this.userPhone = response.data.phone;
+                this.userInitials = response.data.initials;
+                this.isAuth = true;
+            });
             if (response.status === 201) {
                 localStorage.setItem("isAdmin", "true");
-                this.isAdmin = true;
+                this.setIsAdmin(true);
             }
             return response.status;
         } catch (error: any) {
-            console.log(error);
             if (error.response.status === 409) {
                 return 409;
             } else if (error.response.status === 406) {
                 return 406;
             }
         } finally {
-            this.isAuthInProgress = false;
+            this.setAuthInProgress(false);
         }
     }
 
     async checkAuth() {
-        this.isAuthInProgress = true;
+        this.setAuthInProgress(true);
         try {
             const isTokenValid = await checkAuthToken();
-            isTokenValid.data && (this.isAuth = true);
+            isTokenValid.data && (this.setIsAuth(true));
         } catch (err: any) {
             if (err.response?.status === 408) {
-                try {
-                    const resp = await refreshToken();
-                    localStorage.setItem("token", resp.data.accessToken);
-                    localStorage.setItem("refresh_token", resp.data.refreshToken);
-                    this.isAuth = true;
-                } catch (error) {
-                    this.clearUserData();
-                    console.log("Нужно авторизоваться!");
-                }    
+                this.refreshToken();
             }
         } finally {
-            this.isAuthInProgress = false;
+            this.setAuthInProgress(false);
         } 
     }
 
+    async refreshToken() {
+        try {
+            const resp = await refreshToken();
+            localStorage.setItem("token", resp.data.accessToken);
+            localStorage.setItem("refresh_token", resp.data.refreshToken);
+            this.setIsAuth(true);
+        } catch (error) {
+            logout();
+        }
+    }
+
     async logout() {
-        this.isAuthInProgress = true;
+        this.setAuthInProgress(true);
         try {
             await logout();
             this.clearUserData();
         } catch (err) {
             console.log("Ошибка с выходом");
         } finally {
-            this.isAuthInProgress = false;
+            this.setAuthInProgress(false);
         }
     }
 
     clearUserData() {
-        this.isAuth = false;
-        this.isAdmin = false;
-        this.userId = "";
-        this.userPhone = "";
-        this.userInitials = "";
+        runInAction(() => {
+            this.isAuth = false;
+            this.isAdmin = false;
+            this.userId = null;
+            this.userPhone = "";
+            this.userInitials = "";
+        });
         localStorage.clear();
     }
 }

@@ -35,11 +35,13 @@ export function registryUser(
     );
 }
 
-export function checkAuthToken() {
+export async function checkAuthToken() {
     return axios.get("http://localhost:8080/api/v1/check_access_token", {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
+    }).catch(err => {
+        throw new err;
     });
 }
 

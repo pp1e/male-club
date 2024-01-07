@@ -24,40 +24,41 @@ import NavBar from './components/Navigation/NavBar';
  */
 
 const App = observer(() => {
-  useEffect(() => {
-    AuthStore.checkAuth();
-  }, []);
-  return (
-    <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="" element={<StartPage />} />
-          <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
-          <Route path="notEnoughtRightsAdmin" element={<NotEnoughtRightsAdmin />} />
-          <Route path="alreadyAuth" element={<AlreadyAuth />} />
-          <Route path="*" element={<NotFoundPage />} />
-          <Route path="consoles" element={<Consoles />} />
+    useEffect(() => {
+        AuthStore.checkAuth();
+    }, []);
 
-          <Route path="login" element={<PrivateRoute isAuthorisationPage={true} />} >
-              <Route path="" element={<LoginPage />} /> 
-          </Route>
-          <Route path="registration" element={<PrivateRoute isAuthorisationPage={true} />} >
-              <Route path="" element={<RegistrationPage />} />
-          </Route>
-          <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
-              <Route path="" element={<AdminPanel />} />
-          </Route>
-          <Route path="upcoming-events" element={<PrivateRoute />} >
-              <Route path="" element={<EventsPage />} />
-          </Route>
-          <Route path="account" element={<PrivateRoute />} >
-              <Route path="" element={<PersonalAccount />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </> 
-  );
+    return (
+      <>
+          <BrowserRouter>
+              <NavBar />
+              <Routes>
+                  <Route path="" element={<StartPage />} />
+                  <Route path="notEnoughtRights" element={<NotEnoughtRights />} />
+                  <Route path="notEnoughtRightsAdmin" element={<NotEnoughtRightsAdmin />} />
+                  <Route path="alreadyAuth" element={<AlreadyAuth />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                  <Route path="consoles" element={<Consoles />} />
+
+                  <Route path="login" element={<PrivateRoute isAuthorisationPage={true} />} >
+                      <Route path="" element={<LoginPage />} /> 
+                  </Route>
+                  <Route path="registration" element={<PrivateRoute isAuthorisationPage={true} />} >
+                      <Route path="" element={<RegistrationPage />} />
+                  </Route>
+                  <Route path="admin" element={<PrivateRoute isAdminPanel={true} />} >
+                      <Route path="" element={<AdminPanel />} />
+                  </Route>
+                  <Route path="upcoming-events" element={<PrivateRoute />} >
+                      <Route path="" element={<EventsPage />} />
+                  </Route>
+                  <Route path="account" element={<PrivateRoute />} >
+                      <Route path="" element={<PersonalAccount />} />
+                  </Route>
+              </Routes>
+          </BrowserRouter>
+      </> 
+    );
 });
 
 export default App;

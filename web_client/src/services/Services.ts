@@ -46,3 +46,13 @@ export function getAdminChildrenList({date, time}: { date: string, time: string 
         }
     });
 }
+
+export async function getUserData() {
+    return axios.get(CONSOLES_API_BASE_URL('user', 'info'), {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }).catch(err => {
+        throw new err;
+    });
+}
