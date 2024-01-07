@@ -58,12 +58,14 @@ export function updateUserChild(
         child_id: number
     }
 ) {
-    return axios.put(CONSOLES_API_BASE_URL('child', `update/${child_id}`),
-        {
-            firstname: name,
-            peculiarities: features
-        },
-        {
+    return axios.put(CONSOLES_API_BASE_URL('child', `update/${child_id}`),{ 
+        id: child_id},
+    
+    {
+            params: {
+                firstname: name,
+                peculiarities: features
+            },
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }

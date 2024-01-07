@@ -49,7 +49,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
                 resList.push(curChild);
             });
             setChildrenList(resList);
-            console.log('heeeeeeeeere');
+            // console.log('heeeeeeeeere');
         }).catch(error=> console.log(error));
     }, [listChanged]);
 

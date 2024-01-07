@@ -121,7 +121,6 @@ const PrerecordingPage = (props: IProps): ReactElement => {
             return;
         } else {
             const curDateTime = new Date(+(new Date(`${getDateValue()!!} ${getTimeValue()!!}`)) + 3*3600000);
-            console.log(curDateTime);
             const curReservation: IReservation = {
                 timeAndDate: curDateTime,
                 childId: +getChildValue()!!,
