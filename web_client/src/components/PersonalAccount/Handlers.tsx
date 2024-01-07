@@ -2,13 +2,13 @@ import { ReactElement } from "react";
 
 
 export function getAge(date: Date): string {
-    const count = new Date().getFullYear() - date.getFullYear();
+    const count = new Date()?.getFullYear() - date?.getFullYear();
     return count > 4 ? `${count} лет`
                      : `${count} года`;
 }
 
 export function checkAge(date: Date): boolean {
-    const currAge = new Date().getFullYear() - date.getFullYear();
+    const currAge = new Date()?.getFullYear() - date?.getFullYear();
     return currAge > 1 && currAge < 17;
 }
 
