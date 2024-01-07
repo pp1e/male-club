@@ -4,14 +4,23 @@ import AddChildCard from './AddChildCard';
 import Image from 'react-bootstrap/Image';
 import "./styles/personalAccount.css";
 import { getAge, checkAge, getVisitsCircles } from './Handlers';
+import { getChildrenList, deleteUserChild } from '../../services/Services';
+import { error } from "console";
 
-export interface IChild {    
+export interface IChild {
     id: number;
     name: string;
     date: Date;
     features: string;
     countVisites: number;
-    // phone: string;
+}
+
+interface IChildBackend {
+    firstname: string;
+    birthdate: string;
+    id: number;
+    countVisit: number;
+    peculiarities: string;
 }
 
 interface IChildCard {
@@ -21,60 +30,31 @@ interface IChildCard {
 
 interface IProps {}
 
-const childListTest: IChild[] = [{
-    id: 0,
-    name: "Полина",
-    date: new Date("11.06.06"),
-    features: 'насморк',
-    countVisites: 6,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 1,
-    name: "Никина",
-    date: new Date("11.06.20"),
-    features: 'насморк',
-    countVisites: 7,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 2,
-    name: "Пуговка",
-    date: new Date("11.06.12"),
-    features: 'насморк',
-    countVisites: 1,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 3,
-    name: "Егор",
-    date: new Date("11.06.18"),
-    features: 'насморк',
-    countVisites: 4,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 4,
-    name: "Лиза",
-    date: new Date("11.06.19"),
-    features: 'насморк',
-    countVisites: 2,
-    // phone: '+7(910)829-28-27'
-},
-{
-    id: 5,
-    name: "Денис",
-    date: new Date("11.06.16"),
-    features: 'насморк',
-    countVisites: 5,
-    // phone: '+7(910)829-28-27'
-},]
-
-
 const PersonalAccount = (props: IProps): ReactElement => {
-    const [userList, setUserList] = useState(childListTest);
+    const [childrenList, setChildrenList] = useState<IChild[]>([]);
+    const [listChanged, setListChanged] = useState(true);
+
+    useEffect(() => {
+        getChildrenList().then((result) => {
+            const resList: IChild[] = [];
+            const responseList: IChildBackend[] = [...result.data];
+            responseList.forEach(item => {
+                const curChild: IChild = {
+                    id: item.id,
+                    name: item.firstname,
+                    date: new Date(item.birthdate),
+                    features: item.peculiarities,
+                    countVisites: item.countVisit
+                };
+                resList.push(curChild);
+            });
+            setChildrenList(resList);
+            // console.log('heeeeeeeeere');
+        }).catch(error=> console.log(error));
+    }, [listChanged]);
+
     function getList(): IChildCard[] {
-        return userList.map(item => (
+        return childrenList.map(item => (
             {
                 user: item,
                 isEdit: false,
@@ -123,21 +103,16 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                                     <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Количество посещений:</span>
                                                     <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.user.countVisites)}</div>
                                                 </div>
-                                                {/* <div className="d-flex flex-column  justify-content-center">
-                                                    <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Контактный телефон:</span>
-                                                    <span className={`card__text-second card__text__line-height ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.phone}</span>
-                                                </div>                    */}
                                             </div>
                                         :
-                                            <AddChildCard userList={userList} setUserList={setUserList} userIndex={props.user.id} isEdit={props.isEdit} setEditIndex={setEditIndex}/>
+                                            <AddChildCard listChanged={listChanged} setListChanged={setListChanged} setEditIndex={setEditIndex} child={props.user} isEdit={props.isEdit} />
                     }
                 </>
     }
 
-    const deleteCardButtonClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
-        // delete userList[+e.currentTarget.id];
-        userList.splice( +e.currentTarget.id,1);
-        setUserList([...userList]);
+    const deleteCardButtonClick = async (e: React.MouseEvent<HTMLButtonElement> ) => {
+        await deleteUserChild(+e.currentTarget.id);
+        setListChanged(!listChanged);
     };
 
     const editCardButtonClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
@@ -154,8 +129,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
         })
         setUserCardList(newList);
         setEditIndex(+e.currentTarget.id);
-        const newList1: IChild[] = [...userList];
-        setUserList(newList1);
+        setListChanged(!listChanged);
     };
 
     function startEdit(key: number): boolean {
@@ -164,7 +138,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
 
     useEffect(() => {
         const newChildList: IChildCard[] = [];
-        Promise.all(userList.map(user => (
+        Promise.all(childrenList.map(user => (
             newChildList.push(
                 {
                     user,
@@ -173,7 +147,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
             )
         )));
         setUserCardList(newChildList);
-    }, [userList]);
+    }, [childrenList, listChanged]);
 
     useEffect(() => {
         setResultAdditionalList(<>
@@ -194,7 +168,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                             <ChildCard user={item.user} key={item.user.id} isEdit={item.isEdit}/>
                                         ))
                                     }
-                                    <AddChildCard userList={childListTest} setUserList={setUserList}/>
+                                    <AddChildCard listChanged={listChanged} setListChanged={setListChanged} setEditIndex={setEditIndex} />
                                 </>)
     };
 
