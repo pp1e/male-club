@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import ConsolesService from '../../services/ConsolesService'
 
 class ListConsoles extends Component {

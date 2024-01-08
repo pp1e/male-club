@@ -77,7 +77,6 @@ class AuthStore {
             runInAction(() => {
                 this.isAuth = authTokenRes.data;
                 this.isAdmin = authTokenRes.status === 201;
-                this.isAdmin = true;
                 this.userId = getUserDataRes.data.id;
                 this.userInitials = getUserDataRes.data.initials;
                 this.userPhone = getUserDataRes.data.phone;

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { ReactElement}  from 'react';
 import AuthStore from "../../store";
-import UnauthorizedNavBar from "./_navBars/UnauthorizedNavBar";
-import AuthorizedNavBar from "./_navBars/AuthorizedNavBar";
+import UnauthorizedNavBar from "./_navBar/UnauthorizedNavBar";
+import AuthorizedNavBar from "./_navBar/AuthorizedNavBar";
 
 import "./styles/navBar.css";
 

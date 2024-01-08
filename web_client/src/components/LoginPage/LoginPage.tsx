@@ -15,7 +15,6 @@ const LoginPage = (): ReactElement => {
     const [errorPasswordMessage, setErrorPasswordMessage] = useState('');
 
     const setValidityStates = (): void => {
-        // TODO: Сделать валидацию на ввод(через регулярки)
         if (!phoneRef.current?.value) {
             setIsPhoneValid(false);
             setErrorPhoneMessage('Введите номер телефона!');
@@ -87,7 +86,7 @@ const LoginPage = (): ReactElement => {
                         {
                             !isPasswordValid ?
                                 <div className="invalid-feedback text-start">
-                                    Пароль введен неверно!
+                                    { errorPasswordMessage }
                                 </div> 
                             : ""
                         }

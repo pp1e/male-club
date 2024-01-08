@@ -1,23 +1,17 @@
-.reserve-card {
-    border-radius: 10%;
-}
-
-.reserve-card_image {
+.border-radius-10 {
     border-radius: 10%;
 }
 
 .reserve-card_children-list-card {
     width: 35vw;
-    border-radius: 10%;
 }
 
 .reserve-card_children-list {
-    height: 25vh;
+    height: 20vh;
     overflow-y: scroll;
 }
 
-.reserve-card_user-name, .reserve-card_user-age {
-    color: rgba(0, 0, 0, 0.6);
+.reserve-card_user-data {
     width: 6vw;
 }
 
