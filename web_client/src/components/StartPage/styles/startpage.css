@@ -25,13 +25,11 @@
 
 .start-page__text-medium {
     font-size: min(3vw, 34px);
-    color: rgba(0, 0, 0, 0.90);
     margin-bottom: 5%;
 }
 
 .start-page__text-small {
     font-size:  min(2.3vw, 30px);
-    color: rgba(0, 0, 0, 0.60);
 }
 
 .start-page__container__margin-top {

@@ -3,7 +3,7 @@ import {  ADD_BUTTON_IMAGE } from '../../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import ChildCard, { IProps } from '../_accountCardList/ChildCard';
 import AddChildCard from '../_addComponents/AddChildCard';
-import { IChild } from '../_accountCardList/PersonalAccount';
+import { IChild } from '../PersonalAccount';
 import { getIChildCardList } from '../Handlers';
 import '../styles/personalAccount.css';
 

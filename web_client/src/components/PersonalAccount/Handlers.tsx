@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { IChild, IChildCard } from './_accountCardList/PersonalAccount';
+import { IChild, IChildCard } from './PersonalAccount';
 
 
 export function getAge(date: Date): string {

@@ -18,7 +18,7 @@ const NotFoundPage = (): ReactElement => {
                 src={NOT_FOUND_IMAGE}
                 className="no-page__image no-page__image-border"
             />                
-            <span className="no-page__text">Страница не найдена, но мы поищем...</span>                
+            <span className="no-page__text text-body">Страница не найдена, но мы поищем...</span>                
             <a 
                 role="button" 
                 className="btn btn-warning p-4"

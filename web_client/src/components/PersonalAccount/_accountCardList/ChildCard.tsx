@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { AUTHOR_IMAGE, THREE_POINTS } from '../../../resources/Images';
 import AddChildCard from '../_addComponents/AddChildCard';
-import { IChildCard, IChild } from './PersonalAccount';
+import { IChildCard, IChild } from '../PersonalAccount';
 import Image from 'react-bootstrap/Image';
 import { getAge, checkAge, getVisitsCircles } from '../Handlers';
 import { deleteUserChild } from '../../../services/Services';
@@ -77,15 +77,15 @@ const ChildCard = (props: IProps): ReactElement => {
                                 </div>
                                 <div className="account-page__text-container d-flex flex-column justify-content-around">
                                     <div className="d-flex flex-column justify-content-between">
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'card__text__not-allowed': ''}`}>{props.child!!.name}</span>
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'card__text__not-allowed-reason': ''}`}>Возраст: {getAge(props.child!!.date)}</span>
+                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.name}</span>
+                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-danger': ''}`}>Возраст: {getAge(props.child!!.date)}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-around">
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'card__text__not-allowed': ''}`}>Особенности:</span>
-                                        <span className={`card__text-second card__text__line-height ${!checkAge(props.child!!.date) ? 'card__text__not-allowed': ''}`}>{props.child!!.features}</span>
+                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Особенности:</span>
+                                        <span className={`card__text-second card__text__line-height ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.features}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-center pt-1">
-                                        <span className={`card__text-second ${!checkAge(props.child!!.date) ? 'card__text__not-allowed': ''}`}>Количество посещений:</span>
+                                        <span className={`card__text-second ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Количество посещений:</span>
                                         <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.child!!.countVisites)}</div>
                                     </div>
                                 </div> 

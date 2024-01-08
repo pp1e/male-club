@@ -2,10 +2,13 @@ import axios from 'axios';
 import { IReservation } from '../components/PrerecordingPage/PrerecordingPage';
 export const CONSOLES_API_BASE_URL = (entity: string, action: string) => `http://localhost:8080/api/v1/${entity}/${action}`;
 
-export function getChildrenList() {    
+export function getChildrenList(ageFilter?: boolean) {    
     return axios.get(CONSOLES_API_BASE_URL('child', 'list'), {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        params: {
+            ageFilter: ageFilter
         }
     });
 }
