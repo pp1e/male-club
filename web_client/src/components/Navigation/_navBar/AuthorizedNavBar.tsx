@@ -12,7 +12,12 @@ const AuthorizedNavBar = observer((): ReactElement => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand text-warning" href="/"><h2>Ma Le Club</h2></a>
+                <a 
+                    className="navbar-brand text-warning" 
+                    onClick={() => navigate('/')}
+                >
+                    <h2>Ma Le Club</h2>
+                </a>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
