@@ -1,14 +1,16 @@
-import { ReactElement, useState, useMemo, ReactNode, useRef, SetStateAction, Dispatch } from "react";
+import { ReactElement, useState, useMemo, ReactNode, useRef, SetStateAction, Dispatch, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { ADMIN_PANEL_IMAGE } from '../../resources/Images';
+import { USER_IMAGE, ADMIN_LOGO } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import { 
     getAdminChildrenList, 
-    getConsolesOccupation as getOccupatedConsolesAmount 
+    getConsolesOccupation as getOccupatedConsolesAmount ,
+    confirmReservation,
+    deleteReservation
 } from '../../services/Services';
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,43 +18,60 @@ import 'react-time-picker/dist/TimePicker.css';
 import "./styles/adminPanel.css";
 import "../PersonalAccount/styles/personalAccount.css";
 
-interface IUser {
+interface IUserReservation {
     name: string;
     age: number;
     key: string;
-}
-
-interface IUserCard {
-    user: IUser;
+    recordID?: number;
 }
 
 interface IProps {
     childrenList?: ReactNode;
-    children?: IUser[];
-    setChildrenList?: Dispatch<SetStateAction<IUser[]>>;
+    children?: IUserReservation[];
+    setChildrenList?: Dispatch<SetStateAction<IUserReservation[]>>;
+    searchChildrenListButton?: React.RefObject<HTMLButtonElement>;
 }
 
-interface IDatePicker {
-    setUserList: Dispatch<SetStateAction<IUser[]>>;
+interface IUserCardProps extends IProps {
+    user: IUserReservation;
 }
+
+interface IDatePickerProps extends IProps {
+    setUserList: Dispatch<SetStateAction<IUserReservation[]>>;
+}
+
+const prepareChildrenList = (res: any) => (res.data || []).map((child: any) => ({
+    name: child.childFirstname,
+    age: child.childAge,
+    key: child.childId,
+    recordID: child.reservationId 
+}));
 
 /**
  * Блок выбора даты и времени.
  */
-const DateTimePicker = (props: IDatePicker ):ReactElement => {
-    const [dateValue, setDateValue] = useState<string | null>("");
-    const [timeValue, setTimeValue] = useState<string | null>("");
-
-    const getChildrenList = async () => {
-        const newDate = Object(dateValue);
-        const newTime = Object(timeValue);
-        const childrenList = await getAdminChildrenList({
-            date: `${newDate.$y}-${newDate.$M}-${newDate.$D}`,
-            time: String(newTime.$d).split(' ')?.[4]
-        });
-        //TODO: запихнуть результат выполнения метода в список детей;
-        // props.setUserList(childrenList);
-        return [{}]
+const DateTimePicker = (props: IDatePickerProps):ReactElement => {
+    const [dateValue, setDateValue] = useState<string | null>(null);
+    const [timeValue, setTimeValue] = useState<string | null>(null);
+    const newDate = Object(dateValue);
+    const newTime = Object(timeValue);
+    const yearValue = newDate.$y > 9 ? newDate.$y : `0${newDate.$y}`;
+    const monthValue = newDate.$M + 1 > 9 ? newDate.$M + 1 : `0${newDate.$M + 1}`;
+    const dayValue = newDate.$D > 9 ? newDate.$D : `0${newDate.$D}`;
+    const getChildrenList = () => {
+        if (!dateValue) {
+            setDateValue("");
+            return;
+        }
+        getAdminChildrenList({
+            date: `${yearValue}-${monthValue}-${dayValue}`,
+            time: String(newTime?.$d || "").split(' ')?.[4]
+        })
+            .then(res => {
+                const childrenList = prepareChildrenList(res);
+                props.setUserList(childrenList);
+            })
+            .catch(() => console.log("Ошибка получения списка детей."));
     }
 
     return (
@@ -79,7 +98,8 @@ const DateTimePicker = (props: IDatePicker ):ReactElement => {
                     />
                 </LocalizationProvider>
             </div>
-            <button 
+            <button
+                ref={props.searchChildrenListButton}
                 className="btn btn btn-outline-warning" 
                 onClick={getChildrenList} 
             >
@@ -90,32 +110,35 @@ const DateTimePicker = (props: IDatePicker ):ReactElement => {
 };
 
 const getConsolesOccupation = (occupation: number): ReactElement => {
-    let visibleCount = occupation;
-    let emptyCirlesCount = 6 - visibleCount;
-    const content = [];
-    while (visibleCount > 0) {
-        visibleCount--;
-        content.push(<div className="account__circle me-2"></div>);
+    const row = [];
+    const circle = (index: number) => (
+        <div className={`
+            account__circle me-2
+            ${occupation > index ? '' : 'account__circle__not-visite'}
+        `}>
+        </div>
+    );
+    for (let i = 0; i < 6; i++) {
+        row.push(circle(i));
     }
-    while (emptyCirlesCount > 0) {
-        emptyCirlesCount--;
-        content.push(<div className="account__circle account__circle__not-visite me-2"></div>)
-    }
-    return <>{content}</>;
+    return <>{row}</>
 }
 const ReserveCard = (): ReactElement => {
     const [consolesOccupation, setConsolesOccupation] = useState(0);
-    // TODO: Реализовать получение заполненности консолей по времени.
-    getOccupatedConsolesAmount()
-        .then(res => setConsolesOccupation(res.data))
-        .catch(err => console.log("Ошибка с получением заполненности, попробуйте перезапустить приложение"));
+    // TODO: Продумать и реализовать получение заполненности консолей по времени.
+    useEffect(() => {
+        getOccupatedConsolesAmount()
+            .then(res => setConsolesOccupation(res.data))
+            .catch(() => console.log("Ошибка с получением заполненности, попробуйте перезапустить приложение"));
+    }, []);
+    
     return (
         <div 
             className="d-flex flex-column align-items-center reserve-card shadow-lg mx-5 p-3"
         >
             <Image 
-                src={ADMIN_PANEL_IMAGE}
-                className="reserve-card_image"
+                src={ADMIN_LOGO}
+                className="reserve-card_image "
                 width="350"
                 height="300"
             />
@@ -123,14 +146,36 @@ const ReserveCard = (): ReactElement => {
             <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">
                 {getConsolesOccupation(consolesOccupation)}
             </div>
+            <div className="account__circle__container d-flex flex-row justify-content-center align-items-center mt-2">
+                {getConsolesOccupation(consolesOccupation - 6)}
+            </div>
         </div>
     )
 };
 
-const User = (props: IUserCard): ReactElement => {
+const User = (props: IUserCardProps): ReactElement => {
+    const onConfirmReservation = () => {
+        confirmReservation(props.user.recordID || 0)
+            .then(() => {
+                if (props.searchChildrenListButton?.current) {
+                    props.searchChildrenListButton.current.click();
+                }
+            })
+            .catch(() => console.log("Ошибка при подтверждении записи."));
+    }
+
+    const onDeleteReservation = () => {
+        deleteReservation(props.user.recordID || 0)
+            .then(() => {
+                if (props.searchChildrenListButton?.current) {
+                    props.searchChildrenListButton.current.click();
+                }
+            })
+            .catch(() => console.log("Ошибка при удалении записи."));
+    }
     return (
-        <li className="list-group-item list-group-item-action align-items-center d-flex gap-4 py-3 px-1">
-            <img className="rounded-circle flex-shrink-0" src={ADMIN_PANEL_IMAGE} width="50"/>
+        <li className="list-group-item list-group-item-action align-items-center d-flex gap-4 py-2 px-1">
+            <img className="rounded-circle flex-shrink-0 border border-warning p-1" src={USER_IMAGE} width="50"/>
             <div className="
                 border-bottom border-warning 
                 d-flex justify-content-between 
@@ -142,8 +187,22 @@ const User = (props: IUserCard): ReactElement => {
                 <span className="reserve-card_user-age text-truncate">Возраст { props.user.age }</span>
                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" />
                 <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Подтвердить бронь</a></li>
-                    <li><a className="dropdown-item" href="#">Отменить бронь</a></li>
+                    <li>
+                        <div 
+                            className="dropdown-item" 
+                            onClick={onConfirmReservation}
+                        >
+                            Подтвердить бронь
+                        </div>
+                    </li>
+                    <li>
+                        <div 
+                            className="dropdown-item" 
+                            onClick={onDeleteReservation}
+                        >
+                            Отменить бронь
+                        </div>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -154,22 +213,24 @@ const User = (props: IUserCard): ReactElement => {
  * Блок списка детей.
  */
 const ChildrenListCard = (props: IProps): ReactElement => {
-    const [listForFilter, setListForFilter] = useState(props.children);
-    const childrenList = useMemo(() => {
-        return listForFilter?.map(user => (
-            <User user={user} key={user.key} />
-        ))
-    }, [listForFilter]);
     const searchRef = useRef(null);
+    const [searchValue, setSearchValue] = useState('');
+    const childrenListComponent = useMemo(() => {
+        const filteredChildrenList = props.children?.filter(child => 
+            child.name.includes(searchValue)
+        ) || [];
+        return filteredChildrenList?.map(user => {
+            return (
+                <User 
+                    searchChildrenListButton={props.searchChildrenListButton}
+                    user={user} 
+                    key={user.recordID} 
+                />
+            )
+        })
+    }, [searchValue, props.children]);
 
-    const filterList = () => {
-        setListForFilter(props.children?.filter(child => 
-            (searchRef.current && searchRef.current['value'] !== '') 
-                ? child.name === searchRef.current['value'] 
-                : child
-            ) || []
-        );
-    }
+    const filterList = () => setSearchValue(searchRef.current?.['value'] || '');
 
     return (
         <div 
@@ -188,7 +249,11 @@ const ChildrenListCard = (props: IProps): ReactElement => {
                         placeholder="Поиск" 
                         aria-label="Поиск"
                     />
-                    <button className="btn btn btn-outline-warning" type="submit" onClick={filterList}>
+                    <button 
+                        className="btn btn btn-outline-warning" 
+                        type="submit" 
+                        onClick={filterList}
+                    >
                         Поиск
                     </button>
                 </div>
@@ -196,7 +261,7 @@ const ChildrenListCard = (props: IProps): ReactElement => {
             
             <div className="container-fluid mt-4">
                 <ul className="list-group-flush reserve-card_children-list px-0">
-                    {childrenList}
+                    {childrenListComponent}
                 </ul>
             </div>
         </div>
@@ -204,18 +269,8 @@ const ChildrenListCard = (props: IProps): ReactElement => {
 }
 
 const AdminPanel = observer((): ReactElement => {
-    const [userList, setUserList] = useState([
-        {
-            name: "Никита",
-            age: 14,
-            key: '1'
-        }, 
-        {
-            name: "Даня",
-            age: 15,
-            key: '2'
-        }, 
-    ]);
+    const [userList, setUserList] = useState<IUserReservation[]>([]);
+    const searchChildrenListButton = useRef(null);
 
     return (
         <div className="container-xl py-4">
@@ -225,13 +280,18 @@ const AdminPanel = observer((): ReactElement => {
             <div className="container">
                 {/* Выбор даты и времени */}
                 <DateTimePicker 
+                    searchChildrenListButton={searchChildrenListButton}
                     setUserList={setUserList}
                 />
 
                 {/* Блок занятости */}
                 <div className="container d-flex flex-row mt-5 justify-content-center">
                     <ReserveCard />
-                    <ChildrenListCard children={userList} setChildrenList={setUserList} />
+                    <ChildrenListCard 
+                        children={userList} 
+                        setChildrenList={setUserList}
+                        searchChildrenListButton={searchChildrenListButton}
+                    />
                 </div>
             </div>
         </div>

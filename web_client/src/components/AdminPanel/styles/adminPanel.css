@@ -12,7 +12,7 @@
 }
 
 .reserve-card_children-list {
-    max-height: 30vw;
+    height: 25vh;
     overflow-y: scroll;
 }
 
@@ -24,4 +24,3 @@
 .search-container_reserve-text {
     font-size: 2rem;
 }
-

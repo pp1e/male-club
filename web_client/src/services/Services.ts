@@ -84,6 +84,9 @@ export function deleteUserChild(child_id:number) {
 
 export function getAdminChildrenList({date, time}: { date: string, time: string }) {
     return axios.get(CONSOLES_API_BASE_URL('console', 'admin_info'), {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
         params: {
             date: date,
             time: time
@@ -116,11 +119,27 @@ export function addReservation({reservation}: {reservation: IReservation}) {
 
 export function getConsolesStatusList(datetime: string) {    
     return axios.get(CONSOLES_API_BASE_URL('console', 'reservation_info'), {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
         params: {
             datetime: datetime
-        },
+        }
+    });
+}
+
+export function confirmReservation(id: number) {
+    return axios.put(CONSOLES_API_BASE_URL('reservation', `confirm/${id}`), { id: id }, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
-    });
+    })
+}
+
+export function deleteReservation(id: number) {
+    return axios.delete(CONSOLES_API_BASE_URL('reservation', `delete/${id}`), {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    })
 }
