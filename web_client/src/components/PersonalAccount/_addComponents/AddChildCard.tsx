@@ -2,7 +2,7 @@ import { ReactElement, useState, useRef } from "react";
 import { AxiosResponse } from "axios";
 import Image from 'react-bootstrap/Image';
 import { AUTHOR_IMAGE } from '../../../resources/Images';
-import { IChild } from '../_accountCardList/PersonalAccount';
+import { IChild } from '../PersonalAccount';
 import { getAge, checkAge } from '../Handlers';
 import { addUserChild, updateUserChild } from '../../../services/Services';
 import AuthStore from '../../../store';

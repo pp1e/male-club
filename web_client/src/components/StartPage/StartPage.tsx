@@ -12,8 +12,8 @@ const StartPage = (): ReactElement => {
                         <span className="text-warning start-page__text-big">Ma Le Club</span>
                         <div className="d-flex flex-row align-items-center justify-content-between">
                             <div className="d-flex flex-column start-page__text-container justify-content-between">
-                                <span className="start-page__text-medium">Подарите вашему ребёнку<br></br>счастливое детство</span>
-                                <span className="start-page__text-small">Если ваш ребёнок непоседа и любит проводить время весело и с пользой, тогда ему точно понравится у нас в гостях</span>
+                                <span className="start-page__text-medium text-dark">Подарите вашему ребёнку<br></br>счастливое детство</span>
+                                <span className="start-page__text-small text-muted">Если ваш ребёнок непоседа и любит проводить время весело и с пользой, тогда ему точно понравится у нас в гостях</span>
                             </div>
                             <Image
                                 src={START_PAGE_CHILD2}
@@ -27,8 +27,8 @@ const StartPage = (): ReactElement => {
                             className="start-page__image me-4"
                         />
                         <div className="d-flex flex-column start-page__text-container justify-content-between">
-                            <span className="start-page__text-medium">Всестороннее развитие<br></br>и творчество</span>
-                            <span className="start-page__text-small">Мы создали все условия для детского творчества, социализации и приятного времяпрепровождения</span>
+                            <span className="start-page__text-medium text-dark">Всестороннее развитие<br></br>и творчество</span>
+                            <span className="start-page__text-small text-muted">Мы создали все условия для детского творчества, социализации и приятного времяпрепровождения</span>
                         </div>                    
                     </div>                
                 </div>

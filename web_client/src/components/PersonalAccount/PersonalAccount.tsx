@@ -1,9 +1,9 @@
 import { ReactElement, useState, useEffect } from "react";
-import AddButton from '../_addComponents/AddButton';
-import ChildCard from './ChildCard';
-import { getIChildCardList } from '../Handlers';
-import { getChildrenList } from '../../../services/Services';
-import '../styles/personalAccount.css';
+import AddButton from './_addComponents/AddButton';
+import ChildCard from './_accountCardList/ChildCard';
+import { getIChildCardList } from './Handlers';
+import { getChildrenList } from '../../services/Services';
+import './styles/personalAccount.css';
 
 export interface IChild {
     id: number;

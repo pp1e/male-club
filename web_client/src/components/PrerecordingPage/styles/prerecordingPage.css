@@ -4,13 +4,5 @@ input[type="text"],
 input[type="phone"],
 select,
 option {
-    font-size: 16px!important;
-}
-
-.prerecording-page__light-text {
-    color: #6d7175!important;
-}
-
-.prerecording-page__dark-text {
-    color: #000000!important;
+    font-size: 20px!important;
 }

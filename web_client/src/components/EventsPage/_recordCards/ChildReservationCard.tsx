@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { AUTHOR_IMAGE, THREE_POINTS } from '../../../resources/Images';
 import { AxiosResponse } from "axios";
-import { IChild } from './EventsPage';
+import { IChild } from '../EventsPage';
 import Image from 'react-bootstrap/Image';
 import '../styles/eventspage.css';
 import {deleteReservation} from '../../../services/Services';

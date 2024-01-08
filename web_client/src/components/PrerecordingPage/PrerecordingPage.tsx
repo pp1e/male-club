@@ -90,8 +90,9 @@ const PrerecordingPage = (props: IProps): ReactElement => {
     }, [consoleList]);
 
     useEffect(() => {
-        getChildrenList().then((result) => {
+        getChildrenList(true).then((result) => {
             const responseList = [...result.data];
+            console.log(responseList);
             const curChildList: IChild[] = [];
             responseList.forEach(item => {
                 curChildList.push({
@@ -149,9 +150,9 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                 <div className="text-center login-page_container">
                     <h1 className="px-5 mb-4">Предварительная запись</h1>
                     <form method="POST" onSubmit={onSubmit}>
-                        <div className="mb-4 prerecording-page__light-text">
+                        <div className="mb-4 text-muted">
                             <select
-                                className={`form-select py-3 text-start ${isChildSelected ? 'border-warning' : 'is-invalid' } ${getChildValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`}
+                                className={`form-select py-3 text-start ${isChildSelected ? 'border-warning' : 'is-invalid' } ${getChildValue() ? 'text-body' : 'text-muted'}`}
                                 ref={childRef}
                             >
                                 <option value="">Выберите ребенка</option>
@@ -169,7 +170,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                             <input
                                 ref={dateRef}
                                 name="date"
-                                className={`form-control py-3 text-start border ${isDateSelected ? 'border-warning' : 'is-invalid border-danger prerecording-page__light-text'} ${getDateValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`}
+                                className={`form-control py-3 text-start border ${isDateSelected ? 'border-warning' : 'is-invalid border-danger text-muted'} ${getDateValue() ? 'text-body' : 'text-muted'}`}
                                 type="date"
                                 min={minDate}
                                 max={maxDate}
@@ -190,7 +191,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                                 step="300"
                                 min="10:00"                                
                                 max="21:30"
-                                className={`form-control py-3 text-start border ${isTimeSelected ? 'border-warning' : 'is-invalid border-danger'} ${getTimeValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`} 
+                                className={`form-control py-3 text-start border ${isTimeSelected ? 'border-warning' : 'is-invalid border-danger'} ${getTimeValue() ? 'text-body' : 'text-muted'}`} 
                             />
                             {
                                 !isTimeSelected ?
@@ -204,7 +205,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                             <input 
                                 ref={phoneRef}
                                 type="phone"
-                                className={`form-control py-3 text-start border ${isPhoneValid ? 'border-warning' : 'is-invalid border-danger'} ${getPhoneValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`} 
+                                className={`form-control py-3 text-start border ${isPhoneValid ? 'border-warning' : 'is-invalid border-danger'} ${getPhoneValue() ? 'text-body' : 'text-muted'}`} 
                                 placeholder="Введите контактный телефон"
                             />
                             {
@@ -217,7 +218,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                         </div>
                         <div className="mb-5">
                             <select
-                                className={`form-select py-3 text-start border-warning ${getConsoleValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`}
+                                className={`form-select py-3 text-start border-warning ${getConsoleValue() ? 'text-body' : 'text-muted'}`}
                                 ref={consoleRef}
                                 onFocus={onConsoleFocus}
                             >
@@ -226,7 +227,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                             </select>
                             {
                                 !consoleList.length && timeRef.current?.value && dateRef.current?.value ?
-                                    <div className="prerecording-page__light-text px-2 text-start">
+                                    <div className="text-muted px-2 text-start">
                                         * В выбранное время свободных приставок нет
                                     </div> 
                                 : ""

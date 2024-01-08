@@ -1,8 +1,8 @@
 import { ReactElement, useState, useEffect } from "react";
-import AuthStore from '../../../store';
-import ChildCard from "./ChildReservationCard";
-import "../styles/eventspage.css";
-import { getParentReservationList } from '../../../services/Services';
+import AuthStore from '../../store';
+import ChildCard from './_recordCards/ChildReservationCard';
+import { getParentReservationList } from '../../services/Services';
+import './styles/eventspage.css';
 
 interface IProps {}
 
@@ -37,7 +37,7 @@ const EventsPage = (props: IProps): ReactElement => {
                         <ChildCard child={child} listChanged={listChanged} setListChanged={setListChanged} />
                     ))
                 :
-                    <div className="d-flex justify-content-center align-items-center card__no-data card__text-second">Нет записей</div>
+                    <div className="d-flex justify-content-center align-items-center text-muted card__no-data card__text-second">Нет записей</div>
             }
         </>)
         
