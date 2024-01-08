@@ -21,16 +21,34 @@ class ChildController(
 ) {
     @GetMapping("/list")
     fun getAllChildren(
-        @AuthenticationPrincipal userDetails: UserDetailsImpl
-    ): ResponseEntity<List<Child>> {
-        if (userDetails.isAdmin())
-            return ResponseEntity(
-                childRepository.findAll(),
-                HttpStatus.OK
+        @AuthenticationPrincipal userDetails: UserDetailsImpl,
+        @RequestParam("age_filter") ageFilter: Boolean = false
+    ): ResponseEntity<List<Any>> {
+        val childList: List<Any>
+        if (userDetails.isAdmin()) {
+            childList = childRepository.getChildList(ageFilter = ageFilter)
+        }
+        else {
+            val parentId = userDetails.getId()
+            childList = childRepository.getChildList(
+                parentId = parentId,
+                ageFilter = ageFilter
             )
-        val parentId = userDetails.getId()
+        }
+        var childListMapped = listOf<Map<String, Any>>()
+        for (childListItem in childList) {
+            val childListItemMapped = mapOf(
+                "id" to childListItem[0],
+                "firstname" to childListItem[1],
+                "peculiarities" to childListItem[2],
+                "count_visit" to childListItem[3],
+                "user_id" to childListItem[4],
+                "birthdate" to childListItem[5]
+            )
+            childListMapped = childListMapped.plus(childListItemMapped)
+        }
         return ResponseEntity(
-            childRepository.findAllByUserId(parentId),
+            childListMapped,
             HttpStatus.OK
         )
     }
