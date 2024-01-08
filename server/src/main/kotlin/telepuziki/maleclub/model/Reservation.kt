@@ -27,5 +27,8 @@ data class Reservation(
     val consoleId: Long?,
 
     @Column(name = "phone", nullable = false)
-    val phone: String
+    val phone: String,
+
+    @Column(name = "is_confirmed", nullable = false)
+    val isConfirmed: Boolean = false
 )

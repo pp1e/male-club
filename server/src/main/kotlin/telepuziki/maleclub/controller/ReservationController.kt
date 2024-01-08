@@ -90,7 +90,14 @@ class ReservationController(
         val reservation = reservationRepository.findByIdOrNull(id)
         if (reservation == null)
             return ResponseEntity(false, HttpStatus.NOT_FOUND)
+        if (reservation.isConfirmed == true)
+            return ResponseEntity(false, HttpStatus.BAD_REQUEST)
 
+        // Update reservation
+        val newReservation = reservation.copy(isConfirmed = true)
+        reservationRepository.save(newReservation)
+
+        // Update child
         val oldChild = childRepository.findByIdOrNull(
             reservation.childId
         )
