@@ -192,9 +192,21 @@ const RegistrationPage = (props: IProps): ReactElement => {
                             required
                         />
                         <div className="form-check-label ml-2">Я принимаю условия&nbsp; 
-                            <a href="#" className="text-warning">пользовательского соглашения</a>&nbsp; 
+                            <a 
+                                href="https://docs.google.com/document/d/1MtsTa_TdphAg23luhA3qJTbBq3F8SYTf/edit" 
+                                className="text-warning"
+                                target="_blank"
+                            >
+                                пользовательского соглашения
+                            </a>&nbsp; 
                             и даю<br/>
-                            <a href="#" className="text-warning">согласие</a>&nbsp; 
+                            <a 
+                                href="https://docs.google.com/document/d/19DB3xXGp2ul96AbQtkzDu4SUuzFu5EJj/edit" 
+                                className="text-warning"
+                                target="_blank"
+                            >
+                                согласие
+                            </a>&nbsp; 
                             на обработку персональных данных
                         </div>
                     </div>

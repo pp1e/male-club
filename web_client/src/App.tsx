@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { observer } from "mobx-react-lite";
-import AuthStore from "./store";
 import PrivateRoute from './privateRoute';
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
