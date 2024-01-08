@@ -9,7 +9,9 @@ import telepuziki.maleclub.model.Console
 import telepuziki.maleclub.repository.ConsoleRepository
 import java.sql.Date
 import java.sql.Time
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Period
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
@@ -63,13 +65,20 @@ class ConsoleController(@Autowired val consoleRepository: ConsoleRepository) {
         val adminInfo = consoleRepository.getAdminInfoAboutConsoles(date, time, childNamePattern)
         var adminInfoMapped = listOf<Map<String, Any>>()
         for (adminInfoItem in adminInfo) {
+            val childAgePeriod = Period.between(
+                (adminInfoItem[6] as Date).toLocalDate(),
+                LocalDate.now()
+            )
+
             val adminInfoItemMapped = mapOf(
                 "childId" to adminInfoItem[0],
                 "childFirstname" to adminInfoItem[1],
                 "consoleNumber" to adminInfoItem[2],
                 "phone" to adminInfoItem[3],
                 "countVisit" to adminInfoItem[4],
-                "childPeculiarities" to adminInfoItem[5]
+                "childPeculiarities" to adminInfoItem[5],
+                "childAge" to childAgePeriod.years,
+                "reservationId" to adminInfoItem[7],
             )
             adminInfoMapped = adminInfoMapped.plus(adminInfoItemMapped)
         }
