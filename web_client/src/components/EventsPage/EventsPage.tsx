@@ -24,10 +24,11 @@ function getCurrentReservationDateTime(datetime: string) {
 const ChildCard = (props: IChildCard): ReactElement => {  
 
     const cancelReservationOnClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
-        cancelReservation(+e.currentTarget.id);        
-        setListChanged(!listChanged);
-        console.log(+e.currentTarget.id);
-        setListChanged(!listChanged);
+        // cancelReservation(+e.currentTarget.id);        
+        // // setListChanged(!listChanged);
+        // console.log(+e.currentTarget.id);
+        // подправлю после доброски Никиты
+
     };
     return <>
             <div className="events-page__card__container d-flex flex-column justify-content-center align-items-center">
@@ -64,7 +65,7 @@ const EventsPage = (props: IProps): ReactElement => {
         getParentReservationList(AuthStore.getUserId!!).then((result) => {
             setUserList(result.data);
         });
-    }, [listChanged]);
+    }, []);
     
     const childrenList = useMemo(() => {
         if (userList.length > 0) {
