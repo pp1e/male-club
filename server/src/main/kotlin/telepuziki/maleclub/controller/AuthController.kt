@@ -103,14 +103,13 @@ class AuthController(
 
     @GetMapping("/check_access_token")
     fun checkAccessToken(
-        request: HttpServletRequest,
-        @AuthenticationPrincipal userDetails: UserDetailsImpl
+        request: HttpServletRequest
     ): ResponseEntity<Boolean> {
         val unauthorizedCode = request.getAttribute("unauthorizedCode")
         return if (unauthorizedCode != null)
             ResponseEntity(false, unauthorizedCode as HttpStatus)
         else {
-            val status = if (userDetails.isAdmin()) HttpStatus.CREATED else HttpStatus.OK
+            val status = if (UserDetailsServiceImpl.isNotAdmin()) HttpStatus.OK else HttpStatus.CREATED
             ResponseEntity(true, status)
         }
     }
