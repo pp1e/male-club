@@ -134,7 +134,7 @@ const AuthorizedNavBar = observer((): ReactElement => {
                                     className="dropdown-item"
                                     onClick={() => navigate('/upcoming-events')}
                                 >
-                                    Предстоящие мероприятия
+                                    Предстоящие записи
                                 </a>
                             </li>
                             <li>

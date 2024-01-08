@@ -113,6 +113,15 @@ export function addReservation({reservation}: {reservation: IReservation}) {
             }
         });
 }
+
+export function cancelReservation(reservation_id: number) {
+    return axios.delete(CONSOLES_API_BASE_URL('reservation', `delete/${reservation_id}`),
+    {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+}
 export function getConsolesStatusList(datetime: string) {    
     return axios.get(CONSOLES_API_BASE_URL('console', 'reservation_info'), {
         params: {
