@@ -4,6 +4,7 @@ CREATE TABLE reservation (
     console_id BIGINT NULL,
     time_and_date DATETIME NOT NULL,
     phone VARCHAR(12) NOT NULL,
+    is_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT reservation_child_fk FOREIGN KEY (child_id) REFERENCES child (id),
     CONSTRAINT reservation_console_fk FOREIGN KEY (console_id) REFERENCES console (id)
 );

@@ -9,6 +9,6 @@ BEGIN
              INNER JOIN console ON console.id = reservation.console_id
     WHERE DATE(reservation.time_and_date) = date AND
           (time IS NULL OR TIME(reservation.time_and_date) = time) AND
-          child.firstname LIKE child_name
+          child.firstname LIKE child_name AND reservation.is_confirmed = FALSE
     ORDER BY reservation.time_and_date;
 END

@@ -11,8 +11,8 @@
     GRANT ALL PRIVILEGES ON male_club.* TO 'male_club_user'@'%';
     ```
 ### Set up application settings
-1. Put database creditionals in ```database.properties``` file 
-(see [```database-template.properties```](server/src/main/resources/config/db/database-template.properties)
+1. Put database credentials in ```database.properties``` file 
+(see [```database-development-template.properties```](server/src/main/resources/config/db/database-development-template.properties)
 as example)
 ### Launch
 1. Execute ```./gradlew build``` if needed
@@ -44,6 +44,11 @@ as example)
    [mysqld]
    bind-address = 0.0.0.0
    ```
+
+### Set up application settings
+1. Put database credentials in ```database.properties``` file
+   (see [```database-production-template.properties```](server/src/main/resources/config/db/database-production-template.properties)
+   as example)
    
 ### Docker deployment
 1. If there are changes in code:
