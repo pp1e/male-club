@@ -1,5 +1,5 @@
 import { ReactElement, useState, useMemo, useEffect } from "react";
-import { AUTHOR_IMAGE } from '../../resources/Images';
+import { AUTHOR_IMAGE, THREE_POINTS } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import AuthStore from './../../store';
 import "./styles/eventspage.css";
@@ -12,6 +12,7 @@ interface IChild {
 }
 
 interface IChildCard {
+    id: number;
     user: IChild;
 }
 
@@ -20,9 +21,28 @@ interface IProps {}
 function getCurrentReservationDateTime(datetime: string) {
     return new Date(datetime).toLocaleString().slice(0,-3);
 }
-const ChildCard = (props: IChildCard): ReactElement => { 
+const ChildCard = (props: IChildCard): ReactElement => {  
+
+    const cancelReservationOnClick = (e: React.MouseEvent<HTMLButtonElement> ) => {
+        // cancelReservation(+e.currentTarget.id);        
+        // // setListChanged(!listChanged);
+        // console.log(+e.currentTarget.id);
+        // подправлю после доброски Никиты
+
+    };
     return <>
             <div className="events-page__card__container d-flex flex-column justify-content-center align-items-center">
+                <div className="dropdown align-self-end account__dropdown__container">
+                    <button className="btn data-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown">
+                        <Image
+                            src={THREE_POINTS}
+                            className="account__dropdown"
+                        />
+                    </button>
+                    <ul className="dropdown-menu" >
+                        <li><button onClick={cancelReservationOnClick} className="dropdown-item">Отменить бронь</button></li>
+                    </ul>
+                </div>
                     <div className="events-page__card__image d-flex flex-column justify-content-center align-items-center">
                         <Image
                             src={AUTHOR_IMAGE}
@@ -49,8 +69,8 @@ const EventsPage = (props: IProps): ReactElement => {
     
     const childrenList = useMemo(() => {
         if (userList.length > 0) {
-            return userList.map(user => (
-                <ChildCard user={user} />
+            return userList.map((user:any) => (
+                <ChildCard id={user.id} user={user} />
             ))
         } else {
             return <>

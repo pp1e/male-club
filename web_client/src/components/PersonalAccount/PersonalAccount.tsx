@@ -49,7 +49,6 @@ const PersonalAccount = (props: IProps): ReactElement => {
                 resList.push(curChild);
             });
             setChildrenList(resList);
-            // console.log('heeeeeeeeere');
         }).catch(error=> console.log(error));
     }, [listChanged]);
 
@@ -85,24 +84,30 @@ const PersonalAccount = (props: IProps): ReactElement => {
                                                         <li><button id={`${props.user.id}`} onClick={deleteCardButtonClick} className="dropdown-item">Удалить ребенка</button></li>
                                                     </ul>
                                                 </div>
+                                                <div className="aaa d-flex flex-column justify-content-center align-items-center">
                                                 <div className="account-page__card__image d-flex flex-column justify-content-center align-items-center">
                                                     <Image
                                                         src={AUTHOR_IMAGE}
                                                         className="account__no-photo"
                                                     />
-                                                </div>                    
-                                                <div className="d-flex flex-column account-page__text-container justify-content-around">
-                                                    <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.name}</span>
-                                                    <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed-reason': ''}`}>Возраст: {getAge(props.user.date)}</span>
                                                 </div>
-                                                <div className="d-flex flex-column justify-content-around">
-                                                    <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Особенности:</span>
-                                                    <span className={`card__text-second card__text__line-height ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.features}</span>
+                                                <div className="account-page__text-container d-flex flex-column justify-content-around">
+                                                    <div className="d-flex flex-column justify-content-between">
+                                                        <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.name}</span>
+                                                        <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed-reason': ''}`}>Возраст: {getAge(props.user.date)}</span>
+                                                    </div>
+                                                    <div className="d-flex flex-column justify-content-around">
+                                                        <span className={`card__text-main ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Особенности:</span>
+                                                        <span className={`card__text-second card__text__line-height ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>{props.user.features}</span>
+                                                    </div>
+                                                    <div className="d-flex flex-column justify-content-center pt-1">
+                                                        <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Количество посещений:</span>
+                                                        <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.user.countVisites)}</div>
+                                                    </div>
+                                                </div> 
+
                                                 </div>
-                                                <div className="d-flex flex-column  justify-content-center pt-3">
-                                                    <span className={`card__text-second ${!checkAge(props.user.date) ? 'card__text__not-allowed': ''}`}>Количество посещений:</span>
-                                                    <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.user.countVisites)}</div>
-                                                </div>
+                                                                   
                                             </div>
                                         :
                                             <AddChildCard listChanged={listChanged} setListChanged={setListChanged} setEditIndex={setEditIndex} child={props.user} isEdit={props.isEdit} />

@@ -113,6 +113,7 @@ export function addReservation({reservation}: {reservation: IReservation}) {
             }
         });
 }
+
 export function getConsolesStatusList(datetime: string) {    
     return axios.get(CONSOLES_API_BASE_URL('console', 'reservation_info'), {
         params: {

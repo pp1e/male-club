@@ -25,6 +25,8 @@ interface IProps {}
 
 const PrerecordingPage = (props: IProps): ReactElement => {
     const navigate = useNavigate();
+    const minDate = new Date().toISOString().split('T')[0];
+    const maxDate = new Date(+(new Date()) + 24 * 31 * 3600000).toISOString().split('T')[0];
     const childRef = useRef<HTMLSelectElement>(null);
     const dateRef = useRef<HTMLInputElement>(null);
     const [consoleList, setConsoleList] = useState<IConsole[]>([]);    
@@ -169,8 +171,8 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                                 name="date"
                                 className={`form-control py-3 text-start border ${isDateSelected ? 'border-warning' : 'is-invalid border-danger prerecording-page__light-text'} ${getDateValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`}
                                 type="date"
-                                // placeholder="дд.мм.гггг"
-                                // aria-label="дд.мм.гггг" 
+                                min={minDate}
+                                max={maxDate}
                             />                                                
                             {
                                 !isDateSelected ?
@@ -184,7 +186,10 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                             <input
                                 ref={timeRef}
                                 name="time"
-                                type="time"
+                                type="time"                                
+                                step="300"
+                                min="10:00"                                
+                                max="21:30"
                                 className={`form-control py-3 text-start border ${isTimeSelected ? 'border-warning' : 'is-invalid border-danger'} ${getTimeValue() ? 'prerecording-page__dark-text' : 'prerecording-page__light-text'}`} 
                             />
                             {
@@ -219,6 +224,13 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                                 <option value="">Выберите приставку</option>
                                 {consoleOptionsList}
                             </select>
+                            {
+                                !consoleList.length && timeRef.current?.value && dateRef.current?.value ?
+                                    <div className="prerecording-page__light-text px-2 text-start">
+                                        * В выбранное время свободных приставок нет
+                                    </div> 
+                                : ""
+                            }
                         </div>
                         <div className="text-danger mb-1">{errorMessage}</div>
                         <div>
