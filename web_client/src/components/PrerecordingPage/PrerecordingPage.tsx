@@ -33,7 +33,8 @@ const PrerecordingPage = (props: IProps): ReactElement => {
     const [childrenList, setChildrenList] = useState<IChild[]>([]);
     const phoneRef = useRef<HTMLInputElement>(null);    
     const timeRef = useRef<HTMLInputElement>(null);
-    const consoleRef = useRef<HTMLSelectElement>(null);
+    const consoleRef = useRef<HTMLSelectElement>(null);    
+    const submitButtonRef = useRef<HTMLDivElement>(null);
     const [isChildSelected, setChildSelected] = useState(true);
     const [isDateSelected, setDateSelected] = useState(true);
     const [isTimeSelected, setTimeSelected] = useState(true);
@@ -132,7 +133,16 @@ const PrerecordingPage = (props: IProps): ReactElement => {
             await addReservation({reservation:curReservation})
                 .then((result: AxiosResponse<any, any>) => {
                     if (result.status === 200) {
-                        setTimeout(() => navigate('/upcoming-events'), 2000);
+                        submitButtonRef.current && 
+                        (submitButtonRef.current.innerHTML = 
+                            `
+                                <button class="btn btn-success px-5 py-4 border-0" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Бронируем...
+                                </button>
+                            `
+                        )
+                        setTimeout(() => navigate('/upcoming-events'), 1000);
                     }
                 })
                 .catch(errorData => {
@@ -233,7 +243,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                             }
                         </div>
                         <div className="text-danger mb-1">{errorMessage}</div>
-                        <div>
+                        <div ref={submitButtonRef}>
                             <button 
                                 type="submit" 
                                 className="btn btn-warning px-5 py-4 border-0"
