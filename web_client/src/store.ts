@@ -21,6 +21,11 @@ class AuthStore {
     }
 
     @computed
+    get getIsAuthInProgress() {
+        return this.isAuthInProgress;
+    }
+
+    @computed
     get getIsAdmin() {
         return this.isAdmin;
     }
@@ -65,19 +70,23 @@ class AuthStore {
     }
 
     async fillUserData () {
+        this.setAuthInProgress(true);
         try {
             const authTokenRes = await checkAuthToken();
             const getUserDataRes = await getUserData();
             runInAction(() => {
                 this.isAuth = authTokenRes.data;
                 this.isAdmin = authTokenRes.status === 201;
+                this.isAdmin = true;
                 this.userId = getUserDataRes.data.id;
                 this.userInitials = getUserDataRes.data.initials;
                 this.userPhone = getUserDataRes.data.phone;
             });
-        } catch (err) {
-            logout();
-        }
+        } catch (err: any) {
+            this.refreshToken();
+        } finally {
+            this.setAuthInProgress(false);
+        } 
     }
 
     async login(phone: string, password: string) {
@@ -105,26 +114,14 @@ class AuthStore {
         }
     }
 
-    async checkAuth() {
-        this.setAuthInProgress(true);
-        try {
-            const isTokenValid = await checkAuthToken();
-            isTokenValid.data && (this.setIsAuth(true));
-        } catch (err: any) {
-            if (err.response?.status === 408) {
-                this.refreshToken();
-            }
-        } finally {
-            this.setAuthInProgress(false);
-        } 
-    }
-
     async refreshToken() {
         try {
             const resp = await refreshToken();
+            console.log(resp.data, resp.status);
             localStorage.setItem("token", resp.data.accessToken);
             localStorage.setItem("refresh_token", resp.data.refreshToken);
             this.setIsAuth(true);
+            this.setIsAdmin(resp.status === 201);
         } catch (error) {
             logout();
         }
@@ -132,8 +129,8 @@ class AuthStore {
 
     async logout() {
         try {
-            await logout();
             this.clearUserData();
+            await logout();
         } catch (err) {
             console.log("Ошибка с выходом");
         }

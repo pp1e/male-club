@@ -18,17 +18,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Consoles from "./components/Consoles/Consoles";
 import NavBar from './components/Navigation/NavBar';
+
 /**
  * Дока по бутстрапу
  * По компонентам бутстраповским: https://react-bootstrap.github.io/docs/
  * По стилям: https://bootstrap5.ru/docs/getting-started/introduction
  */
-
 const App = observer(() => {
-    useEffect(() => {
-        AuthStore.checkAuth();
-    }, []);
-
     return (
       <>
           <BrowserRouter>
@@ -40,6 +36,7 @@ const App = observer(() => {
                   <Route path="alreadyAuth" element={<AlreadyAuth />} />
                   <Route path="*" element={<NotFoundPage />} />
                   <Route path="consoles" element={<Consoles />} />
+
                   <Route path="prerecording" element={<PrivateRoute />} >
                         <Route path="" element={<PrerecordingPage />} />
                   </Route>
@@ -55,7 +52,7 @@ const App = observer(() => {
                   <Route path="upcoming-events" element={<PrivateRoute />} >
                       <Route path="" element={<EventsPage />} />
                   </Route>
-                  <Route path="account" element={<PrivateRoute />} >
+                  <Route path="account" element={<PrivateRoute isAccount={true} />} >
                       <Route path="" element={<PersonalAccount />} />
                   </Route>
               </Routes>

@@ -29,17 +29,19 @@ const RegistrationPage = (props: IProps): ReactElement => {
                 && submitPasswordRef.current?.value 
                 && passwordRef.current?.value === submitPasswordRef.current?.value;
 
-    const setValidationStatuses = () => {
+    const setValidationStatuses = (isPhoneValid: boolean) => {
         setIsNameValid(!!getNameValue());
         setIsSurenameValid(!!getSurnameValue());
-        setIsPhoneValid(!!getPhoneValue());
+        setIsPhoneValid(isPhoneValid);
         setArePasswordsValid(!!checkPasswordsValidity());
     }
 
     const onSubmit = async (event: any) => {
         event.preventDefault();
-        setValidationStatuses();
-        if (!getNameValue() || !getSurnameValue() || !getPhoneValue() || !arePasswordsValid ) {
+        const phoneRegExp: RegExp = /^((\+7)[\- ]?)(\(\d{3}\)|\d{3})[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}(([\- ]?\d{1})[\- ]?\d{1})$/;
+        const isPhoneValid = phoneRegExp.test(getPhoneValue() || "");
+        setValidationStatuses(isPhoneValid);
+        if (!getNameValue() || !getSurnameValue() || !isPhoneValid || !arePasswordsValid ) {
             return;
         } else {
             await registryUser({
@@ -68,6 +70,8 @@ const RegistrationPage = (props: IProps): ReactElement => {
                     if (errorData.response?.status === 409) {
                         setIsPhoneValid(false);
                         setErrorMessage("Пользователь уже зарегистрирован!");
+                    } else {
+                        setErrorMessage("Ошибка регистрации, обновите страницу!");
                     }
                 });
         } 
@@ -141,7 +145,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                         {
                             !isPhoneValid ?
                                 <div className="invalid-feedback text-start">
-                                    Введите телефон!
+                                    Введите корректный телефон!
                                 </div> 
                             : ""
                         }
