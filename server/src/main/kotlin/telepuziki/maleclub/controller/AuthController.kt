@@ -97,8 +97,9 @@ class AuthController(
         val accessJwt = jwtUtils.generateAccessJwt(user.phone)
         val refreshJwt = jwtUtils.generateRefreshJwt(user.id)
         val tokens = mapOf("accessToken" to accessJwt, "refreshToken" to refreshJwt)
+        val status = if (userRepository.getRole(user.id) == "admin") HttpStatus.CREATED else HttpStatus.OK
 
-        return ResponseEntity(tokens, HttpStatus.OK)
+        return ResponseEntity(tokens, status)
     }
 
     @GetMapping("/check_access_token")
