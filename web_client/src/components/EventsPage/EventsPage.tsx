@@ -3,7 +3,7 @@ import { AUTHOR_IMAGE, THREE_POINTS } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import AuthStore from './../../store';
 import "./styles/eventspage.css";
-import { getParentReservationList, cancelReservation } from '../../services/Services';
+import { getParentReservationList } from '../../services/Services';
 
 interface IChild {
     childFirstname: string;
