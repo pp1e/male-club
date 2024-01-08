@@ -17,11 +17,13 @@ const RegistrationPage = (props: IProps): ReactElement => {
     const saveLoginRef = useRef<HTMLInputElement>(null);
     const submitPasswordRef = useRef<HTMLInputElement>(null);
     const submitButtonRef = useRef<HTMLDivElement>(null);
+
     const [isNameValid, setIsNameValid] = useState(true);
     const [isSurnameValid, setIsSurenameValid] = useState(true);
     const [isPhoneValid, setIsPhoneValid] = useState(true);
     const [arePasswordsValid, setArePasswordsValid] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+
     const getNameValue = () => nameRef.current?.value;
     const getSurnameValue = () => surnameRef.current?.value;
     const getPhoneValue = () => phoneRef.current?.value;
@@ -63,7 +65,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                             `
                         )
                         setErrorMessage("");
-                        setTimeout(() => navigate('/login'), 2000);
+                        setTimeout(() => navigate('/login'), 1500);
                     }
                 })
                 .catch(errorData => {
