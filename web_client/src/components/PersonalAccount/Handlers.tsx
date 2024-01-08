@@ -1,10 +1,14 @@
 import { ReactElement } from "react";
+import { IChild, IChildCard } from './_accountCardList/PersonalAccount';
 
 
 export function getAge(date: Date): string {
     const count = new Date()?.getFullYear() - date?.getFullYear();
-    return count > 4 ? `${count} лет`
-                     : `${count} года`;
+    return count > 4
+            ?
+                `${count} лет`
+            :
+                `${count} года`;
 }
 
 export function checkAge(date: Date): boolean {
@@ -29,4 +33,13 @@ export function getVisitsCircles(count: number): ReactElement {
     content.push(<div className="account__circle account__circle__sixth-visite me-2">
                 </div>)
     return <>{content}</>;
+}
+
+export function getIChildCardList(childrenList: IChild[]): IChildCard[] {
+    return childrenList.map(item => (
+        {
+            user: item,
+            isEdit: false,
+        }
+    ));
 }
