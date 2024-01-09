@@ -3,6 +3,10 @@ import { START_PAGE_CHILD1, START_PAGE_CHILD2 } from '../../resources/Images';
 import Image from 'react-bootstrap/Image';
 import "./styles/startpage.css";
 
+
+/**
+ * Старстовая страница
+ */
 const StartPage = (): ReactElement => {
     return (
         <>

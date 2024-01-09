@@ -21,29 +21,29 @@
     height: 40%;
 }
 
-.card__text-main{
-    font-size: min(2.7vw, 30px);
-    line-height: 150%;
-    margin-top: -0.4rem;
+.account-card__text-main{
+    font-size: min(6vh, 30px);
+    line-height: min(8vh, 30px);
 }
-.card__text-second{
-    font-size: min(2.2vh, 20px);
+.account-card__text-second{
+    font-size: min(4vh, 20px);
+    line-height: min(4vh, 20px);
 }
-.aaa{
+.account-card__content__container{
     width: 100%;
     height: 90%;
 }
 .card__text__line-height {    
-    margin-top: -3%;
-    line-height: 120%;
+    margin-top: 2%;
+    line-height: min(4vh, 20px);
 }
 
 .account-page__card__image{
     border-radius: 100%;
     border: 0.15vh solid #FFDB58;
     filter: drop-shadow(0.2vh 0.2vh 0.2vh rgba(0, 0, 0, 0.15));
-    height: 50vh;
-    width: 50vh;
+    height: 50%;
+    width: 60%;
     max-height: 190px;
     max-width: 190px;
 }
@@ -91,8 +91,17 @@
 }
 
 .account__circle__container {
+    margin-top: 0.5vw;
     width: inherit;
     height: min(2vw, 20px);
+}
+
+.account-page__card__containerv2{
+    height: 100%;
+    width: 100%;
+    margin-top: 20%;
+    min-height: 200px;
+    min-width: 140px;
 }
 
 .account__circle__not-visite{
@@ -118,7 +127,7 @@ input[type="date"],
 input[type="phone"],
 textarea
 {    
-    font-size: min(2.2vw, 20px)!important;
+    font-size: min(4vh, 20px)!important;
     text-align: center;
 }
 

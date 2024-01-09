@@ -17,7 +17,7 @@ interface IChildBackend {
     firstname: string;
     birthdate: string;
     id: number;
-    countVisit: number;
+    count_visit: number;
     peculiarities: string;
 }
 
@@ -45,7 +45,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
                     name: item.firstname,
                     date: new Date(item.birthdate),
                     features: item.peculiarities,
-                    countVisites: item.countVisit
+                    countVisites: item.count_visit
                 };
                 resList.push(curChild);
             });

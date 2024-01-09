@@ -23,6 +23,10 @@ interface IChild {
 
 interface IProps {}
 
+
+/**
+ * Список предстоящих записей
+ */
 const PrerecordingPage = (props: IProps): ReactElement => {
     const navigate = useNavigate();
     const minDate = new Date().toISOString().split('T')[0];

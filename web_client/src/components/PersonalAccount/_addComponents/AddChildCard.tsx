@@ -73,62 +73,64 @@ const AddChildCard = (props: IProps): ReactElement => {
     };
 
     return  <>
-                <form method="POST" onSubmit={onSubmit} className=" account-page__card__container d-flex flex-column justify-content-center align-items-center">
-                    <div className="account-page__card__image d-flex flex-column justify-content-center align-items-center">
-                        <Image
-                            src={AUTHOR_IMAGE}
-                            className="account__no-photo"
-                        />
-                    </div>                    
-                    <div className="d-flex flex-column justify-content-center align-items-center pt-3 account-page__container">
-                        <div className="card__input__width mb-2">
-                            <input
-                                ref={nameRef}
-                                name="name"
-                                defaultValue={props.isEdit ? props.child?.name : undefined}
-                                className={`form-control border ${isNameValid ? 'border-warning' : 'is-invalid border-danger'}`}
-                                type="text" 
-                                placeholder="Введите имя" 
-                                aria-label="Введите имя" 
+                <form method="POST" onSubmit={onSubmit} className="account-page__card__container d-flex flex-column justify-content-center align-items-center">
+                    <div className=" account-page__card__containerv2  d-flex flex-column justify-content-center align-items-center">
+                        <div className="account-page__card__image d-flex flex-column justify-content-center align-items-center">
+                            <Image
+                                src={AUTHOR_IMAGE}
+                                className="account__no-photo"
                             />
-                        </div>
-                        {
-                            !props.isEdit
-                            ?
-                                <div className="card__input__width mb-2">
-                                    <input
-                                        ref={dateRef}
-                                        name="date"
-                                        className={`form-control border ${isDateValid ? 'border-warning' : 'is-invalid border-danger'}`}
-                                        type="date"
-                                        placeholder="дд.мм.гггг" 
-                                        aria-label="дд.мм.гггг" 
-                                    />                                                
-                                    {
-                                        !isDateValid
-                                        ?
-                                            <div className="invalid-feedback text-start px-1">
-                                                Допустимый возраст: 2-16 лет.
-                                            </div> 
-                                        : ""
-                                    }
-                                </div>
-                            :
-                                <div className="d-flex flex-column justify-content-around py-1">
-                                    <span className="card__text-main">Возраст: {getAge(props.child!!.date)}</span>
+                        </div>                    
+                        <div className="d-flex flex-column justify-content-center align-items-center pt-3 account-page__container">
+                            <div className="card__input__width mb-2">
+                                <input
+                                    ref={nameRef}
+                                    name="name"
+                                    defaultValue={props.isEdit ? props.child?.name : undefined}
+                                    className={`form-control border ${isNameValid ? 'border-warning' : 'is-invalid border-danger'}`}
+                                    type="text" 
+                                    placeholder="Введите имя" 
+                                    aria-label="Введите имя" 
+                                />
                             </div>
-                        }
-                        <div className="card__input__width mb-2">
-                            <textarea
-                                ref={featuresRef}
-                                name="features"
-                                defaultValue={props.isEdit ? props.child?.features : undefined}
-                                className="form-control border border-warning card__textarea__resize"
-                                placeholder="Введите особенности ребенка" 
-                                aria-label="Введите особенности ребенка"
-                            />
+                            {
+                                !props.isEdit
+                                ?
+                                    <div className="card__input__width mb-2">
+                                        <input
+                                            ref={dateRef}
+                                            name="date"
+                                            className={`form-control border ${isDateValid ? 'border-warning' : 'is-invalid border-danger'}`}
+                                            type="date"
+                                            placeholder="дд.мм.гггг" 
+                                            aria-label="дд.мм.гггг" 
+                                        />                                                
+                                        {
+                                            !isDateValid
+                                            ?
+                                                <div className="invalid-feedback text-start px-1">
+                                                    Допустимый возраст: 2-16 лет.
+                                                </div> 
+                                            : ""
+                                        }
+                                    </div>
+                                :
+                                    <div className="d-flex flex-column justify-content-around mb-2">
+                                        <span className="account-card__text-main">Возраст: {getAge(props.child!!.date)}</span>
+                                </div>
+                            }
+                            <div className="card__input__width mb-2">
+                                <textarea
+                                    ref={featuresRef}
+                                    name="features"
+                                    defaultValue={props.isEdit ? props.child?.features : undefined}
+                                    className="form-control border border-warning card__textarea__resize"
+                                    placeholder="Введите особенности ребенка" 
+                                    aria-label="Введите особенности ребенка"
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-warning p-3 my-2">{ props.isEdit ? 'Изменить' : 'Добавить ребенка'}</button>
                         </div>
-                        <button type="submit" className="btn btn-warning p-3 my-2">{ props.isEdit ? 'Изменить' : 'Добавить ребенка'}</button>
                     </div>
                 </form>
             </>
