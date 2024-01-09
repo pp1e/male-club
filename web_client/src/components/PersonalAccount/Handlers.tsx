@@ -17,6 +17,7 @@ export function checkAge(date: Date): boolean {
 }
 
 export function getVisitsCircles(count: number): ReactElement {
+    console.log(count);
     let visibleCount = count % 6;
     let emptyCirlesCount = 5 - visibleCount;
     const content = [];

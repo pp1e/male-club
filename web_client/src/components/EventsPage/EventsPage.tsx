@@ -24,7 +24,7 @@ const EventsPage = (props: IProps): ReactElement => {
     useEffect(() => {
         getParentReservationList(AuthStore.getUserId!!).then((result) => {
             setResponseList(result.data);
-            console.log('responseList');
+            console.log(result.data);
         });
     }, [listChanged]);
 
@@ -40,15 +40,15 @@ const EventsPage = (props: IProps): ReactElement => {
                     <div className="d-flex justify-content-center align-items-center text-muted card__no-data card__text-second">Нет записей</div>
             }
         </>)
-        
-        console.log('reactList');
     }, [responseList, listChanged]);
 
     return (
         <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
             <span className="events-page__text-main">Предстоящие записи</span>
-            <div className="d-flex flex-row justify-content-center flex-wrap events-page__container">
-                {prerecordsList}
+            <div className="d-flex flex-row justify-content-center events-page__maxWidth">
+                <div className="d-flex flex-row justify-content-start flex-wrap events-page__container">
+                    {prerecordsList}
+                </div>
             </div>
         </div> 
     )
