@@ -77,6 +77,8 @@ class SecurityConfig(
         val config = CorsConfiguration()
         config.allowCredentials = true
         config.addAllowedOrigin("http://localhost:3000")
+        config.addAllowedOrigin("http://localhost:80")
+        config.addAllowedOrigin("http://localhost")
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
         source.registerCorsConfiguration("/**", config)
