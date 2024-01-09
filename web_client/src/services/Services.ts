@@ -8,7 +8,7 @@ export function getChildrenList(ageFilter?: boolean) {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         params: {
-            ageFilter: ageFilter
+            age_filter: ageFilter
         }
     });
 }

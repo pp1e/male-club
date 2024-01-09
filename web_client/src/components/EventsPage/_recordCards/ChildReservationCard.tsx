@@ -26,7 +26,6 @@ const ChildCard = (props: IProps): ReactElement => {
             if (result.status !== 200) {
                 console.log('Ошибка при отмене брони');
             }
-            console.log('deleteReservation');
             props.setListChanged(!props.listChanged);
         })
         .catch(errorData => {
@@ -57,7 +56,7 @@ const ChildCard = (props: IProps): ReactElement => {
                     <div className="d-flex flex-column events-page__text-container justify-content-around">
                         <span className="card__text-main">{props.child.childFirstname}</span>
                         <span className="card__text-second">Дата записи: {getCurrentReservationDateTime(props.child.reservationTime)}</span>
-                        <span className="card__text-second">Номер консоли: {props.child.consoleNumber}</span>
+                        <span className="card__text-second">{props.child.consoleNumber ? `Номер консоли: ${props.child.consoleNumber}` : 'Без консоли'}</span>
                     </div>
                 </div>
             </>
