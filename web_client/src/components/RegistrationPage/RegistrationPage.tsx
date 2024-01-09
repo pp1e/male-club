@@ -5,9 +5,11 @@ import { registryUser } from "../../services/api.auth";
 
 import "./styles/registrationPage.css";
 
-interface IProps {}
-
-const RegistrationPage = (props: IProps): ReactElement => {
+/**
+ * Регистрация пользователя.
+ * @author Корюшкин Н.Е.
+ */
+const RegistrationPage = (): ReactElement => {
     const navigate = useNavigate();
     const nameRef = useRef<HTMLInputElement>(null);
     const surnameRef = useRef<HTMLInputElement>(null);
@@ -27,9 +29,11 @@ const RegistrationPage = (props: IProps): ReactElement => {
     const getNameValue = () => nameRef.current?.value;
     const getSurnameValue = () => surnameRef.current?.value;
     const getPhoneValue = () => phoneRef.current?.value;
-    const checkPasswordsValidity = () => passwordRef.current?.value 
-                && submitPasswordRef.current?.value 
-                && passwordRef.current?.value === submitPasswordRef.current?.value;
+    const checkPasswordsValidity = (): boolean => {
+        return !!(passwordRef.current?.value
+            && submitPasswordRef.current?.value 
+            && passwordRef.current.value === submitPasswordRef.current.value);
+    };
 
     const setValidationStatuses = (isPhoneValid: boolean) => {
         setIsNameValid(!!getNameValue());
@@ -41,9 +45,10 @@ const RegistrationPage = (props: IProps): ReactElement => {
     const onSubmit = async (event: any) => {
         event.preventDefault();
         const phoneRegExp: RegExp = /^((\+7)[\- ]?)(\(\d{3}\)|\d{3})[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}(([\- ]?\d{1})[\- ]?\d{1})$/;
-        const isPhoneValid = phoneRegExp.test(getPhoneValue() || "");
-        setValidationStatuses(isPhoneValid);
-        if (!getNameValue() || !getSurnameValue() || !isPhoneValid || !arePasswordsValid ) {
+        const isPhoneCorrect = phoneRegExp.test(getPhoneValue() || "");
+        const arePasswordsCorrect = checkPasswordsValidity();
+        setValidationStatuses(isPhoneCorrect);
+        if (!getNameValue() || !getSurnameValue() || !isPhoneCorrect || !arePasswordsCorrect ) {
             return;
         } else {
             await registryUser({
@@ -76,7 +81,7 @@ const RegistrationPage = (props: IProps): ReactElement => {
                         setErrorMessage("Ошибка регистрации, обновите страницу!");
                     }
                 });
-        } 
+        }
     }
 
     return (

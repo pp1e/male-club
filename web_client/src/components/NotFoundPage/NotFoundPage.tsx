@@ -4,6 +4,9 @@ import "./styles/notFoundPage.css";
 import { NOT_FOUND_IMAGE } from '../../resources/Images';
 import { useNavigate } from "react-router";
 
+/**
+ * Страница не найдена.
+ */
 const NotFoundPage = (): ReactElement => {
     const navigate = useNavigate();
     return (

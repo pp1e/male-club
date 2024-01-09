@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router';
 import { ReactElement}  from 'react';
 import AuthStore from "../../../store";
 
+/**
+ * Панель навигации для авторизованного пользователя.
+ * @author Корюшкин Н.Е.
+ */
 const AuthorizedNavBar = observer((): ReactElement => {
     const navigate = useNavigate();
     const onLogoutClick = () => {
@@ -72,23 +76,25 @@ const AuthorizedNavBar = observer((): ReactElement => {
                         <ul className="dropdown-menu dropdown-menu-right">
                             {
                                 AuthStore.isAdmin ? null :
-                                    <li>
-                                        <a 
-                                            className="dropdown-item" 
-                                            onClick={() => navigate('/account')}
-                                        >
-                                            Личный кабинет
-                                        </a>
-                                    </li>
+                                    <>
+                                        <li>
+                                            <a 
+                                                className="dropdown-item" 
+                                                onClick={() => navigate('/account')}
+                                            >
+                                                Личный кабинет
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a 
+                                                className="dropdown-item"
+                                                onClick={() => navigate('/upcoming-events')}
+                                            >
+                                                Предстоящие записи
+                                            </a>
+                                        </li>
+                                    </>
                             }
-                            <li>
-                                <a 
-                                    className="dropdown-item"
-                                    onClick={() => navigate('/upcoming-events')}
-                                >
-                                    Предстоящие записи
-                                </a>
-                            </li>
                             <li>
                                 <a 
                                     className="dropdown-item" 

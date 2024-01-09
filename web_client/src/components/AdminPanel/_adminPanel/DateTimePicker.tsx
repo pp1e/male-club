@@ -29,6 +29,7 @@ const prepareChildrenList = (res: any) => (res.data || []).map((child: any) => (
 
 /**
  * Блок выбора даты и времени.
+ * @author Корюшкин Н.Е.
  */
 const DateTimePicker = (props: IDatePickerProps):ReactElement => {
     const [dateValue, setDateValue] = useState<string | null>(null);

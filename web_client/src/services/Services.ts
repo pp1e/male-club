@@ -2,6 +2,7 @@ import axios from 'axios';
 import { IReservation } from '../components/PrerecordingPage/PrerecordingPage';
 export const CONSOLES_API_BASE_URL = (entity: string, action: string) => `http://localhost:8080/api/v1/${entity}/${action}`;
 
+/** Получение списка детей */
 export function getChildrenList(ageFilter?: boolean) {    
     return axios.get(CONSOLES_API_BASE_URL('child', 'list'), {
         headers: {
@@ -13,6 +14,7 @@ export function getChildrenList(ageFilter?: boolean) {
     });
 }
 
+/** Получение занятости консолей. */
 export function getConsolesOccupation() {
     return axios.get(CONSOLES_API_BASE_URL('reservation', 'occupancy'), {
         headers: {
@@ -29,6 +31,7 @@ export function getParentReservationList(parent_id: number) {
     });
 }
 
+/** Добавление ребенка. */
 export function addUserChild(
     { name, date, features, countVisites, user_id }: {
         name: string,
@@ -54,6 +57,7 @@ export function addUserChild(
     );
 }
 
+/** Обновление ребенка. */
 export function updateUserChild(
     { name, features, child_id }: {
         name: string,
@@ -76,6 +80,7 @@ export function updateUserChild(
     );
 }
 
+/** Удаление ребенка. */
 export function deleteUserChild(child_id:number) {
     return axios.delete(CONSOLES_API_BASE_URL('child', `delete/${child_id}`),
     {
@@ -85,6 +90,7 @@ export function deleteUserChild(child_id:number) {
     });
 }
 
+/** Получение списка детей админом. */
 export function getAdminChildrenList({date, time}: { date: string, time: string }) {
     return axios.get(CONSOLES_API_BASE_URL('console', 'admin_info'), {
         headers: {
@@ -97,6 +103,7 @@ export function getAdminChildrenList({date, time}: { date: string, time: string 
     });
 }
 
+/** Получение информации о пользователе. */
 export async function getUserData() {
     return axios.get(CONSOLES_API_BASE_URL('user', 'info'), {
         headers: {
@@ -107,6 +114,7 @@ export async function getUserData() {
     });
 }
 
+/** Добавление записи. */
 export function addReservation({reservation}: {reservation: IReservation}) {    
     return axios.post(CONSOLES_API_BASE_URL('reservation', 'add'), {
             timeAndDate: reservation.timeAndDate,
@@ -120,6 +128,7 @@ export function addReservation({reservation}: {reservation: IReservation}) {
         });
 }
 
+/** Получение статуса консолей. */
 export function getConsolesStatusList(datetime: string) {    
     return axios.get(CONSOLES_API_BASE_URL('console', 'reservation_info'), {
         headers: {
@@ -131,6 +140,7 @@ export function getConsolesStatusList(datetime: string) {
     });
 }
 
+/** Подтверждение записи. */
 export function confirmReservation(id: number) {
     return axios.put(CONSOLES_API_BASE_URL('reservation', `confirm/${id}`), { id: id }, {
         headers: {
@@ -139,6 +149,7 @@ export function confirmReservation(id: number) {
     })
 }
 
+/** Удаление записи. */
 export function deleteReservation(id: number) {
     return axios.delete(CONSOLES_API_BASE_URL('reservation', `delete/${id}`), {
         headers: {

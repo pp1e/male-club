@@ -9,6 +9,10 @@ interface IProps {
   isAccount?: boolean;
 }
 
+/**
+ * Компонент для приватной путей.
+ * @author Корюшкин Н.Е.
+ */
 const PrivateRoute = (props: IProps) => {
     const renderTemplate = useMemo(() => {
         if (AuthStore.isAuthInProgress) {

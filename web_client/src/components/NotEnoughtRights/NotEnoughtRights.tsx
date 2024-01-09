@@ -4,6 +4,10 @@ import "../NotFoundPage/styles/notFoundPage.css";
 import { NOT_ENOUGHT_RIGHTS } from '../../resources/Images';
 import { useNavigate } from "react-router";
 
+/**
+ * Страница об ошибке, что у пользователя недостаточно прав для просмотра.
+ * @author Корюшкин Н.Е.
+ */
 const NotEnoughtRights = (): ReactElement => {
     const navigate = useNavigate();
     return (

@@ -17,7 +17,11 @@ interface IUserCardProps {
     user: IUserReservation;
 }
 
-const User = (props: IUserCardProps): ReactElement => {
+/**
+ * Запись пользователя в списке всех записей.
+ * @author Корюшкин Н.Е.
+ */
+const Reservation = (props: IUserCardProps): ReactElement => {
     const onConfirmReservation = () => {
         confirmReservation(props.user.recordID || 0)
             .then(() => {
@@ -77,4 +81,4 @@ const User = (props: IUserCardProps): ReactElement => {
     )
 };
 
-export default User;
+export default Reservation;

@@ -1,19 +1,21 @@
 import axios from 'axios';
 import { CONSOLES_API_BASE_URL } from './Services';
 
-/* Возвращает 
-    406 - нет пользователя с таким телефоном
-    409 - неправильный пароль
-    200 - все ок
-    201 - админ
+/* Авторизация пользователя.
+    Возвращает 
+        406 - нет пользователя с таким телефоном
+        409 - неправильный пароль
+        200 - все ок
+        201 - админ
 */
 export function loginUser({ phone, password }: { phone: string, password: string }) {
     return axios.post(`http://localhost:8080/api/v1/login?phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`);
 }
 
-/* Возвращает 
-    409 - уже зареган пользователь
-    200 - все ок
+/* Регистрация пользователя.
+    Возвращает 
+        409 - уже зарегистрирован пользователь
+        200 - все ок
 */
 export function registryUser(
     { firstName, lastName, patronymic, phone, password }: {
@@ -35,6 +37,12 @@ export function registryUser(
     );
 }
 
+/** Проверка валидности токена.
+    Возвращает
+        200 - все ок
+        201 - админ
+        408 - надо обновить токен
+ */
 export async function checkAuthToken() {
     return axios.get("http://localhost:8080/api/v1/check_access_token", {
         headers: {
@@ -45,6 +53,9 @@ export async function checkAuthToken() {
     });
 }
 
+/**
+ * Обновление токена.
+ */
 export function refreshToken() {
     return axios.post("http://localhost:8080/api/v1/refresh", null, {
         headers: {
@@ -53,6 +64,9 @@ export function refreshToken() {
     });
 }
     
+/**
+ * Выход из под пользователя.
+ */
 export function logout() {
     return axios.post("http://localhost:8080/api/v1/logout");
 }

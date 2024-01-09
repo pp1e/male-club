@@ -4,6 +4,10 @@ import authStore from "../../store";
 
 import "./styles/loginPage.css";
 
+/**
+ * Авторизация пользователя.
+ * @author Корюшкин Н.Е.
+ */
 const LoginPage = (): ReactElement => {
     const navigate = useNavigate();
     const phoneRef = useRef<HTMLInputElement>(null);
@@ -35,15 +39,20 @@ const LoginPage = (): ReactElement => {
         if (!phoneRef.current?.value || !passwordRef.current?.value) {
             return;
         }
-        const resultStatus = await authStore.login(phoneRef.current.value, passwordRef.current.value);
+        const resultStatus = 
+            await authStore.login(phoneRef.current.value, passwordRef.current.value);
         if (resultStatus === 409) {
             setIsPasswordValid(false);
             setErrorPasswordMessage('Пароль введен неверно!');
         } else if (resultStatus === 406) {
             setIsPhoneValid(false);
             setErrorPhoneMessage('Номера телефона не существует!');
+        } else if ((resultStatus || 400) >= 400) {
+            setIsPhoneValid(false);
+            setIsPasswordValid(false);
+            setErrorPasswordMessage('Ошибка, повторите еще раз.');
         } else {
-            navigate("/");
+            navigate('/');
         }
     }
 

@@ -14,7 +14,6 @@ import PersonalAccount from './components/PersonalAccount/PersonalAccount';
 import PrerecordingPage from "./components/PrerecordingPage/PrerecordingPage";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Consoles from "./components/Consoles/Consoles";
 import NavBar from './components/Navigation/NavBar';
 
 /**
@@ -33,7 +32,6 @@ const App = observer(() => {
                   <Route path="notEnoughtRightsAdmin" element={<NotEnoughtRightsAdmin />} />
                   <Route path="alreadyAuth" element={<AlreadyAuth />} />
                   <Route path="*" element={<NotFoundPage />} />
-                  <Route path="consoles" element={<Consoles />} />
 
                   <Route path="prerecording" element={<PrivateRoute />} >
                         <Route path="" element={<PrerecordingPage />} />

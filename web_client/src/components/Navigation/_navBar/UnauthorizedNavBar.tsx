@@ -1,6 +1,10 @@
 import { useNavigate } from 'react-router';
 import { ReactElement}  from 'react';
 
+/**
+ * Панель навигации для неавторизованного пользователя.
+ * @author Корюшкин Н.Е.
+ */
 const UnauthorizedNavBar = (): ReactElement => {
     const navigate = useNavigate();
     return (

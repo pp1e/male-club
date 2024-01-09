@@ -17,6 +17,10 @@ interface IUserReservation {
     recordID?: number;
 }
 
+/**
+ * Страница администратора.
+ * @author Корюшкин Н.Е.
+ */
 const AdminPanel = observer((): ReactElement => {
     const [userList, setUserList] = useState<IUserReservation[]>([]);
     const searchChildrenListButton = useRef(null);

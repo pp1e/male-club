@@ -5,6 +5,10 @@ import {
     getConsolesOccupation as getOccupatedConsolesAmount
 } from '../../../services/Services';
 
+/**
+ * Генерация показателей занятости площадки.
+ * @param occupation Занятость площадки.
+ */
 const getConsolesOccupation = (occupation: number): ReactElement => {
     const row = [];
     const circle = (index: number) => (
@@ -19,6 +23,11 @@ const getConsolesOccupation = (occupation: number): ReactElement => {
     }
     return <>{row}</>
 }
+
+/**
+ * Карточка занятости площадки.
+ * @author Корюшкин Н.Е.
+ */
 const ReserveCard = (): ReactElement => {
     const [consolesOccupation, setConsolesOccupation] = useState(0);
     // TODO: Продумать и реализовать получение заполненности консолей по времени.

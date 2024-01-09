@@ -6,6 +6,10 @@ import AuthorizedNavBar from "./_navBar/AuthorizedNavBar";
 
 import "./styles/navBar.css";
 
+/**
+ * Панель навигации.
+ * @author Корюшкин Н.Е.
+ */
 const NavBar = observer((): ReactElement => {
     return AuthStore.isAuth
         ? <AuthorizedNavBar />

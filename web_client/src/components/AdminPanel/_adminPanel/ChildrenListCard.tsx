@@ -1,5 +1,5 @@
 import { ReactElement, useState, useMemo, ReactNode, useRef, SetStateAction, Dispatch } from "react";
-import User from './User';
+import Reservation from './User';
 
 interface IUserReservation {
     name: string;
@@ -17,6 +17,7 @@ interface IProps {
 
 /**
  * Блок списка детей.
+ * @author Корюшкин Н.Е.
  */
 const ChildrenListCard = (props: IProps): ReactElement => {
     const searchRef = useRef(null);
@@ -27,7 +28,7 @@ const ChildrenListCard = (props: IProps): ReactElement => {
         ) || [];
         return filteredChildrenList?.map(user => {
             return (
-                <User 
+                <Reservation
                     searchChildrenListButton={props.searchChildrenListButton}
                     user={user} 
                     key={user.recordID} 
