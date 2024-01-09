@@ -24,7 +24,6 @@ const EventsPage = (props: IProps): ReactElement => {
     useEffect(() => {
         getParentReservationList(AuthStore.getUserId!!).then((result) => {
             setResponseList(result.data);
-            console.log(result.data);
         });
     }, [listChanged]);
 
