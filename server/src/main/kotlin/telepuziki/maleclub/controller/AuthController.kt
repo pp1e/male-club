@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
+import telepuziki.maleclub.model.LoginForm
 import telepuziki.maleclub.repository.RefreshTokenRepository
 import telepuziki.maleclub.repository.UserRepository
 import telepuziki.maleclub.security.details.UserDetailsImpl
@@ -36,20 +37,17 @@ class AuthController(
 ) {
 
     @PostMapping("/login")
-    fun generateToken(
-        @RequestParam("phone") phone: String,
-        @RequestParam("password") password: String
-    ): ResponseEntity<Map<String, Any>> {
-        val user = userRepository.findByPhone(phone)
+    fun generateToken(@RequestBody loginForm: LoginForm): ResponseEntity<Map<String, Any>> {
+        val user = userRepository.findByPhone(loginForm.phone)
         if (user == null)
             return ResponseEntity(null, HttpStatus.NOT_ACCEPTABLE)
         else {
-            if (!passwordEncoder.matches(password, user.password))
+            if (!passwordEncoder.matches(loginForm.password, user.password))
                 return ResponseEntity(null, HttpStatus.CONFLICT)
         }
 
         val authentication = authenticationManager
-            .authenticate(UsernamePasswordAuthenticationToken(phone, password))
+            .authenticate(UsernamePasswordAuthenticationToken(loginForm.phone, loginForm.password))
         SecurityContextHolder.getContext().authentication = authentication
         val userDetails = authentication.principal as UserDetailsImpl
 
