@@ -17,7 +17,7 @@ interface IChildBackend {
     firstname: string;
     birthdate: string;
     id: number;
-    countVisit: number;
+    count_visit: number;
     peculiarities: string;
 }
 
@@ -45,7 +45,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
                     name: item.firstname,
                     date: new Date(item.birthdate),
                     features: item.peculiarities,
-                    countVisites: item.countVisit
+                    countVisites: item.count_visit
                 };
                 resList.push(curChild);
             });
@@ -95,7 +95,7 @@ const PersonalAccount = (props: IProps): ReactElement => {
 
     return (
         <div className="container d-flex flex-column align-items-center font-weight-normal text-center">
-            <span className="account-page__text-main">Личный аккаунт</span>
+            <span className="account-page__text-main">Личный кабинет</span>
             <div className="d-flex flex-row justify-content-center flex-wrap account-page__container">
                 {resultAdditionalList}
                 <AddButton

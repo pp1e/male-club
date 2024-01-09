@@ -11,6 +11,7 @@
     height: min(36vw, 400px);
     width: min(28vw, 350px);
     padding-bottom: 2vh;
+    margin: 20px;
 }
 
 .events-page__text-container{
@@ -23,10 +24,12 @@
 }
 
 .card__text-main{
-    font-size: min(3.3vw, 32px);
+    font-size: min(4vw, 32px);
+    line-height: 2vh;
 }
 .card__text-second{    
     font-size: min(2.8vw, 24px);
+    line-height: 2vh;
 }
 
 .card__no-data{
@@ -38,18 +41,22 @@
     border-radius: 100%;
     border: 0.2vh solid #FFDB58;
     filter: drop-shadow(0.2vh 0.2vh 0.2vh rgba(0, 0, 0, 0.10));
-    height: 30vh;
-    width: 30vh;
+    height: 50%;
+    width: 55%;
     max-height: 200px;
     max-width: 200px;
 }
 
 .events-page__container{
-    width: 100%;
+    width: 91%;
 }
 .account__no-photo{
-    height: 60%;
-    width: 60%;
+    height: 50%;
+    width: 50%;
     max-height: 130px; 
     max-width: 115px;
+}
+
+.events-page__maxWidth{
+    width: 100%;
 }

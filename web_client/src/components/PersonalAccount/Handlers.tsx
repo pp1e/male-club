@@ -3,16 +3,22 @@ import { IChild, IChildCard } from './PersonalAccount';
 
 
 export function getAge(date: Date): string {
-    const count = new Date()?.getFullYear() - date?.getFullYear();
-    return count > 4
+    const birthdayDate  = new Date(date);
+    const currentDate  = new Date();
+    let currAge = currentDate.getFullYear() - birthdayDate.getFullYear();
+    if (currentDate.getMonth() < birthdayDate.getMonth() || 
+        (currentDate.getMonth() == birthdayDate.getMonth() && currentDate.getDate() < birthdayDate.getDate())) {
+            currAge--;
+    }
+    return currAge > 4
             ?
-                `${count} лет`
+                `${currAge} лет`
             :
-                `${count} года`;
+                `${currAge} года`;
 }
 
 export function checkAge(date: Date): boolean {
-    const currAge = new Date()?.getFullYear() - date?.getFullYear();
+    const currAge = +getAge(date).split(' ')[0];
     return currAge > 1 && currAge < 17;
 }
 

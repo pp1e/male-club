@@ -68,7 +68,7 @@ const ChildCard = (props: IProps): ReactElement => {
                                     <li><button id={`${props.child!!.id}`} onClick={deleteCardButtonClick} className="dropdown-item">Удалить ребенка</button></li>
                                 </ul>
                             </div>
-                            <div className="aaa d-flex flex-column justify-content-center align-items-center">
+                            <div className="account-card__content__container d-flex flex-column justify-content-center align-items-center">
                                 <div className="account-page__card__image d-flex flex-column justify-content-center align-items-center">
                                     <Image
                                         src={AUTHOR_IMAGE}
@@ -77,15 +77,15 @@ const ChildCard = (props: IProps): ReactElement => {
                                 </div>
                                 <div className="account-page__text-container d-flex flex-column justify-content-around">
                                     <div className="d-flex flex-column justify-content-between">
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.name}</span>
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-danger': ''}`}>Возраст: {getAge(props.child!!.date)}</span>
+                                        <span className={`account-card__text-main mb-1 ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.name}</span>
+                                        <span className={`account-card__text-main ${!checkAge(props.child!!.date) ? 'text-danger': ''}`}>Возраст: {getAge(props.child!!.date)}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-around">
-                                        <span className={`card__text-main ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Особенности:</span>
-                                        <span className={`card__text-second card__text__line-height ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.features}</span>
+                                        <span className={`account-card__text-main ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Особенности:</span>
+                                        <span className={`account-card__text-second card__text__line-height ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>{props.child!!.features}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-center pt-1">
-                                        <span className={`card__text-second ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Количество посещений:</span>
+                                        <span className={`account-card__text-second ${!checkAge(props.child!!.date) ? 'text-black-50': ''}`}>Количество посещений:</span>
                                         <div className="account__circle__container d-flex flex-row justify-content-center align-items-center">{getVisitsCircles(props.child!!.countVisites)}</div>
                                     </div>
                                 </div> 

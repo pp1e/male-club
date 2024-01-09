@@ -47,8 +47,7 @@ class ReservationController(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Boolean> {
         val child = childRepository.findByIdOrNull(reservation.childId)
-        val console = consoleRepository.findByIdOrNull(reservation.consoleId)
-        if (child == null || console == null) {
+        if (child == null) {
             return ResponseEntity(false, HttpStatus.BAD_REQUEST)
         }
         if (child.userId != userDetails.getId() && userDetails.isNotAdmin())

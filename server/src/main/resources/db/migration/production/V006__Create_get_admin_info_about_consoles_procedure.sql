@@ -6,7 +6,7 @@ BEGIN
            child.count_visit, child.peculiarities, child.birthdate, reservation.id
     FROM reservation
              INNER JOIN child ON child.id = reservation.child_id
-             INNER JOIN console ON console.id = reservation.console_id
+             LEFT JOIN console ON console.id = reservation.console_id
     WHERE DATE(reservation.time_and_date) = date AND
           (time IS NULL OR TIME(reservation.time_and_date) = time) AND
           child.firstname LIKE child_name AND reservation.is_confirmed = FALSE
