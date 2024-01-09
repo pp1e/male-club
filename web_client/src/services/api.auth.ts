@@ -9,7 +9,10 @@ import { CONSOLES_API_BASE_URL } from './Services';
         201 - админ
 */
 export function loginUser({ phone, password }: { phone: string, password: string }) {
-    return axios.post(`http://localhost:8080/api/v1/login?phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`);
+    return axios.post('http://localhost:8080/api/v1/login', {
+        phone: phone,
+        password: password
+    });
 }
 
 /* Регистрация пользователя.
