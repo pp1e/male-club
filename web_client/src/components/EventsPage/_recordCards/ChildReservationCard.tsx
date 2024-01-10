@@ -19,6 +19,7 @@ function getCurrentReservationDateTime(datetime: string) {
 
 /**
  * Карточка предстоящей записи
+ * @author Гусева П.Н.
  */
 const ChildCard = (props: IProps): ReactElement => {
     const cancelReservationOnClick = (e: React.MouseEvent<HTMLButtonElement> ) => {

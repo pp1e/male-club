@@ -15,6 +15,7 @@ export interface IChild {
 
 /**
  * Список предстоящих записей пользователя
+ * @author Гусева П.Н.
  */
 const EventsPage = (props: IProps): ReactElement => {
     const [listChanged, setListChanged] = useState(true);

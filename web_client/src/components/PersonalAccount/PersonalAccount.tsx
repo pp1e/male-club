@@ -30,6 +30,7 @@ interface IProps {}
 
 /**
  * Список карточек детей в ЛК пользователя
+ * @author Гусева П.Н.
  */
 const PersonalAccount = (props: IProps): ReactElement => {
     const [childrenList, setChildrenList] = useState<IChild[]>([]);

@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
 import { ReactElement, useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { getChildrenList, addReservation, getConsolesStatusList } from '../../services/Services'
 import './styles/prerecordingPage.css';
 
@@ -26,6 +28,7 @@ interface IProps {}
 
 /**
  * Список предстоящих записей
+ * @author Гусева П.Н.
  */
 const PrerecordingPage = (props: IProps): ReactElement => {
     const navigate = useNavigate();
@@ -42,11 +45,14 @@ const PrerecordingPage = (props: IProps): ReactElement => {
     const [isChildSelected, setChildSelected] = useState(true);
     const [isDateSelected, setDateSelected] = useState(true);
     const [isTimeSelected, setTimeSelected] = useState(true);
-    const [isPhoneValid, setIsPhoneValid] = useState(true);    
+    const [isPhoneValid, setIsPhoneValid] = useState(true);  
+    const [isFullSite, setIsFullSite] = useState(false);
     const phoneRegExp: RegExp = /^((\+7)[\- ]?)(\(\d{3}\)|\d{3})[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}(([\- ]?\d{1})[\- ]?\d{1})$/;
 
     const [errorMessage, setErrorMessage] = useState('');
-
+    
+    const handleClose = () => setIsFullSite(false);
+    const handleShow = () => setIsFullSite(true);
     const getChildValue = () => childRef.current?.value;
     const getDateValue = () => dateRef.current?.value;
     const getTimeValue = () => timeRef.current?.value;
@@ -124,7 +130,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
     const onSubmit = async (event: any) => {
         event.preventDefault();
         setValidationStatuses();
-        if (!getChildValue() || !getDateValue() || !getTimeValue() || !getPhoneValue ) {
+        if (!getChildValue() || !getDateValue() || !getTimeValue() || !getPhoneValue) {
             return;
         } else {
             const curDateTime = new Date(+(new Date(`${getDateValue()!!} ${getTimeValue()!!}`)) + 3*3600000);
@@ -150,6 +156,9 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                     }
                 })
                 .catch(errorData => {
+                    if (errorData.response.status === 400) {
+                        handleShow();
+                    }
                     if (errorData.message === "Request failed with status code 409") {
                         setErrorMessage("Не удалось произвести запись");
                     }
@@ -202,7 +211,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                                 name="time"
                                 type="time"                                
                                 step="300"
-                                min="10:00"                                
+                                min="10:00"                               
                                 max="21:30"
                                 className={`form-control py-3 text-start border ${isTimeSelected ? 'border-warning' : 'is-invalid border-danger'} ${getTimeValue() ? 'text-body' : 'text-muted'}`} 
                             />
@@ -249,15 +258,34 @@ const PrerecordingPage = (props: IProps): ReactElement => {
                         <div className="text-danger mb-1">{errorMessage}</div>
                         <div ref={submitButtonRef}>
                             <button 
-                                type="submit" 
+                                type="submit"
                                 className="btn btn-warning px-5 py-4 border-0"
                             >
                                 Забронировать
                             </button>
-                        </div>
+                        </div>                        
+                        <Modal
+                            show={isFullSite}
+                            onHide={handleClose}
+                            backdrop="static"
+                            keyboard={false}
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title>Не удалось забронировать</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                Этот ребенок уже записан или площадка заполнена в выбранное время. Пожалуйста, выберите другой день или другое время.
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="warning" onClick={handleClose}>
+                                    Хорошо
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>                        
                     </form>
                 </div>
             </div>
+            
         </>   
     )
 };
