@@ -1,5 +1,6 @@
 package telepuziki.maleclub.controller
 
+import MAX_OCCUPANCY
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -57,7 +58,7 @@ class ReservationController(
             datetime = reservation.timeAndDate,
             childId = reservation.childId
         )
-        if (upcomingOccupancy > 7 || childReservation > 0)
+        if (upcomingOccupancy > MAX_OCCUPANCY - 1 || childReservation > 0)
             return ResponseEntity(false, HttpStatus.BAD_REQUEST)
 
         reservationRepository.save(reservation)
