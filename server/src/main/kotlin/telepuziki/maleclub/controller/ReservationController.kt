@@ -47,11 +47,19 @@ class ReservationController(
         @AuthenticationPrincipal userDetails: UserDetailsImpl
     ): ResponseEntity<Boolean> {
         val child = childRepository.findByIdOrNull(reservation.childId)
-        if (child == null) {
+        if (child == null)
             return ResponseEntity(false, HttpStatus.BAD_REQUEST)
-        }
         if (child.userId != userDetails.getId() && userDetails.isNotAdmin())
             return ResponseEntity(false, HttpStatus.FORBIDDEN)
+
+        val upcomingOccupancy = reservationRepository.getUpcomingOccupancy(reservation.timeAndDate)
+        val childReservation = reservationRepository.getReservationsForChild(
+            datetime = reservation.timeAndDate,
+            childId = reservation.childId
+        )
+        if (upcomingOccupancy > 7 || childReservation > 0)
+            return ResponseEntity(false, HttpStatus.BAD_REQUEST)
+
         reservationRepository.save(reservation)
         return ResponseEntity(true, HttpStatus.OK)
     }

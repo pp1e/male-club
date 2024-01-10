@@ -14,4 +14,13 @@ interface ReservationRepository: JpaRepository<Reservation, Long> {
 
     @Query(value = "CALL GetCurrentOccupancy(:datetime);", nativeQuery = true)
     fun getOccupancy(@Param("datetime") datetime: LocalDateTime): Int
+
+    @Query(value = "CALL GetUpcomingOccupancy(:datetime);", nativeQuery = true)
+    fun getUpcomingOccupancy(@Param("datetime") datetime: LocalDateTime): Int
+
+    @Query(value = "CALL GetChildReservationInfo(:datetime, :id_child);", nativeQuery = true)
+    fun getReservationsForChild(
+        @Param("datetime") datetime: LocalDateTime,
+        @Param("id_child") childId: Long,
+    ): Int
 }
