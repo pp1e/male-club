@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 /**
  * Страница не найдена.
+ * @author Гусева П.Н.
  */
 const NotFoundPage = (): ReactElement => {
     const navigate = useNavigate();

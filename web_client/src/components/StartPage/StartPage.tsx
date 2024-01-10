@@ -6,6 +6,7 @@ import "./styles/startpage.css";
 
 /**
  * Старстовая страница
+ * @author Гусева П.Н.
  */
 const StartPage = (): ReactElement => {
     return (

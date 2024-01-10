@@ -1,13 +1,12 @@
 import { ReactElement } from "react";
 import { IChild, IChildCard } from './PersonalAccount';
 
-
 export function getAge(date: Date): string {
     const birthdayDate  = new Date(date);
     const currentDate  = new Date();
     let currAge = currentDate.getFullYear() - birthdayDate.getFullYear();
     if (currentDate.getMonth() < birthdayDate.getMonth() || 
-        (currentDate.getMonth() == birthdayDate.getMonth() && currentDate.getDate() < birthdayDate.getDate())) {
+        (currentDate.getMonth() === birthdayDate.getMonth() && currentDate.getDate() < birthdayDate.getDate())) {
             currAge--;
     }
     return currAge > 4

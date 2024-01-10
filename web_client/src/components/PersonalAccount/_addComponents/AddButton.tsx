@@ -15,6 +15,7 @@ interface ICurrentProps extends IProps {
 
 /**
  * Кнопка добавления карточки ребенка в ЛК пользователя
+ * @author Гусева П.Н.
  */
 const AddButton = (props: ICurrentProps): ReactElement => {
 

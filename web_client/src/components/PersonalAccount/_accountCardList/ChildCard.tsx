@@ -19,6 +19,7 @@ export interface IProps {
 
 /**
 * Карточка ребенка в ЛК пользователя
+ * @author Гусева П.Н.
 */
 const ChildCard = (props: IProps): ReactElement => {
 

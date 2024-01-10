@@ -16,6 +16,7 @@ interface IProps {
 }
 /**
  * Карточка добавления/редактирования ребенка в ЛК пользователя.
+ * @author Гусева П.Н.
  */
 const AddChildCard = (props: IProps): ReactElement => {
     const nameRef = useRef<HTMLInputElement>(null);
