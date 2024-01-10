@@ -99,7 +99,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
             <option value={console.console_id} key={console.console_id}>{console.name}</option>
         ))
     }, [consoleList]);
-  
+
     useEffect(() => {
         getChildrenList(true).then((result) => {
             const responseList = [...result.data];
@@ -112,7 +112,7 @@ const PrerecordingPage = (props: IProps): ReactElement => {
             });
             setChildrenList(curChildList);
         });
-    }, [isFullSite]);
+    }, []);
 
     const childrenOptionsList = useMemo(() => {
         return childrenList?.map(child => (
